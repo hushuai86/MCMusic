@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.SingerPoMapper">
+	<resultMap id="BaseResultMap" type="cn.pojo.SingerPo">
+		<id column="singerId" property="singerid" jdbcType="INTEGER" />
+		<result column="singerName" property="singername" jdbcType="VARCHAR" />
+		<result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+		<result column="collectionCount" property="collectioncount"
+			jdbcType="INTEGER" />
+		<result column="areaId" property="areaid" jdbcType="INTEGER" />
+		<result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+		<result column="singerSex" property="singersex" jdbcType="BIT" />
+		<result column="photoUrl" property="photourl" jdbcType="VARCHAR" />
+		<result column="debutDate" property="debutdate" jdbcType="TIMESTAMP" />
+		<result column="singerStateId" property="singerstateid"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="cn.pojo.SingerPo"
+		extends="BaseResultMap">
+		<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		singerId, singerName, accessCount, collectionCount, areaId,
+		birthday,
+		singerSex,
+		photoUrl, debutDate, singerStateId
+	</sql>
+	<sql id="Blob_Column_List">
+		introduce
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		where singerId = #{singerid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from singer
+		where singerId = #{singerid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.pojo.SingerPo">
+		insert into singer (singerId,
+		singerName, accessCount,
+		collectionCount, areaId, birthday,
+		singerSex,
+		photoUrl, debutDate,
+		singerStateId, introduce)
+		values
+		(#{singerid,jdbcType=INTEGER}, #{singername,jdbcType=VARCHAR},
+		#{accesscount,jdbcType=INTEGER},
+		#{collectioncount,jdbcType=INTEGER},
+		#{areaid,jdbcType=INTEGER}, #{birthday,jdbcType=TIMESTAMP},
+		#{singersex,jdbcType=BIT}, #{photourl,jdbcType=VARCHAR},
+		#{debutdate,jdbcType=TIMESTAMP},
+		#{singerstateid,jdbcType=INTEGER},
+		#{introduce,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.pojo.SingerPo">
+		insert into singer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="singerid != null">
+				singerId,
+			</if>
+			<if test="singername != null">
+				singerName,
+			</if>
+			<if test="accesscount != null">
+				accessCount,
+			</if>
+			<if test="collectioncount != null">
+				collectionCount,
+			</if>
+			<if test="areaid != null">
+				areaId,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="singersex != null">
+				singerSex,
+			</if>
+			<if test="photourl != null">
+				photoUrl,
+			</if>
+			<if test="debutdate != null">
+				debutDate,
+			</if>
+			<if test="singerstateid != null">
+				singerStateId,
+			</if>
+			<if test="introduce != null">
+				introduce,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="singerid != null">
+				#{singerid,jdbcType=INTEGER},
+			</if>
+			<if test="singername != null">
+				#{singername,jdbcType=VARCHAR},
+			</if>
+			<if test="accesscount != null">
+				#{accesscount,jdbcType=INTEGER},
+			</if>
+			<if test="collectioncount != null">
+				#{collectioncount,jdbcType=INTEGER},
+			</if>
+			<if test="areaid != null">
+				#{areaid,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=TIMESTAMP},
+			</if>
+			<if test="singersex != null">
+				#{singersex,jdbcType=BIT},
+			</if>
+			<if test="photourl != null">
+				#{photourl,jdbcType=VARCHAR},
+			</if>
+			<if test="debutdate != null">
+				#{debutdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="singerstateid != null">
+				#{singerstateid,jdbcType=INTEGER},
+			</if>
+			<if test="introduce != null">
+				#{introduce,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.pojo.SingerPo">
+		update singer
+		<set>
+			<if test="singername != null">
+				singerName = #{singername,jdbcType=VARCHAR},
+			</if>
+			<if test="accesscount != null">
+				accessCount = #{accesscount,jdbcType=INTEGER},
+			</if>
+			<if test="collectioncount != null">
+				collectionCount = #{collectioncount,jdbcType=INTEGER},
+			</if>
+			<if test="areaid != null">
+				areaId = #{areaid,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=TIMESTAMP},
+			</if>
+			<if test="singersex != null">
+				singerSex = #{singersex,jdbcType=BIT},
+			</if>
+			<if test="photourl != null">
+				photoUrl = #{photourl,jdbcType=VARCHAR},
+			</if>
+			<if test="debutdate != null">
+				debutDate = #{debutdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="singerstateid != null">
+				singerStateId = #{singerstateid,jdbcType=INTEGER},
+			</if>
+			<if test="introduce != null">
+				introduce = #{introduce,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where singerId = #{singerid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.pojo.SingerPo">
+		update
+		singer
+		set singerName = #{singername,jdbcType=VARCHAR},
+		accessCount =
+		#{accesscount,jdbcType=INTEGER},
+		collectionCount =
+		#{collectioncount,jdbcType=INTEGER},
+		areaId =
+		#{areaid,jdbcType=INTEGER},
+		birthday = #{birthday,jdbcType=TIMESTAMP},
+		singerSex = #{singersex,jdbcType=BIT},
+		photoUrl =
+		#{photourl,jdbcType=VARCHAR},
+		debutDate =
+		#{debutdate,jdbcType=TIMESTAMP},
+		singerStateId =
+		#{singerstateid,jdbcType=INTEGER},
+		introduce =
+		#{introduce,jdbcType=LONGVARCHAR}
+		where singerId =
+		#{singerid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.pojo.SingerPo">
+		update singer
+		set
+		singerName = #{singername,jdbcType=VARCHAR},
+		accessCount =
+		#{accesscount,jdbcType=INTEGER},
+		collectionCount =
+		#{collectioncount,jdbcType=INTEGER},
+		areaId =
+		#{areaid,jdbcType=INTEGER},
+		birthday = #{birthday,jdbcType=TIMESTAMP},
+		singerSex = #{singersex,jdbcType=BIT},
+		photoUrl =
+		#{photourl,jdbcType=VARCHAR},
+		debutDate =
+		#{debutdate,jdbcType=TIMESTAMP},
+		singerStateId =
+		#{singerstateid,jdbcType=INTEGER}
+		where singerId =
+		#{singerid,jdbcType=INTEGER}
+	</update>
+	<select id="selectAllSinger" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+	</select>
+	<select id="selectAllSingerPoBlock" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		where singerStateId != 1
+	</select>
+
+	<resultMap id="ResultSingerVoMap" type="cn.pojo.vo.SingerVo">
+		<association property="singerPo" javaType="cn.pojo.SingerPo"
+			column="singerId" select="cn.mapper.SingerPoMapper.selectByPrimaryKey">
+			<id column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="singerName" property="singername" jdbcType="VARCHAR" />
+			<result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+			<result column="collectionCount	" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="areaId" property="areaid" jdbcType="INTEGER" />
+			<result column="birthday" property="birthday" jdbcType="DATE" />
+			<result column="singerSex" property="singersex" jdbcType="VARCHAR" />
+			<result column="photoUrl" property="photourl" jdbcType="VARCHAR" />
+			<result column="debutDate" property="debutdate" jdbcType="INTEGER" />
+			<result column="singerStateId" property="singerstateid"
+				jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+		</association>
+		<association property="areaPo" javaType="cn.pojo.AreaPo"
+			column="areaId" select="cn.mapper.AreaPoMapper.selectByPrimaryKey">
+			<id column="areaId" property="areaid" />
+			<result column="areaName" property="areaname" />
+		</association>
+		<collection property="CDList" ofType="cn.pojo.CDPo" column="singerId"
+			select="cn.mapper.CDPoMapper.selecCdPosBySingerId">
+			<id column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="CDName" property="cdname" jdbcType="VARCHAR" />
+			<result column="coverUrl" property="coverurl" jdbcType="VARCHAR" />
+			<result column="songCount" property="songcount" jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="DATE" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="CDstateId" property="cdstateid" jdbcType="INTEGER" />
+		</collection>
+	</resultMap>
+	<!-- 查新所有singerVo -->
+	<select id="selectAllSingerVo" resultMap="ResultSingerVoMap">
+		select * from singer
+		where singerStateId != 1
+	</select>
+	<resultMap id="ResultSingerVoMap1" type="cn.pojo.vo.SingerVo">
+		<association property="singerPo" javaType="cn.pojo.SingerPo">
+			<id column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="singerName" property="singername" jdbcType="VARCHAR" />
+			<result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+			<result column="collectionCount	" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="areaId" property="areaid" jdbcType="INTEGER" />
+			<result column="birthday" property="birthday" jdbcType="DATE" />
+			<result column="singerSex" property="singersex" jdbcType="VARCHAR" />
+			<result column="photoUrl" property="photourl" jdbcType="VARCHAR" />
+			<result column="debutDate" property="debutdate" jdbcType="INTEGER" />
+			<result column="singerStateId" property="singerstateid"
+				jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+		</association>
+		<association property="areaPo" javaType="cn.pojo.AreaPo"
+			column="areaId" select="cn.mapper.AreaPoMapper.selectByPrimaryKey">
+			<id column="areaId" property="areaid" />
+			<result column="areaName" property="areaname" />
+		</association>
+		<collection property="CDList" ofType="cn.pojo.CDPo" column="singerId"
+			select="cn.mapper.CDPoMapper.selecCdPosBySingerId">
+			<id column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="CDName" property="cdname" jdbcType="VARCHAR" />
+			<result column="coverUrl" property="coverurl" jdbcType="VARCHAR" />
+			<result column="songCount" property="songcount" jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="DATE" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="CDstateId" property="cdstateid" jdbcType="INTEGER" />
+		</collection>
+	</resultMap>
+	<!-- 通过singerId查询singerVo对象并且状态不阻塞 -->
+	<select id="selectSingerVoBySingerId" resultMap="ResultSingerVoMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		where singerStateId != 1 and
+		singerId = #{singerId }
+	</select>
+	<!-- 通过singerName，areaId，singerSex模糊查询singPo，并且通过accessCount，collectionCount,debutDate排序，分页 -->
+	<select id="selectSingerPoBlockForPagination" resultMap="ResultMapWithBLOBs"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		<where>
+			<if test="singername!=null and singername!=''">
+				and singerName like #{singername }
+			</if>
+			<if test="areaid!=null and areaid!=''">
+				and areaId = #{areaid }
+			</if>
+			<if test="singersex==true or singersex==false">
+				and singerSex like #{singersex }
+			</if>
+			<if test="firstLetter!=null and firstLetter!=''">
+				and GET_FIRST_PINYIN_CHAR(singerName) = #{firstLetter}
+			</if>
+			<if test="singerStateId==null">
+ 				and singerStateId != 1
+ 			</if>
+ 			<if test="singerStateId!=null">
+ 				and singerStateId = #{singerStateId}
+ 			</if>
+		</where>
+		order by debutDate desc
+		<if test="accessCount!=null">
+			,accessCount desc
+		</if>
+		<if test="collectionCount!=null">
+			,collectionCount desc
+		</if>
+		limit #{pageIndex },#{pageSize }
+	</select>
+
+	<!-- 通过singerName，areaId，singerSex模糊查询singPo，并且通过accessCount排序，分页 -->
+	<select id="selectSingerPoBlockForPaginationByHotSingerRank"
+		resultMap="ResultMapWithBLOBs" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		<where>
+			<if test="singername!=null and singername!=''">
+				and singerName like #{singername }
+			</if>
+			<if test="areaid!=null and areaid!=''">
+				and areaId = #{areaid }
+			</if>
+			<if test="singersex==true or singersex ==false">
+				and singerSex like #{singersex }
+			</if>
+			and singerStateId != 1
+		</where>
+		order by accessCount desc
+		limit #{pageIndex },#{pageSize }
+	</select>
+	<!-- 通过singerName，areaId，singerSex模糊查询singPo，并且通过accessCount排序，分页 -->
+	<select id="selectSingerPoBlockForPaginationByHotSingerRankAndAreaId"
+		resultMap="ResultMapWithBLOBs" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		<where>
+			<if test="singername!=null and singername!=''">
+				and singerName like #{singername }
+			</if>
+			<if test="areaid!=null and areaid!=''">
+				and areaId = #{areaid }
+			</if>
+			<if test="singersex==true or singersex ==false">
+				and singerSex like #{singersex}
+			</if>
+			and singerStateId != 1
+		</where>
+		order by accessCount desc
+		limit #{pageIndex },#{pageSize }
+	</select>
+
+	<!-- 通过singerName，areaId，singerSex 得到总数 -->
+	<select id="selectSingerPoBlockForPaginationCount" resultType="int"
+		parameterType="java.util.Map">
+		select count(*)
+		from singer
+		<where>
+			<if test="singername!=null and singername!=''">
+				and singerName like #{singername }
+			</if>
+			<if test="areaid!=null and areaid!=''">
+				and areaId = #{areaid }
+			</if>
+			<if test="singersex==true or singersex==false">
+				and singerSex = #{singersex }
+			</if>
+			<if test="firstLetter!=null and firstLetter!=''">
+				and GET_FIRST_PINYIN_CHAR(singerName) = #{firstLetter}
+			</if>
+			<if test="singerStateId==null">
+ 				and singerStateId != 1
+ 			</if>
+ 			<if test="singerStateId!=null">
+ 				and singerStateId = #{singerStateId}
+ 			</if>
+		</where>
+	</select>
+	<!-- 通过singerName，areaId，singerSex模糊查询singPo，并且通过collectionCount排序，分页 -->
+	<select id="selectSingerPoBlockForPaginationByCollectionCount"
+		resultMap="ResultMapWithBLOBs" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		<where>
+			<if test="singername!=null and singername!=''">
+				and singerName like #{singername }
+			</if>
+			<if test="areaid!=null and areaid!=''">
+				and areaId = #{areaid }
+			</if>
+			<if test="singersex==true or singersex ==false">
+				and singerSex like #{singersex }
+			</if>
+			and singerStateId != 1
+		</where>
+		order by collectionCount desc
+		limit #{pageIndex },#{pageSize }
+	</select>
+
+	<!-- 通过歌手名查询歌手实体对象 -->
+	<select id="selectBySingerName" parameterType="String"
+		resultType="SingerPo">
+		select * from singer where singerName=#{name}
+	</select>
+
+
+	<!--areaPoMapper -->
+	<!-- 通过areaId查歌手列表 -->
+	<select id="selectByAreaId" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		where areaid = #{areaid,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectSingerForForeign" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select * from singer
+		where areaId in (
+		SELECT areaId from area where areaName not like '%中国%')
+		ORDER BY accessCount desc
+		limit #{pageIndex },#{pageSize }
+	</select>
+
+	<select id="selectByPrimaryKeyForName" resultType="java.lang.String"
+		parameterType="int">
+		select singername from singer
+		where singerid = #{singerid,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查询歌手总数 -->
+	<select id="selectShowSingerCount" resultType="int">
+		select count(*) from singer
+		where singerStateId!=1
+	</select>
+
+	<!-- 根据singername模糊查询 获取歌手实体对象 状态不阻塞 -->
+	<select id="selectSingerPoBlockBySingerName" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from singer
+		<where>
+			singerStateId!=1
+			<if test="_parameter !=null">
+				and singerName like #{_parameter }
+			</if>
+		</where>
+	</select>
+	<select id="selectByPrimaryKey1" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from singer
+		where singerId = #{singerid,jdbcType=INTEGER}
+
+	</select>
+</mapper>

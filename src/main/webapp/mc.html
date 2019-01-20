@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<title></title>
+	</head>
+	<script>
+		//获取到浏览器屏幕的宽度，并且设置
+		$(function(){
+			function changeDefaultWidth(){
+				var scrennWidth =1600+ 'px';
+				var scrennheight =  $(window).height();
+				$(".player").css("width",scrennWidth);
+				$(".playerContext").css("width",scrennWidth);
+				$(".playerContext").css("height",scrennheight);
+			}
+			changeDefaultWidth();
+			
+			//屏幕修改宽度事件
+			$(window).resize(function(){
+			   changeDefaultWidth();
+			});
+		})
+	</script>
+	<style>
+		body{
+			overflow-x: hidden;
+		}
+	</style>
+	<body>
+		<audio id="player"></audio>
+		
+		
+		
+		<style>
+			.singerDefaultCon{
+				
+				float: left;
+			}
+			.singerDefaultSmallCon{
+				height: 550px; 
+				margin: auto;
+				color: #BBB;
+				padding-top: 50px;"
+			}
+			.playerSingerButton{
+				height: 40px;
+			}
+			.playerSingerButton li{
+				text-align: center;
+				line-height: 40px;
+				margin-left: 6px;
+				border: solid #AAA 1px;
+				width: 110px;
+				height: 40px;
+				float: left;
+			}
+			.playerSingerButton li:hover{
+				cursor: pointer;
+				border: solid white 1px;
+			}
+			.playerSingerButton img{
+				vertical-align:middle;
+			}
+		</style>
+		<div class="playerContext"  style="background-image:url(img/mcBG/test07.png);background-size: cover;">
+			<div class="singerDefaultCon" style="width: 60%;">
+				<div class="singerDefaultSmallCon" style="width: 850px;">
+					<ul class="playerSingerButton">
+						<li><img src="img/player-star01.png" height="22"/>&nbsp;收藏</li>
+						<li><img src="img/player-add.png" height="22"/>&nbsp;添加</li>
+						<li id="singDel"><img src="img/player-delete.png" height="22"/>&nbsp;删除</li>
+						<li><img src="img/player-down02.png" height="22"/>&nbsp;下载</li>
+						<li id="singClear"><img src="img/player-clear.png" height="22"/>&nbsp;清空</li>
+					</ul><br /><br />
+					
+					<style>
+						.singerListTab{
+							margin-left: 10px;
+						}
+						.singerListTab th{
+							text-align: left!important;
+							font-size: 16px;
+							border-bottom: 1px #666 solid;
+							padding-bottom: 10px;
+						}
+
+						.singerListTab td{
+							font-size: 15px;
+							padding-top: 7px;
+							padding-bottom: 7px;
+							cursor: default;
+						}
+						.singerListTab td .changePlayButton{
+							border: inherit;
+							background-color: inherit;
+							color: #AAA;
+						}
+						.singerListTab .urlTd{
+							display: none;
+						}
+						.singerListTab input[type='checkbox']{
+							display: none;
+						}
+						.checkLabel{
+							display: block;
+							width: 16px;
+							height: 16px;
+							border: solid #666 1px;
+							float: left;
+						}
+						.checkLabel:hover{border: solid #AAA 1px;}
+						#songWords li{
+							font-size: 16px;
+							height: 25px;
+						}
+					</style>
+					<table lay-skin="line" class="singerListTab">
+					  <colgroup>
+					  	<col width="35"><col width="30"><col width="400"><col width="250"><col width="60">
+					  </colgroup>
+					  <thead>
+					    <tr>
+					      <th>
+					      	<label for="all" class="checkLabel"></label>
+		  					<input type="checkbox" id="all"/>
+					      </th>
+					      <th></th>
+					      <th>歌曲</th>
+					      <th>歌手</th>
+					      <th>时长</th>
+					      <th>播放</th>
+					    </tr> 
+					  </thead>
+					  <tbody>
+					    <tr>
+					      <td class="urlTd">mc/演员.mp3</td>
+					      <td>
+					      	<label for="tdInput0" class="checkLabel"></label>
+		  					<input type="checkbox" id="tdInput0" />
+					      </td>
+					      <td class="stateTd">01</td>
+					      <td class="tableSing">演员</td>
+					      <td class="tableSinger">薛之谦</td>
+					      <td >3.14</td>
+					      <td>
+					      	<button class="changePlayButton"><i class="layui-icon"style="font-size: 25px;">&#xe652;</i></button>
+					      </td>
+					    </tr>
+					    <tr>
+					      <td class="urlTd">mc/童话.mp3</td>
+					      <td>
+					      	<label for="tdInput1" class="checkLabel"></label>
+		  					<input type="checkbox" id="tdInput1" />
+					      </td>
+					      <td class="stateTd">02</td>
+					      <td class="tableSing">童话</td>
+					      <td class="tableSinger">光良</td>
+					      <td>15.34</td>
+					      <td>
+					      	<button class="changePlayButton"><i class="layui-icon"style="font-size: 25px;">&#xe652;</i></button>
+					      </td>
+					    </tr>
+					  </tbody>
+					</table>  
+					
+				</div>
+			</div>
+			<div class="singerDefaultCon noOverflow" style="width: 40%;">
+				<div class="singerDefaultSmallCon noOverflow" style="width: 450px;text-align: center;">
+					<img src="img/singList07.png" height="150px" />
+					<div style="width: 450px;">
+						<!--利用父容器来隐藏滚动条-->
+						<ul id="songWords" style="overflow:auto;margin-top: 20px;height:380px;width: 470px;"></ul>
+					</div>
+				</div>
+			</div>
+			<div style="clear: both;"></div>	
+		</div>
+		<script>
+			$(".checkLabel").click(function(){  //判定当个复选框
+				var bool = $(this).next("input").is(':checked');
+				if(bool){
+					$(this).css("background-image","");
+				}else{
+					$(this).css("background-image","url(img/good.png)");
+				}
+			})
+			
+			//----------按钮js
+			//清空
+			$("#singClear").click(function(){
+				$(".singerListTab tbody").html("");
+			})
+			//删除
+			$("#singDel").click(function(){
+				var $checkedInput = $(".singerListTab input[type='checkbox']:checked").not($("#all"));
+				$checkedInput.parent().parent().remove();
+				//singPlayIndex 设置为删除后的索引位置
+				singPlayIndex = 0;
+			})
+			
+			
+			//全选
+			$("#all").change(function(){
+				var bool = $(this).is(':checked');
+				if(bool){
+					$(".singerListTab input[type='checkbox']").attr("checked","");
+					$(".checkLabel").css("background-image","url(img/good.png)");
+				}else{
+					$(".singerListTab input[type='checkbox']").removeAttr("checked");
+					$(".checkLabel").css("background-image","");
+				}
+			})
+			$(".playerContext").css("background-image","url(img/mcBG/test0"+(Math.ceil(Math.random()*10)%7+1)+".png)");
+		</script>
+		
+		
+		
+		
+		
+		
+		<style>
+			.player{
+				position: fixed;
+				bottom: 0px;
+				height: 130px;
+				background-color: transparent;
+			}
+			.player .playButton, .otherButton{
+				padding: 30px;
+				padding-top: 40px;
+				height: 150px;
+				float: left;
+			}
+			.player .playBar{
+				height: 150px;
+				width: 900px;
+				float: left;
+			}
+			
+			
+			.player .playBar .singText{/*歌词容器*/
+				height: 25px;
+				margin-top: 40px;
+				color: white;
+			}
+			.player .playBar .progress{/*进度条容器（灰色背景）*/
+				cursor: pointer;
+				height: 5px;
+				background-color: #AAA;
+				margin-top: 5px;
+			}
+			.player .playBar .progress .bc{/*进度条白色背景*/
+				border: white solid 3px;
+				width: 0px;/*白色进度长度，总长度为900*/
+			}
+			.player .playBar .progress .bcmove{/*进度移动块*/
+				border-radius: 20px;
+				height: 20px; 
+				width: 20px; 
+				background-color: white;
+				position: absolute;
+				top: 62px;
+				left: 217px;/*进度块最左距离*/
+			}
+			
+			
+			.player .soundButton{
+				padding: 30px;
+				padding-top: 40px;
+				height: 150px;
+				width: 150px;
+				float: left;
+			}
+			.player .soundProgress{
+				background-color: #AAA;
+				margin-top: 25px;
+				float: left;
+				width: 85px;
+				height: 5px;
+			}
+			.player .soundBc{
+				border: white solid 3px;
+				width: 20px;/*声音白色进度长度，总长度为85*/
+			}
+			
+			.player .soundBcMove{
+				
+				height: 5px; 
+				width: 7px; 
+				background-color: lightsteelblue;
+				position: absolute;
+				top: 65px;
+				left: 1416px;/*进度块最左距离*/
+			}
+			
+			.player img{
+				height: 50px;
+				cursor: pointer;
+			}
+		</style>
+		
+		<div class="player">
+			<div class="playButton">
+				<img id="playPre" src="img/player-pre.png" />
+				<img id="playOrStop" src="img/player-play.png"/>
+				<img id="playNext" src="img/player-next.png" />
+				<!--<img src="img/player-stop.png" />-->
+			</div>
+			
+			<div class="playBar">
+				<div class="singText">
+					<p style="float: left;"></p>
+					<p style="float: right;"><font class="changeTime">0.0</font>/<font class="allTime">0.0</font></p>
+				</div>
+				<div class="progress">
+					<div class="bc"></div>
+					<div class="bcmove"></div>
+				</div>
+			</div>
+			
+			<div class="otherButton">
+				<img id="singPlayModel" src="img/player-order.png" title="顺序播放"/>
+				<img id="playStar" src="img/player-star01.png" title="喜欢"/>
+				<img src="img/player-down.png" />
+			</div>
+			<div class="soundButton">
+				<img id="soundVolume" src="img/player-sound.png" style="float: left;" />
+				<div class="soundProgress">
+					<div class="soundBc"></div>
+					<div class="soundBcMove"></div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+		$(function(){
+			//player全局变量
+			var playBarLength = 900; //playerbar长度
+			var playBarLeft = 217;   //playerbar左位置
+			//sound全局变量
+			var soundBarLength = 85; //soundbar长度
+			var soundBarLeft = 1416;   //sound左位置
+			//歌词全局
+			var songConHeight = 380; //歌词ul父容器的高度
+			var songLiHeight = 25;   //歌词li一行的高度
+			var songText ;//存放歌词
+			var res ; //解析歌词得到的数组
+			//歌曲
+			var singPlayIndex = 0; //正在播放的歌曲索引
+			var singPlayModel = 0; //0表示歌单循环播放，1表示单曲循环播放，2表示随机播放
+			
+			//---------------------------下一曲和上一曲
+			$('#playPre').click(function(){
+				var num = $(".urlTd").length;
+				singPlayIndex = (singPlayIndex+num-1)%num;
+				$(".changePlayButton").eq(singPlayIndex).click();
+			});
+			$('#playNext').click(function(){
+				var num = $(".urlTd").length;
+				singPlayIndex = (singPlayIndex+1)%num;
+				$(".changePlayButton").eq(singPlayIndex).click();
+			});
+			
+			//-------------------------------------------------------------
+			//播放与停止
+			var playFlag = false; //默认停止
+			$("#playOrStop").click(function(){
+				playFlag =!playFlag;
+				if(playFlag){
+					$('#player').get(0).play();
+					$(this).attr("src","img/player-stop.png");
+				}else{
+					$('#player').get(0).pause();
+					$(this).attr("src","img/player-play.png");
+				}	
+			});
+			
+			//直接开始播放当前音乐
+			function playAutoThis(){
+				$("#player").get(0).play();
+				$("#playOrStop").attr("src","img/player-stop.png");
+				playFlag = true;
+			}
+			
+			//监听就绪状态设置
+			$("#player").get(0).oncanplay = function(){
+				//设置歌曲名称
+				//
+				//
+				//设置总时间
+				var alltime = Math.ceil($("#player").get(0).duration);
+				$('.allTime').html(Math.floor(alltime/60) + '.'+ alltime%60);
+				//设置声音进度条
+				var percentSound = $("#player").get(0).volume;
+				$(".soundBcMove").css("left",(percentSound*soundBarLength+soundBarLeft)+"px");
+				$(".soundBc").css("width",(percentSound*soundBarLength)+"px");
+			};
+			
+			//监听audio的进度条时间来影响显示的进度条
+			$("#player").get(0).ontimeupdate=function(){
+				//计算百分比
+				var percent =parseFloat($("#player").get(0).currentTime)/parseFloat($("#player").get(0).duration);
+				//设置到页面进度条
+				$(".bc").css("width",parseInt(playBarLength*percent)+"px");
+				$(".bcmove").css("left",(playBarLeft+parseInt(playBarLength*percent))+"px");
+				//设置进度时间
+				var changetime = Math.ceil($("#player").get(0).currentTime);
+				$('.changeTime').html(Math.floor(changetime/60) + '.'+ changetime%60);
+				
+				//显示歌词高亮滚动,该部分res歌词结果在下个js标签解析
+				res.forEach(function(v1, i1, a1){
+					if($("#player").get(0).currentTime>v1[0]){
+						var thisWord = $("#songWords li").eq(i1);
+						thisWord.css("color","lightgreen");
+						$("#songWords li").not(thisWord).css("color","#BBB");
+						
+						//移动歌词
+						var songIndex = i1;
+						var centerHeight = songConHeight/2;
+						var scrollLocation = songLiHeight*songIndex;
+						if(scrollLocation>centerHeight){
+							$("#songWords").get(0).scrollTop=songLiHeight*songIndex-centerHeight;
+						}
+						else $("#songWords").get(0).scrollTop=0;
+							
+					}
+				});
+				
+			}
+			
+			//监听歌曲进度条结束跳转到下一曲
+			$("#player").get(0).onended=function(){
+				//根据歌曲播放模式来进行方法调用
+				var num = $(".urlTd").length; //播放歌曲总数
+				if(singPlayModel==0){//歌单循环播放
+					singPlayIndex = (singPlayIndex+1)%num;
+				}
+				else if(singPlayModel==1){//单曲循环播放
+					//歌曲索引不需要变化
+				}
+				else if(singPlayModel==2){//随机播放
+					singPlayIndex = Math.floor(Math.random()*num);
+				}
+				//重新播放歌曲
+				$(".changePlayButton").eq(singPlayIndex).click();
+			}
+			
+			
+			//点击灰色背景进行进度设置
+			$(".progress").click(function(e){
+				//得到相对的点击长度，计算百分比
+				var percent = (e.pageX - $(this).position().left)/playBarLength;
+				//设置audio的进度，由于监听了audio会移动白条，所以不需要设置白条
+				$("#player").get(0).currentTime = $("#player").get(0).duration * percent;
+				//设置移动块位置
+				$(".bcmove").css("left",(playBarLeft+parseInt(playBarLength*percent))+"px");
+			});
+			
+			//监听移动页面音乐进度条
+			var mouseMoveFlag = true; //判断是否可以移动进度块
+			$(".bcmove").mousedown(function(e){
+				e.preventDefault();
+				mouseMoveFlag = true;
+				$("body").mousemove(function(e){ //点击后通过设置flag可在页面带动进度块
+					e.preventDefault();
+					if(mouseMoveFlag){
+						if(e.pageX<playBarLeft){ //边界判断
+							$(".bcmove").css("left",playBarLeft+"px");
+						}
+						else if(e.pageX>(playBarLeft+playBarLength)){
+							$(".bcmove").css("left",(playBarLeft+playBarLength)+"px");
+						}
+						else $(".bcmove").css("left",e.pageX+"px");
+						var percent = (e.pageX - playBarLeft)/playBarLength;
+						$(".bc").css("width",parseInt(playBarLength*percent)+"px");
+						//duration得到的总时间，currentTime可设置的当前时间
+						$("#player").get(0).currentTime = $("#player").get(0).duration * percent;
+					}
+				})
+				$("body").mouseup(function(e){
+					e.preventDefault();
+					mouseMoveFlag = false;
+				})
+			})
+			
+			
+			//-----------------------------------------------------------------------
+			//监听audio声音进度条
+			$("#player").get(0).onvolumechange = function(){
+				var percentSound = $("#player").get(0).volume;
+				//判断修改静音图标
+				if(percentSound<0.01){
+					$("#soundVolume").attr("src","img/player-nosound.png");
+				}
+				else{
+					$("#soundVolume").attr("src","img/player-sound.png");
+				}
+				//监听设置页面音量位置
+				$(".soundBcMove").css("left",(percentSound*soundBarLength+soundBarLeft)+"px");
+				$(".soundBc").css("width",(percentSound*soundBarLength)+"px");
+			}
+			
+			//监听sound灰色进度条
+			$(".soundProgress").click(function(e){
+				//因为比例就是音量，可以直接设置
+				$("#player").get(0).volume=(e.pageX-soundBarLeft)/soundBarLength;
+			})
+			
+			//静音
+			var soundVolumeFlag = true; //默认没有收藏，后台传入数据判断
+			var soundVolumeHistory = 0; //用于记录一个历史音量
+			$("#soundVolume").click(function(){
+				soundVolumeFlag = !soundVolumeFlag;
+				if(!soundVolumeFlag){ //表示声音被静音
+					//设置图标并且记录历史音量
+					$("#soundVolume").attr("src","img/player-nosound.png");
+					soundVolumeHistory = $("#player").get(0).volume;
+					$("#player").get(0).volume = 0; //设置音量为0
+				}
+				else{
+					$("#soundVolume").attr("src","img/player-sound.png");
+					//回复历史音量
+					$("#player").get(0).volume = soundVolumeHistory;
+				}
+			})
+			
+			//页面sound进度块
+			var soundMouseMoveFlag = true; //判断是否可以移动进度块
+			$(".soundBcMove").mousedown(function(e){
+				e.preventDefault();
+				soundMouseMoveFlag = true;
+				$("body").mousemove(function(e){ //点击后通过设置flag可在页面带动进度块
+					e.preventDefault();
+					if(soundMouseMoveFlag){
+						//计算移动百分比，也可以直接当做音量的值
+						var percent = (e.pageX - soundBarLeft)/soundBarLength; 
+						if(e.pageX<soundBarLeft){ //判断鼠标位置是否在左边界左边
+							$(".soundBcMove").css("left",soundBarLeft+"px");//设置进度块为左边界
+							percent=0; //不能为负数，直接为0
+						}
+						else if(e.pageX>(soundBarLeft+soundBarLength)){//判断鼠标位置是否在右边界右边
+							$(".soundBcMove").css("left",(soundBarLeft+soundBarLength)+"px");
+							percent=1 //不能为大于1，直接为1
+						}
+						else $(".soundBcMove").css("left",e.pageX+"px");
+						//设置白进度条
+						$(".soundBc").css("width",parseInt(soundBarLength*percent)+"px");
+						//设置音量
+						$("#player").get(0).volume = percent;
+					}
+				})
+				$("body").mouseup(function(e){ //监听鼠标松开事件
+					e.preventDefault();
+					soundMouseMoveFlag = false;
+				})
+			})
+			
+			
+			
+			
+			//-------------------------------------------------------------
+			//收藏
+			var playStarFlag = false; //默认没有收藏，后台传入数据判断
+			$("#playStar").click(function(){
+				playStarFlag =!playStarFlag;
+				if(playStarFlag){
+					//执行ajax后台程序 进行收藏
+					$(this).attr("src","img/player-star03.png");
+				}else{
+					//执行ajax后台程序 取消收藏
+					$(this).attr("src","img/player-star01.png");
+				}	
+			});
+			
+			
+			//--------------------------------------------------------------
+			//播放模式
+			//图标和标记切换
+			$("#singPlayModel").click(function(){
+				if(singPlayModel==0){//歌单循环播放切换为单曲播放
+					//修改图标和提示
+					$("#singPlayModel").attr("src","img/player-alone.png");
+					$("#singPlayModel").attr("title","单曲播放");
+					singPlayModel=1;
+				}
+				else if(singPlayModel==1){//单曲循环播放切换为随机播放
+					$("#singPlayModel").attr("src","img/player-random.png");
+					$("#singPlayModel").attr("title","随机播放");
+					singPlayModel=2;
+				}
+				else if(singPlayModel==2){
+					$("#singPlayModel").attr("src","img/player-order.png");
+					$("#singPlayModel").attr("title","顺序播放");
+					singPlayModel=0;
+				}
+			})
+			
+				
+			
+			//----------------------------------------------歌词js
+			//歌词全局
+			//var songConHeight = 380; //soundbar长度
+			//var songLiHeight = 25;   //sound左位置
+
+
+			//根据歌词动态刷新
+			function reflashSongWord(){
+				//解析text
+				res = parseLyric(songText);
+				//动态增加容器高度
+				$("#songWords").parent().css("height",(res.length*songLiHeight)+"px");
+				//清空标签和定位
+				$("#songWords").html("");
+				$("#songWords").get(0).scrollTop=0;
+				
+				//动态添加歌词li标签
+				res.forEach(function(v1, i1, a1) {  
+					var li = $("<li>"+v1[1]+"</li>");
+					$("#songWords").append(li);
+				});
+			}
+			
+
+			//歌词解析器
+			function parseLyric(text) {   
+				var lines = text.split('\n');//存入数组  
+				
+				pattern = /\[\d{2}:\d{2}.\d{2}\]/g;//匹配时间的正则表达式
+				result = [];   //最终结果的数组   
+				//去掉不含时间的行   
+				while (!pattern.test(lines[0])) {   
+					lines = lines.slice(1);//选取下标1带末尾的数组   
+				};  
+				lines[lines.length - 1].length === 0 && lines.pop(); // 去掉末尾空元素    
+				
+				lines.forEach(function(v /*数组元素值*/ , i /*元素索引*/ , a /*数组本身*/ ) {   
+					var time = v.match(pattern);//提取出时间[xx:xx.xx]   
+					var value = v.replace(pattern, '');  //提取歌词   
+					
+					//因为一行里面可能有多个时间，所以time有可能是[xx:xx.xx][xx:xx.xx][xx:xx.xx]的形式，需要进一步分隔   
+					time.forEach(function(v1, i1, a1) {   		
+						var t = v1.slice(1, -1).split(':'); //去掉每个时间里的[]
+						//将结果压入最终数组 ,格式[xx.xx] 即将分钟合并到秒钟
+						result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value]);   
+					});   
+				});   
+				//排序
+				result.sort(function(a, b) {   
+					return a[0] - b[0];   
+				});   
+				return result;   
+			}
+			
+			//-------------------------------------------切换播放
+			$(".changePlayButton").click(function(){
+				//得到对应的索引，即tr的索引
+				var index = $(this).parent().parent().index();
+				//------切换音乐
+				//修改图标
+				$("#player").attr("src",$(".urlTd").eq(index).html());
+				var thisTd = $(".stateTd").eq(index); //获取到需要修改的状态td
+				thisTd.html('<i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop">&#x1002;</i>');//修改
+				$(".stateTd").not(thisTd).each(function(i,v){ //其他状态td为数字
+					var numIndex = $(this).parent().index()+1; //得到其索引+1
+					if((""+numIndex).length<2){ //例如1，则设置为01
+						numIndex = "0"+numIndex;
+					}
+					$(this).html(numIndex);
+					
+				});
+				
+				//设置歌曲底部的信息
+				var $tableSing = $(".tableSing").eq(index).html();
+				var $tableSinger = $(".tableSinger").eq(index).html();
+				$(".singText p").eq(0).html($tableSing+"-"+$tableSinger)
+				
+				//修改歌曲图片
+				//...........
+				
+				//ajax获取歌词并且设置到text
+				//...........先来个静态的简单判断
+				if(index==0){
+					songText = 
+					"[00:00.32]演员\n"
+					+"[00:01.00]\n"
+					+"[00:01.61]作词：薛之谦\n"
+					+"[00:02.64]作曲：薛之谦\n"
+					+"[00:03.00]演唱：薛之谦\n"
+					+"[00:04.20]\n"
+					+"[00:21.12]简单点说话的方式简单点\n"
+					+"[00:30.20]递进的情绪请省略\n"
+					+"[00:33.64]你又不是个演员\n"
+					+"[00:36.38]别设计那些情节\n"
+					+"[00:39.36]\n"
+					+"[00:41.93]没意见我只想看看你怎么圆\n"
+					+"[00:51.54]你难过的太表面 像没天赋的演员\n"
+					+"[00:57.15]观众一眼能看见\n"
+					+"[01:00.19]\n"
+					+"[01:02.22]该配合你演出的我演视而不见\n"
+					+"[01:07.68]在逼一个最爱你的人即兴表演\n"
+					+"[01:12.90]什么时候我们开始收起了底线\n"
+					+"[01:18.02]顺应时代的改变看那些拙劣的表演\n"
+					+"[01:23.42]可你曾经那么爱我干嘛演出细节\n"
+					+"[01:28.63]我该变成什么样子才能延缓厌倦\n"
+					+"[01:33.87]原来当爱放下防备后的这些那些\n"
+					+"[01:39.37]才是考验\n"
+					+"[01:41.97]\n"
+					+"[01:44.60]没意见你想怎样我都随便\n"
+					+"[01:54.53]你演技也有限\n"
+					+"[01:57.58]又不用说感言\n"
+					+"[02:00.15]分开就平淡些\n"
+					+"[02:02.99]\n"
+					+"[02:05.00]该配合你演出的我演视而不见\n"
+					+"[02:10.53]别逼一个最爱你的人即兴表演\n"
+					+"[02:15.81]什么时候我们开始没有了底线\n"
+					+"[02:21.01]顺着别人的谎言被动就不显得可怜\n"
+					+"[02:26.43]可你曾经那么爱我干嘛演出细节\n"
+					+"[02:31.52]我该变成什么样子才能配合出演\n"
+					+"[02:36.72]原来当爱放下防备后的这些那些\n"
+					+"[02:41.86]都有个期限\n"
+					+"[02:44.60]\n"
+					+"[02:47.56]其实台下的观众就我一个\n"
+					+"[02:53.04]其实我也看出你有点不舍\n"
+					+"[02:58.34]场景也习惯我们来回拉扯\n"
+					+"[03:02.93]还计较着什么\n"
+					+"[03:07.39]\n"
+					+"[03:08.71]其实说分不开的也不见得\n"
+					+"[03:14.04]其实感情最怕的就是拖着\n"
+					+"[03:19.21]越演到重场戏越哭不出了\n"
+					+"[03:24.07]是否还值得\n"
+					+"[03:28.12]\n"
+					+"[03:29.07]该配合你演出的我尽力在表演\n"
+					+"[03:34.39]像情感节目里的嘉宾任人挑选\n"
+					+"[03:39.68]如果还能看出我有爱你的那面\n"
+					+"[03:44.82]请剪掉那些情节让我看上去体面\n"
+					+"[03:50.04]可你曾经那么爱我干嘛演出细节\n"
+					+"[03:55.31]不在意的样子是我最后的表演\n"
+					+"[04:01.05]是因为爱你我才选择表演 这种成全\n"
+				}else if(index==1){
+					songText = 
+					"[00:02.69]童话\n"+
+					"[00:04.05]演唱：光良\n"+
+					"[00:06.24]\n"+
+					"[00:13.61]忘了有多久 再没听到你\n"+
+					"[00:20.31]对我说你 最爱的故事\n"+
+					"[00:27.38]我想了很久 我开始慌了\n"+
+					"[00:34.43]是不是我又 做错了什么\n"+
+					"[00:41.50]你哭着对我说 童话里都是骗人的\n"+
+					"[00:48.54]我不可能是你的王子\n"+
+					"[00:55.58]也许你不会懂 从你说爱我以后\n"+
+					"[01:02.70]我的天空 星星都亮了\n"+
+					"[01:09.72]我愿变成童话里 你爱的那个天使\n"+
+					"[01:16.78]张开双手 变成翅膀守护你\n"+
+					"[01:24.29]你要相信 相信我们会象童话故事里\n"+
+					"[01:31.39]幸福和快乐是结局\n"+
+					"[01:37.94]\n"+
+					"[01:48.57]你哭着对我说 童话里都是骗人的\n"+
+					"[01:56.10]我不可能是你的王子\n"+
+					"[02:02.62]也许你不会懂 从你说爱我以后\n"+
+					"[02:09.70]我的天空 星星都亮了\n"+
+					"[02:16.69]我愿变成童话里 你爱的那个天使\n"+
+					"[02:23.86]张开双手 变成翅膀守护你\n"+
+					"[02:30.89]你要相信 相信我们会象童话故事里\n"+
+					"[02:38.48]幸福和快乐是结局\n"+
+					"[02:45.03]我要变成童话里 你爱的那个天使\n"+
+					"[02:52.06]张开双手 变成翅膀守护你\n"+
+					"[02:59.07]你要相信 相信我们会象童话故事里\n"+
+					"[03:06.71]幸福和快乐是结局\n"+
+					"[03:13.28]我会变成童话里 你爱的那个天使\n"+
+					"[03:20.29]张开双手 变成翅膀守护你\n"+
+					"[03:27.84]你要相信 相信我们会象童话故事里\n"+
+					"[03:35.28]幸福和快乐是结局  喔\n"+
+					"[03:45.93]一起写 我们的结局\n"
+
+				}
+			
+				//刷新歌词
+				reflashSongWord();
+				//直接开始播放当前音乐
+				playAutoThis();
+				
+			});
+			
+			
+			
+			
+			//默认点击播放列表第一个音乐
+			$(".changePlayButton").eq(0).click();
+			
+			
+			
+		});
+		</script>
+		
+		
+	</body>
+</html>

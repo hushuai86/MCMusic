@@ -1,0 +1,33 @@
+.singerCDList{
+	width: 1200px;
+	margin: auto;
+	padding-left: 15px;
+}
+.title{
+	font-family: myFirstFont;
+	font-size: 30px;
+	margin-top: 20px;
+	margin-left: 40px;
+}
+.singerCDList li{
+	margin-left: 25px;
+	margin-right: 25px;
+	margin-top: 10px;
+	height: 290px;
+	width: 240px;
+	float: left;
+}
+.singerCDList li .singerCDListbg{
+	height: 240px;
+	width: 240px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.singerCDList li .singerCDListText{
+	height: 50px;width: 230px;
+}
+.singerCDList li .singerCDDate{
+	color: #888;float: left;
+}

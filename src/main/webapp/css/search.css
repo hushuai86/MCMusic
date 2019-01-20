@@ -1,0 +1,167 @@
+.result .list{
+	overflow:visible!important;
+	white-space: inherit!important;
+}
+.searchCon{
+	height: 210px;
+	background-color: #DDD;
+	text-align: center;
+	background-image: url(../img/search/searchBg.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+.searchCon .searchInputCon{
+	width: 650px;margin: auto;
+}
+.searchCon .searchInputCon input{
+	width: 590px;
+	height: 40px;
+	border: none;
+	padding-left: 10px;
+	color: #999;
+}
+.searchCon .searchInputCon .inputButton{
+	float: right;
+	width: 50px;
+	background-color: white;
+	height:40px;
+	background-image: url(../img/search/search.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/*搜索导航*/
+.searchNavCon{
+	border: solid #DDD 1px;
+	background-color: white!important;
+	position: relative;
+	top:-30px;
+	text-align: left;
+	display: none;
+	z-index: 9999;
+}
+.searchNavCon .first{
+	width: 130px;
+	float: left;
+	text-align: center;
+}
+.searchNavCon .con{
+	width: 516px;
+	float: left;
+	border-left: solid #DDD 1px;
+}
+
+
+.searchNavUl{
+	padding-top: 5px;
+}
+.searchNavUl li{
+	height: 40px;
+	line-height: 40px;
+	padding-left: 40px;
+}
+.searchNavUl li:hover{
+	cursor: pointer;
+	background-color: #5FB878;
+	color: white;
+}
+
+
+.ulSongList li{
+	height: 140px;
+	margin-top: 15px;
+	border: solid #DDD 1px;
+	cursor: pointer;
+}
+.ulSongList li .img{
+	height: 140px;
+	width: 140px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	float: left;
+	margin-right: 10px;
+}
+.ulSongList li .liTitle{
+	font-size: 25px;
+	font-family: myFirstFont;
+}
+.ulSongList li .liText{
+	width: 800px;
+	color: #888;
+}
+
+.ulSinger li{
+	height: 220px;
+	width: 180px;
+	float: left;
+	margin-right: 20px;
+	margin-top: 11px;
+	text-align: center;
+	
+}
+.ulSinger li:hover{
+	background-color: #E5E5E5;
+	cursor: pointer;
+}
+.ulSinger li img{
+	height: 160px;
+	border-radius: 160px;
+	margin-top: 10px;
+}
+.ulSinger li div{
+	margin-top: 20px;
+	font-size: 16px;
+	color: #555;
+}
+
+.ulcd li{
+	height: 220px;
+	width: 180px;
+	float: left;
+	margin-right: 20px;
+	margin-top: 11px;
+	text-align: center;
+	
+}
+.ulcd li:hover{
+	background-color: #E5E5E5;
+	cursor: pointer;
+}
+.ulcd li img{
+	height: 160px;
+	margin-top: 10px;
+}
+.ulcd li div{
+	margin-top: 5px;
+	font-size: 16px;
+	color: #555;
+}
+
+.layui-tab-title li{
+	font-size: 16px!important;
+}
+.layui-table tr{
+	background-color: #EEE;
+	height: 70px;
+}
+.layui-table tr:nth-child(odd){
+	background-color:#F6F6F6;
+}
+.layui-table i{
+	cursor: pointer;
+}
+.layui-table .buttonCon{width: 200px;}
+.layui-table .songActionButton{
+	display: none;
+}
+input[type='checkbox']{
+	display: none;
+}
+.checkLabel{
+	display: none;
+	width: 16px;
+	height: 16px;
+	border: solid #30A89C 1px;
+	float: left;
+}

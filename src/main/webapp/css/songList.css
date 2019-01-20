@@ -1,0 +1,85 @@
+.chooseCon{
+	padding-left: 20px;
+}
+.chooseCon ul li{
+	float: left;
+	text-align: center;
+	line-height: 25px;
+	margin: 5px;
+	height: 25px;
+	font-size: 15px;
+	color: #555;
+	cursor: pointer;
+}
+.ulType{
+	width:850px;
+}
+.ulType li{
+	width: 60px;
+}
+
+.thisAction{
+	background-color: #30A89C;
+	width: 60px!important;
+	color: white!important;
+}
+
+.songListCon{
+	width: 1300px;	
+	margin: auto;	
+	
+}
+.songListCon .songListnav{
+	height: 500px;
+	width: 200px;
+	margin-left: 90px;
+	float: left;
+}
+.songListCon .songListnav .caseSong{
+	padding-top: 20px;
+}
+.songListCon .songListnav .caseSong li{
+	cursor:pointer;
+	width: 200px;
+	height: 40px;
+	font-size: 17px;
+	text-align: center;
+	line-height: 40px;
+	color: #777;
+}
+.songListCon .songList{
+	width: 1000px;
+	margin: auto;
+	float: left;	
+}
+
+.songListCon .songList .songListInfo{
+	width: 1000px;
+}
+.songListCon .songList .songListInfo li{
+	padding: 15px;
+	float: left;
+	height: 250px;
+	width: 180px;		
+}
+.songListCon .songList .songListInfo li:hover{
+	background-color: #DDD;
+}
+.songListCon .songList .songListInfo li .songListBg{
+	background-size: cover;
+	height: 180px;
+	width: 180px;
+	margin-bottom: 5px;
+	
+}
+.songListCon .songList .title{
+	font-family: myFirstFont;
+	font-size: 35px;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+
+.tagAction{
+	background-color: #30A89C;
+	color: white!important;
+}

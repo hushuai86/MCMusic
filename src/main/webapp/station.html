@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<script src="js/vue.min.js"></script>
+	</head>
+
+	<body style="background-color: #EEE;">
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+
+		<!--图片-->
+		<style>
+			.stationBg{
+				height: 350px;background-image: url(img/stationBg.png);
+				background-repeat: no-repeat;background-size: cover;font-family: myFirstFont;
+				font-size: 40px;color: white;text-align: center;line-height: 350px;
+			}
+		</style>
+		<div class="stationBg">
+			清风吹歌入空去，歌曲自绕行云飞
+		</div>
+		
+		
+		
+		
+		<!--电台信息-->
+		<style>
+			.stationCon{
+				width: 1300px;	
+				margin: auto;	
+			}
+
+			.stationCon .stationInfo{
+				width: 1300px;
+			}
+			.stationCon .stationInfo li{
+				margin: 12px;
+				float: left;
+				height: 300px;
+				width: 230px;		
+			}
+			.stationCon .stationInfo li .songListBg{
+				background-size: cover;
+				height: 230px;
+				width: 230px;
+				margin-bottom: 15px;
+			}
+			.stationCon .stationInfo li .songListBg .bg{
+				height: 230px;
+				width: 230px;
+				text-align: center;
+				line-height: 230px;		
+				background-color: #CCC;
+				opacity: 0.8;	
+				display: none;
+			}
+			.stationCon .title{
+				font-family: myFirstFont;
+				font-size: 30px;
+				margin-top: 10px;
+				margin-left: 20px;
+			}
+			
+		</style>
+		<div class="stationCon"><br />
+			<div>
+				<div class="title">类型电台</div>	<hr />	
+				<div style="margin-left: 10px;">
+					<ul class="stationInfo getAllTypes"><!--20条最多-->
+						<li>
+							<div class="songListBg" style="background-image: url(img/singList02.png);" onclick="location='station-mc.html'">
+								<div class="bg"><img src="img/testPlay.png" /></div>
+							</div>
+							<div style="font-size: 17px;">
+								<a style="color: #009F95;" href="station-mc.html">{{r.typename}}</a>
+							</div>
+							<div style="color: #888;">歌曲：1345</div>
+						</li>
+					</ul>
+				</div>
+				<div class="clear"></div><br />
+			</div>
+			<script type="text/javascript">
+				$.post("getAllTypes",function(result){
+					$(".getAllTypes").html("")
+					result.forEach(function(value,index){
+						$.post("selectCountByTypeId",{typeId:value.typeid},function(data){		
+							var $li =
+								$('<li><div class="songListBg" style="background-image: url(img/typeImg/'+value.typename+'.png);" onclick="location=\'station-mc.html?typeId='+value.typeid+'\'">'
+								+'<div class="bg"><img src="img/testPlay.png" /></div>'
+								+'</div><div style="font-size: 17px;">'
+								+'<a style="color: #009F95;" href="station-mc.html">'+value.typename+'</a>'
+								+'</div><div style="color: #888;">歌曲：'+data+'</div></li>')
+							$(".getAllTypes").append($li);
+						})
+					})
+				})
+			</script>		
+		</div><br /><br />
+		<!--电台信息结束-->
+		
+		
+
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+	
+	</body>
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+  			
+		 form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 
+		  	  
+		 $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

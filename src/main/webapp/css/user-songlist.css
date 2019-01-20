@@ -1,0 +1,38 @@
+.mySongList{
+	margin-top: 50px;
+}
+.mySongList li{
+	margin: 20px;
+	height: 280px;
+	width: 230px;
+	float: left;
+}
+.mySongList li .songlistbg{
+	height: 230px;
+	width: 230px;
+	background-image: url(../img/user/songlist-default.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #5FB878;
+}
+.mySongList li .songlistbgAdd{
+	height: 230px;
+	width: 230px;
+	background-image: url(../img/user/bigAdd.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #CCC;
+}
+
+.mySongList li .songlisttext{
+	height: 50px;width: 230px;
+}
+.mySongList li .songlistuser{
+	color: #888;float: left;
+}
+.mySongList li .sonlistedit,.mySongList li .sonlistedel{
+	 float: right;
+	 margin-right: 5px;
+	 display: none;
+	 cursor: pointer;
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js"></script>
+	</head>
+	<body style="background-color: #EEE;">
+		 <!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		
+		<style>
+			.chooseCon{
+				padding-left: 20px;
+				padding-top: 10px;
+			}
+		
+			.singerRankCon{
+				width: 1210px;	
+				margin: auto;	
+				
+			}
+			.singerRankCon .singerRanknav{
+				height: 500px;
+				width: 200px;
+				float: left;
+				border: solid #BBB 1px;
+			}
+			.singerRankCon .singerRanknav .caseSinger{
+				padding-top: 20px;
+			}
+			.singerRankCon .singerRanknav .caseSinger li{
+				width: 200px;
+				height: 40px;
+				font-size: 17px;
+				text-align: center;
+				line-height: 40px;
+				color: #777;
+			}
+			.singerRankCon .singerList{
+				width: 1000px;
+				margin: auto;
+				float: left;	
+			}
+			.title{
+				font-family: myFirstFont;
+				font-size: 35px;
+				margin-top: 10px;
+				margin-left: 20px;
+			}
+
+			.caseSinger li{
+				font-family: myFirstFont;
+			}
+			
+			.ulSinger li{
+				height: 220px;
+				width: 180px;
+				float: left;
+				margin-right: 11px;
+				margin-top: 11px;
+				text-align: center;
+				
+			}
+			.ulSinger li:hover{
+				background-color: #E5E5E5;
+				cursor: pointer;
+			}
+			.ulSinger li img{
+				height: 160px;
+				border-radius: 160px;
+				margin-top: 10px;
+			}
+			.ulSinger li div{
+				margin-top: 20px;
+				font-size: 16px;
+				color: #555;
+			}
+			
+			.ulSingerList {
+				margin-left: 50px;
+			}
+			.ulSingerList li{
+				height: 30px;
+				width: 180px;
+				text-align: left;
+				float: left;
+				line-height: 30px;
+				font-size: 16px;
+				color: #666;
+			}
+		</style>
+		<div class="singerRankCon">
+			<br />
+			<div class="singerRanknav">
+				<ul class="caseSinger">
+					<li style="font-size: 25px;padding-bottom: 28px;">歌手排行榜</li>
+					<li style="background-color: #30A89C;color: white;">全球榜</li><!--热度排序-->
+					<li>内陆榜</li><!--热度，中国排序-->
+					<li>国外榜</li><!--热度，外国排序-->
+					<li>收藏榜</li>
+				</ul>
+			</div>
+			
+			
+			<div class="singerList">
+				
+				<div class="chooseCon">
+					<div class="title">歌手</div>
+				</div>
+			
+				<div style="margin-left: 20px;">
+					<hr />
+					<!--歌手列表容器 -->
+					<ul class="ulSinger">
+						<li>
+							<img src="img/singer-ljj.jpg">
+							<div>林俊杰</div>
+						</li>
+						<li>
+							<img src="img/singer-xs.jpg">
+							<div>许嵩</div>
+						</li>
+						<li>
+							<img src="img/singer-zjl.jpg">
+							<div>周杰伦</div>
+						</li>
+						<li>
+							<img src="img/singer-xzq.jpg">
+							<div>薛之谦</div>
+						</li>
+						<li>
+							<img src="img/singer-zjl.jpg">
+							<div>周杰伦</div>
+						</li>
+						<li>
+							<img src="img/singer-ljj.jpg">
+							<div>林俊杰</div>
+						</li>
+						<li>
+							<img src="img/singer-xs.jpg">
+							<div>许嵩</div>
+						</li>
+						<li>
+							<img src="img/singer-zjl.jpg">
+							<div>周杰伦</div>
+						</li>
+						<li>
+							<img src="img/singer-xzq.jpg">
+							<div>薛之谦</div>
+						</li>
+						<li>
+							<img src="img/singer-zjl.jpg">
+							<div>周杰伦</div>
+						</li>
+						
+					</ul>
+					<div class="clear"></div>
+					<hr />
+					
+					<ul class="ulSingerList">
+						<li><a href="">降央卓玛</a></li>
+						<li><a href="">陈奕迅</a></li>
+						<li><a href="">青鸟飞鱼</a></li>
+						<li><a href="">S.H.E</a></li>
+						<li><a href="">张赫宣</a></li>
+						<li><a href="">王若琳</a></li>
+						<li><a href="">乌兰托娅army</a></li>
+						<li><a href="">布仁巴雅尔</a></li>
+						<li><a href="">Richard Clayderma</a></li>
+						<li><a href="">迪玛希Dimash</a></li>
+						<li><a href="">诱导社乐队</a></li>
+						<li><a href="">魏晨</a></li>
+					</ul>
+					<!--歌手列表结束 -->
+					<br />
+				</div>
+			</div>
+		</div><br /><br /><br /><br />
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+  
+		  //执行一个laypage实例
+		  laypage.render({
+		    elem: 'limit' //注意，这里的 test1 是 ID，不用加 # 号
+		    ,count: 150, //数据总数，从服务端得到
+		    limit:20,
+		    theme:'limitClass',
+		    prev:'<i class="layui-icon">&#xe603;</i>',
+		    next:'<i class="layui-icon">&#xe602;</i>'
+		  });
+		  
+		  form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 
+		  
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

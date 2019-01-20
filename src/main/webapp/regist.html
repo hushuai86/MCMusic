@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/regist.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<title></title>
+	</head>
+	<script>
+		//获取到浏览器屏幕的宽度，并且设置
+		$(function(){
+			function changeDefaultWidth(){
+				var scrennWidth =$(window).width()+ 'px';
+				if($(window).width() < 1300){
+					scrennWidth = "1300px";
+				}
+				var scrennheight =  document.body.scrollHeight;
+				$(".registCon").css("width",scrennWidth);
+				$(".registCon").css("height",scrennheight);
+			}
+			changeDefaultWidth();
+			//屏幕修改宽度事件
+			$(window).resize(function(){
+			   changeDefaultWidth();
+			});
+		})
+	</script>
+	<style>
+		body{
+			overflow-x: hidden;
+			background-image: url(img/regist/img.png);
+			background-size: cover;
+		}
+	</style>
+
+	<body>
+		<!--导航-->
+		<div id="nav-main" class="noOverflow">
+			<div style="float: left;height: 48px;width: 105px;
+				background-image: url(img/logon.png); margin-top: 10px;margin-left: 50px;">
+			</div>
+
+			<ul class="layui-nav">
+			  <li class="layui-nav-item"><a href="index.html">首页</a></li>  
+			  <li class="layui-nav-item layui-this conNav"><a>注册</a></li>
+			  <li class="layui-nav-item conNav"><a>登录</a></li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+		<script>
+			//导航跳转
+			//登录与注册
+			$(".conNav").click(function(){
+				var index = $(".conNav").index($(this));
+				var con = $(".registCon").eq(index);
+				con.show();
+				$(".registCon").not(con).hide();
+			})
+		</script>
+		
+		
+		
+		
+		
+		<!--注册-->
+		<form class="layui-form  layui-form-pane" action="">
+		<div class="registCon regist" >
+			<br /><br /><br />
+			<div class="defaultContian">
+				   <font style="font-size: 25px;">欢迎注册MC</font>
+				   <br /><br />
+				
+				  <input style="background: url(img/regist/user.png) no-repeat;"
+				   type="text" name="loginid" lay-verify="required|username|isRegist" placeholder="请输入账号" class="layui-input inputText"><br />
+				  
+				  <input style="background: url(img/name.png) no-repeat;"
+				   type="text" name="username" lay-verify="required|name" placeholder="请输入用户名称" class="layui-input inputText"><br />
+				  
+				  <input  style="background: url(img/regist/password.png) no-repeat;"
+				   	type="password" name="password" lay-verify="required|pass" placeholder="请输入密码" class="layui-input inputText"><br />
+				  
+				  <input  style="padding-left: 45px;background: url(img/two.png) no-repeat;"
+				   	type="password" lay-verify="required|pass|pass2" placeholder="请再次输入密码" class="layui-input inputText"><br />
+  
+				  <div class="layui-form-item" style="padding-left:30px;" >
+				    <div class="layui-input-block" style="text-align: left;">
+				      <input type="radio" name="usersex" value="男" title="男" checked="">
+				      <input type="radio" name="usersex" value="女" title="女">
+				    </div>
+				  </div>
+			</div>
+			<div class="defaultContianBut">
+			<button class="defaultContianBut loginbutton" lay-submit lay-filter="regist" style="background:rgba(0,150,136,0.7);">
+				注册
+			</button>
+			</div>
+		</div>
+		</form>
+		
+		
+		
+		<!--登录-->
+		<form class="layui-form  layui-form-pane" action="login">
+		<div class="registCon" style="display: none;">
+			<br /><br /><br />
+			<div class="defaultContian">
+			<form class="layui-form" action="" method="post">
+			   <font style="font-size: 25px;">MC登录</font>
+			   <br /><br />
+			   <input style="background: url(img/regist/user.png) no-repeat; 
+			   type="text" name="loginId" lay-verify="required|username" placeholder="请输入账号" class="layui-input inputText"><br />
+			  
+			   <input  style="background: url(img/regist/password.png) no-repeat;"
+			   	type="password" name="password" lay-verify="required|pass"  placeholder="请输入密码" class="layui-input inputText">
+			   	
+			   <p style="color: #222;margin-top: 10px;">忘记了密码，需要<a style="color: #009F95;">马上找回</a></p>
+			   
+			</div>
+			<div class="defaultContianBut">
+			<button class="defaultContianBut loginbutton" lay-submit lay-filter="login" style="background:rgba(0,150,136,0.7);">
+				登录
+			</button>
+			</div>
+		</div>
+		</form>
+	</body>
+	
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var layer = layui.layer;
+		 //表单提交时引用ajax
+		 form.on('submit(login)', function(data){
+		  $.post("login",data.field,function(data){
+			  if(data.userid==null){
+				layer.msg('用户名或密码错误');
+				$('input[name="password"]').val("");
+				$('input[name="password"]').focus();
+			  }else{
+				  window.location="index.html";
+			  }
+		  })
+		  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		});
+		 
+		 
+		 form.on('submit(regist)', function(data){
+			  $.post("register",data.field,function(data){
+				if(data){
+					layer.msg('注册成功');
+					window.location="index.html";
+				}else{
+					layer.msg('注册失败');
+				}
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+	 
+		 
+		 form.verify({
+			  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+			    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+			      return '用户名不能有特殊字符';
+			    }
+			    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+			      return '用户名首尾不能出现下划线\'_\'';
+			    }
+			    if(/^\d+\d+\d$/.test(value)){
+			      return '用户名不能全为数字';
+			    }
+			  }
+			  ,pass: [
+			    /^[\S]{6,12}$/
+			    ,'密码必须6到12位，且不能出现空格'
+			  ] 
+			  ,pass2: function(value, item){ //value：表单的值、item：表单的DOM对象
+			  	var newPassword = $('input[name="password"]').val();
+			  	if(value!=newPassword){
+			  		return '两次密码不一致';
+			  	}
+			  }
+			  ,name: [
+			    /^[\S]{0,12}$/
+			    ,'昵称不超过12位，且不能出现空格'
+			  ],
+			  isRegist: function(value, item){
+				  var flag;
+				  $.ajax({
+					  url : 'isRegister',
+					  type : 'post',
+					  async: false,//使用同步的方式,true为异步方式
+					  data : {loginid:value},//这里使用json对象
+					  success : function(data){
+						  flag=data;
+					  }
+				  })
+				  if(!flag){
+					  return '该账号已被注册';
+				  }
+			  }
+			});  
+		});
+	</script>
+</html>

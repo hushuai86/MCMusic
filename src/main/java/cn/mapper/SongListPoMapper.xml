@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.SongListPoMapper" >
+  <resultMap id="BaseResultMap" type="cn.pojo.SongListPo" >
+    <id column="songListId" property="songlistid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="songListName" property="songlistname" jdbcType="VARCHAR" />
+    <result column="typeId" property="typeid" jdbcType="INTEGER" />
+    <result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+    <result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+    <result column="collectionCount" property="collectioncount" jdbcType="INTEGER" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="songListStateId" property="songliststateid" jdbcType="INTEGER" />
+    <result column="imgURL" property="imgurl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    songListId, userId, songListName, typeId, accessCount, collectionCount, tags, songListStateId, 
+    imgURL,introduce
+  </sql>
+  <sql id="Blob_Column_List" >
+    introduce
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from songlist
+    where songListId = #{songlistid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from songlist
+    where songListId = #{songlistid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.pojo.SongListPo" >
+    insert into songlist (songListId, userId, songListName, 
+      typeId, accessCount, collectionCount, 
+      tags, songListStateId, imgURL, 
+      introduce)
+    values (#{songlistid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{songlistname,jdbcType=VARCHAR}, 
+      #{typeid,jdbcType=INTEGER}, #{accesscount,jdbcType=INTEGER}, #{collectioncount,jdbcType=INTEGER}, 
+      #{tags,jdbcType=VARCHAR}, #{songliststateid,jdbcType=INTEGER}, #{imgurl,jdbcType=VARCHAR}, 
+      #{introduce,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="songlistid" parameterType="cn.pojo.SongListPo" >
+    insert into songlist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="songlistid != null" >
+        songListId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="songlistname != null" >
+        songListName,
+      </if>
+      <if test="typeid != null" >
+        typeId,
+      </if>
+      <if test="accesscount != null" >
+        accessCount,
+      </if>
+      <if test="collectioncount != null" >
+        collectionCount,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+      <if test="songliststateid != null" >
+        songListStateId,
+      </if>
+      <if test="imgurl != null" >
+        imgURL,
+      </if>
+      <if test="introduce != null" >
+        introduce,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="songlistid != null" >
+        #{songlistid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="songlistname != null" >
+        #{songlistname,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="accesscount != null" >
+        #{accesscount,jdbcType=INTEGER},
+      </if>
+      <if test="collectioncount != null" >
+        #{collectioncount,jdbcType=INTEGER},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="songliststateid != null" >
+        #{songliststateid,jdbcType=INTEGER},
+      </if>
+      <if test="imgurl != null" >
+        #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        #{introduce,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.pojo.SongListPo" >
+    update songlist
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="songlistname != null" >
+        songListName = #{songlistname,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null" >
+        typeId = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="accesscount != null" >
+        accessCount = #{accesscount,jdbcType=INTEGER},
+      </if>
+      <if test="collectioncount != null" >
+        collectionCount = #{collectioncount,jdbcType=INTEGER},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="songliststateid != null" >
+        songListStateId = #{songliststateid,jdbcType=INTEGER},
+      </if>
+      <if test="imgurl != null" >
+        imgURL = #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where songListId = #{songlistid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.pojo.SongListPo" >
+    update songlist
+    set userId = #{userid,jdbcType=INTEGER},
+      songListName = #{songlistname,jdbcType=VARCHAR},
+      typeId = #{typeid,jdbcType=INTEGER},
+      accessCount = #{accesscount,jdbcType=INTEGER},
+      collectionCount = #{collectioncount,jdbcType=INTEGER},
+      tags = #{tags,jdbcType=VARCHAR},
+      songListStateId = #{songliststateid,jdbcType=INTEGER},
+      imgURL = #{imgurl,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=LONGVARCHAR}
+    where songListId = #{songlistid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.pojo.SongListPo" >
+    update songlist
+    set userId = #{userid,jdbcType=INTEGER},
+      songListName = #{songlistname,jdbcType=VARCHAR},
+      typeId = #{typeid,jdbcType=INTEGER},
+      accessCount = #{accesscount,jdbcType=INTEGER},
+      collectionCount = #{collectioncount,jdbcType=INTEGER},
+      tags = #{tags,jdbcType=VARCHAR},
+      songListStateId = #{songliststateid,jdbcType=INTEGER},
+      imgURL = #{imgurl,jdbcType=VARCHAR}
+    where songListId = #{songlistid,jdbcType=INTEGER}
+  </update>
+
+	  <!-- 歌单名字获取歌单 -->
+  <select id="selectBySongListName" parameterType="String" resultType="SongListPo">
+  		select * from songList where songListName=#{name} and songListStateId !=1
+  </select>	
+   <!-- 地区id查询歌单集合 -->
+  <select id="selectByTypeId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from songlist
+    where typeId = #{typeId,jdbcType=INTEGER} songListStateId !=1
+  </select>
+  
+    <!-- 歌单热度排行 -->
+   <select id="selectSongListPoBlockForPaginationByHotSingerRank" resultMap="BaseResultMap" parameterType="Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from songlist where songListStateId !=1
+    order by accessCount desc
+	limit #{pageIndex},#{pageSize}
+  </select>
+   <!-- 歌单收藏排行 -->
+    <select id="selectSongListPoBlockForPaginationByCollectionCount" resultMap="BaseResultMap" parameterType="Map">
+    select 
+    <include refid="Base_Column_List" />
+      from songlist where songListStateId !=1
+    order by collectionCount desc
+	limit #{pageIndex},#{pageSize}
+  </select>
+     <!-- 歌单收藏排行 -->
+    <select id="selectShowSongListCount"  resultType="int">
+    select  count(*) from songlist where songListStateId !=1
+  </select>
+</mapper>

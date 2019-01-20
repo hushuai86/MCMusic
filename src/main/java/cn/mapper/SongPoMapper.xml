@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.SongPoMapper">
+	<resultMap id="BaseResultMap" type="cn.pojo.SongPo">
+		<id column="songId" property="songid" jdbcType="INTEGER" />
+		<result column="songName" property="songname" jdbcType="VARCHAR" />
+		<result column="singerId" property="singerid" jdbcType="INTEGER" />
+		<result column="CDId" property="cdid" jdbcType="INTEGER" />
+		<result column="language" property="language" jdbcType="VARCHAR" />
+		<result column="playCount" property="playcount" jdbcType="INTEGER" />
+		<result column="downloadCount" property="downloadcount"
+			jdbcType="INTEGER" />
+		<result column="collectionCount" property="collectioncount"
+			jdbcType="INTEGER" />
+		<result column="publishDate" property="publishdate" jdbcType="TIMESTAMP" />
+		<result column="songUrl" property="songurl" jdbcType="VARCHAR" />
+		<result column="cyricUrl" property="cyricurl" jdbcType="VARCHAR" />
+		<result column="songTime" property="songtime" jdbcType="DOUBLE" />
+		<result column="typeId" property="typeid" jdbcType="INTEGER" />
+		<result column="songStateId" property="songstateid" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		songId, songName, singerId, CDId, language, playCount,
+		downloadCount,
+		collectionCount,
+		publishDate, songUrl, cyricUrl,
+		songTime, typeId, songStateId
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from song
+		where songId = #{songid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from song
+		where songId = #{songid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.pojo.SongPo">
+		insert into song (songId,
+		songName, singerId,
+		CDId, language, playCount,
+		downloadCount,
+		collectionCount, publishDate,
+		songUrl, cyricUrl, songTime,
+		typeId,
+		songStateId)
+		values (#{songid,jdbcType=INTEGER},
+		#{songname,jdbcType=VARCHAR},
+		#{singerid,jdbcType=INTEGER},
+		#{cdid,jdbcType=INTEGER}, #{language,jdbcType=VARCHAR},
+		#{playcount,jdbcType=INTEGER},
+		#{downloadcount,jdbcType=INTEGER},
+		#{collectioncount,jdbcType=INTEGER},
+		#{publishdate,jdbcType=TIMESTAMP},
+		#{songurl,jdbcType=VARCHAR},
+		#{cyricurl,jdbcType=VARCHAR}, #{songtime,jdbcType=DOUBLE},
+		#{typeid,jdbcType=INTEGER}, #{songstateid,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.pojo.SongPo">
+		insert into song
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="songid != null">
+				songId,
+			</if>
+			<if test="songname != null">
+				songName,
+			</if>
+			<if test="singerid != null">
+				singerId,
+			</if>
+			<if test="cdid != null">
+				CDId,
+			</if>
+			<if test="language != null">
+				language,
+			</if>
+			<if test="playcount != null">
+				playCount,
+			</if>
+			<if test="downloadcount != null">
+				downloadCount,
+			</if>
+			<if test="collectioncount != null">
+				collectionCount,
+			</if>
+			<if test="publishdate != null">
+				publishDate,
+			</if>
+			<if test="songurl != null">
+				songUrl,
+			</if>
+			<if test="cyricurl != null">
+				cyricUrl,
+			</if>
+			<if test="songtime != null">
+				songTime,
+			</if>
+			<if test="typeid != null">
+				typeId,
+			</if>
+			<if test="songstateid != null">
+				songStateId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="songid != null">
+				#{songid,jdbcType=INTEGER},
+			</if>
+			<if test="songname != null">
+				#{songname,jdbcType=VARCHAR},
+			</if>
+			<if test="singerid != null">
+				#{singerid,jdbcType=INTEGER},
+			</if>
+			<if test="cdid != null">
+				#{cdid,jdbcType=INTEGER},
+			</if>
+			<if test="language != null">
+				#{language,jdbcType=VARCHAR},
+			</if>
+			<if test="playcount != null">
+				#{playcount,jdbcType=INTEGER},
+			</if>
+			<if test="downloadcount != null">
+				#{downloadcount,jdbcType=INTEGER},
+			</if>
+			<if test="collectioncount != null">
+				#{collectioncount,jdbcType=INTEGER},
+			</if>
+			<if test="publishdate != null">
+				#{publishdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="songurl != null">
+				#{songurl,jdbcType=VARCHAR},
+			</if>
+			<if test="cyricurl != null">
+				#{cyricurl,jdbcType=VARCHAR},
+			</if>
+			<if test="songtime != null">
+				#{songtime,jdbcType=DOUBLE},
+			</if>
+			<if test="typeid != null">
+				#{typeid,jdbcType=INTEGER},
+			</if>
+			<if test="songstateid != null">
+				#{songstateid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.pojo.SongPo">
+		update song
+		<set>
+			<if test="songname != null">
+				songName = #{songname,jdbcType=VARCHAR},
+			</if>
+			<if test="singerid != null">
+				singerId = #{singerid,jdbcType=INTEGER},
+			</if>
+			<if test="cdid != null">
+				CDId = #{cdid,jdbcType=INTEGER},
+			</if>
+			<if test="language != null">
+				language = #{language,jdbcType=VARCHAR},
+			</if>
+			<if test="playcount != null">
+				playCount = #{playcount,jdbcType=INTEGER},
+			</if>
+			<if test="downloadcount != null">
+				downloadCount = #{downloadcount,jdbcType=INTEGER},
+			</if>
+			<if test="collectioncount != null">
+				collectionCount = #{collectioncount,jdbcType=INTEGER},
+			</if>
+			<if test="publishdate != null">
+				publishDate = #{publishdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="songurl != null">
+				songUrl = #{songurl,jdbcType=VARCHAR},
+			</if>
+			<if test="cyricurl != null">
+				cyricUrl = #{cyricurl,jdbcType=VARCHAR},
+			</if>
+			<if test="songtime != null">
+				songTime = #{songtime,jdbcType=DOUBLE},
+			</if>
+			<if test="typeid != null">
+				typeId = #{typeid,jdbcType=INTEGER},
+			</if>
+			<if test="songstateid != null">
+				songStateId = #{songstateid,jdbcType=INTEGER},
+			</if>
+		</set>
+		where songId = #{songid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.pojo.SongPo">
+		update song
+		set
+		songName = #{songname,jdbcType=VARCHAR},
+		singerId =
+		#{singerid,jdbcType=INTEGER},
+		CDId = #{cdid,jdbcType=INTEGER},
+		language
+		= #{language,jdbcType=VARCHAR},
+		playCount =
+		#{playcount,jdbcType=INTEGER},
+		downloadCount =
+		#{downloadcount,jdbcType=INTEGER},
+		collectionCount =
+		#{collectioncount,jdbcType=INTEGER},
+		publishDate =
+		#{publishdate,jdbcType=TIMESTAMP},
+		songUrl =
+		#{songurl,jdbcType=VARCHAR},
+		cyricUrl = #{cyricurl,jdbcType=VARCHAR},
+		songTime = #{songtime,jdbcType=DOUBLE},
+		typeId =
+		#{typeid,jdbcType=INTEGER},
+		songStateId =
+		#{songstateid,jdbcType=INTEGER}
+		where songId =
+		#{songid,jdbcType=INTEGER}
+	</update>
+
+
+
+
+	<!-- 查询所有歌曲实体对象 -->
+	<select id="selectAllSong" resultMap="BaseResultMap">
+		select * from song
+	</select>
+	<!-- 查询所有歌曲实体对象并且状态不阻塞 -->
+	<select id="selectAllSongNoBlock" resultMap="BaseResultMap">
+		select * from song
+		where songStateId != 1
+	</select>
+	<!-- 通过songId查询所有歌曲实体对象并且状态不阻塞 -->
+	<select id="selectByPrimaryKeyNoBlock" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from song
+		where songId = #{songid,jdbcType=INTEGER} and songStateId !=
+		1
+	</select>
+	<!-- 通过songId查询歌曲状态 -->
+	<select id="selectSongStateId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select songStateId
+		from song
+		where songId =
+		#{songid,jdbcType=INTEGER}
+	</select>
+	<!-- songVo集 -->
+	<resultMap id="ResultSongVoMap" type="cn.pojo.vo.SongVo">
+		<association property="songPo" javaType="cn.pojo.SongPo"
+			column="songId" select="cn.mapper.SongPoMapper.selectByPrimaryKey">
+			<id column="songId" property="songid" jdbcType="INTEGER" />
+			<result column="songName" property="songname" jdbcType="VARCHAR" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="language" property="language" jdbcType="VARCHAR" />
+			<result column="playCount" property="playcount" jdbcType="INTEGER" />
+			<result column="downloadCount" property="downloadcount"
+				jdbcType="INTEGER" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="DATE" />
+			<result column="songUrl" property="songurl" jdbcType="VARCHAR" />
+			<result column="cyricUrl" property="cyricurl" jdbcType="VARCHAR" />
+			<result column="songTime" property="songtime" jdbcType="DOUBLE" />
+			<result column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="songStateId" property="songstateid" jdbcType="INTEGER" />
+		</association>
+		<association property="singPo" javaType="cn.pojo.SingerPo"
+			column="singerId" select="cn.mapper.SingerPoMapper.selectByPrimaryKey">
+			<id column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="singerName" property="singername" jdbcType="VARCHAR" />
+			<result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+			<result column="collectionCount	" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="areaId" property="areaid" jdbcType="INTEGER" />
+			<result column="birthday" property="birthday" jdbcType="DATE" />
+			<result column="singerSex" property="singersex" jdbcType="VARCHAR" />
+			<result column="photoUrl" property="photourl" jdbcType="VARCHAR" />
+			<result column="debutDate" property="debutdate" jdbcType="INTEGER" />
+			<result column="singerStateId" property="singerstateid"
+				jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+		</association>
+		<association property="cdPo" javaType="cn.pojo.CDPo"
+			column="CDId" select="cn.mapper.CDPoMapper.selectByPrimaryKey">
+			<id column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="CDName" property="cdname" jdbcType="VARCHAR" />
+			<result column="coverUrl" property="coverurl" jdbcType="VARCHAR" />
+			<result column="songCount" property="songcount" jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="DATE" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="CDstateId" property="cdstateid" jdbcType="INTEGER" />
+		</association>
+		<association property="typePo" javaType="cn.pojo.TypePo"
+			column="typeId" select="cn.mapper.TypePoMapper.selectByPrimaryKey">
+			<id column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="typeName" property="typename" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<!-- 查询所有songVo并且状态不阻塞 -->
+	<select id="selectAllSongVo" resultMap="ResultSongVoMap">
+		select * from song where
+		songStateId != 1
+	</select>
+	<!-- 分页查询所有songVo并且状态不阻塞 -->
+	<select id="selectAllSongVoForPagination" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song
+		<where>
+			songStateId != 1
+			<if test="songname != null">
+				and songName like #{songname}
+			</if>
+		</where>
+		limit #{pageIndex},#{pageSize}
+	</select>
+	
+	<!-- 根据查询条件得到总数 -->
+	<select id="selectAllSongVoForPaginationCount" resultType="int" parameterType="string">
+		select count(*) from song
+		<where>
+			songStateId != 1
+			<if test="songname != null">
+				and songName like #{songname}
+			</if>
+		</where>
+	</select>
+	<!-- 查询所有songVo的数量并且状态不阻塞 -->
+	<select id="selectCountAllSongVoForPagination" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(*) from song
+		<where>
+			songStateId != 1
+			<if test="songname != null">
+				and songName like #{songname,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 分页查询所有songVo,状态不阻塞,通过collectionCount(收藏次数)排序 -->
+	<select id="selectAllSongVoForPaginationByCollectionCount" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song where
+		songStateId != 1
+		order by collectionCount desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 分页查询所有songVo,状态不阻塞,通过playCount(播放次数,热度)排序 -->
+	<select id="selectAllSongVoForPaginationByHotRank" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song where
+		songStateId != 1
+		order by playCount desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 分页通过language查询songVo,状态不阻塞,通过playCount(播放次数,热度)排序, -->
+	<select id="selectAllSongVoForPaginationByHotRankAndLanguage" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song 
+		<where>
+		songStateId != 1
+		<if test="language!=null and language!=''">
+		 and language like #{language }
+		</if>
+		</where>
+		order by playCount desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 分页查询所有songVo,状态不阻塞,通过publishDate(发行时间)排序 -->
+	<select id="selectAllSongVoForPaginationByPublishDate" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song where
+		songStateId != 1
+		order by publishDate desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 分页通过language查询songVo,状态不阻塞,通过publishDate(发型时间)排序, -->
+	<select id="selectAllSongVoForPaginationByPublishDateAndLanguage" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song 
+		<where>
+		songStateId != 1
+		<if test="language!=null and language!=''">
+		 and language like #{language }
+		</if>
+		</where>
+		order by publishDate desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 分页查询所有songVo,状态不阻塞,通过publishDate(发行时间)，playCount(播放次数)排序  先排序publishDate后排序playCount-->
+	<select id="selectAllSongVoForPaginationByPublishDateAndHotRank" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song where
+		songStateId != 1
+		order by publishDate,playCount desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 通过singerId查询所有song实体对象 -->
+	<select id="selectBySingerId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select * from song where singerId=#{singerId } and songStateId !=1
+	</select>
+	<!-- 通过typeId查询所有song实体对象 -->
+	<select id="selectByTypeId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select * from song where typeId=#{typeId } and songStateId !=1
+	</select>
+	 <!-- 通过singerId查询所有songVo对象吗，通过playCount(播放次数)排序 -->
+	<select id="selectSongVoBySingerId" resultMap="ResultSongVoMap"
+		parameterType="java.lang.Integer">
+		select * from song where singerId=#{singerId } and songStateId !=1 order by playCount desc
+	</select>
+ 	<!-- 通过typeId查询所有songVo对象 -->
+	<select id="selectSongVoByTypeId" resultMap="ResultSongVoMap"
+		parameterType="java.lang.Integer">
+		select * from song where typeId=#{typeId } and songStateId !=1
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- songVo集合 -->
+	<resultMap id="ResultSongVoMap1" type="cn.pojo.vo.SongVo">
+		<id column="songId" property="songid" jdbcType="INTEGER" />
+		<association property="songPo" javaType="cn.pojo.SongPo">
+			<id column="songId" property="songid" jdbcType="INTEGER" />
+			<result column="songName" property="songname" jdbcType="VARCHAR" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="language" property="language" jdbcType="VARCHAR" />
+			<result column="playCount" property="playcount" jdbcType="INTEGER" />
+			<result column="downloadCount" property="downloadcount"
+				jdbcType="INTEGER" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="DATE" />
+			<result column="songUrl" property="songurl" jdbcType="VARCHAR" />
+			<result column="cyricUrl" property="cyricurl" jdbcType="VARCHAR" />
+			<result column="songTime" property="songtime" jdbcType="DOUBLE" />
+			<result column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="songStateId" property="songstateid" jdbcType="INTEGER" />
+		</association>
+		<association property="singPo" javaType="cn.pojo.SingerPo"
+			column="singerId" select="cn.mapper.SingerPoMapper.selectByPrimaryKey">
+			<id column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="singerName" property="singername" jdbcType="VARCHAR" />
+			<result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+			<result column="collectionCount	" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="areaId" property="areaid" jdbcType="INTEGER" />
+			<result column="birthday" property="birthday" jdbcType="DATE" />
+			<result column="singerSex" property="singersex" jdbcType="VARCHAR" />
+			<result column="photoUrl" property="photourl" jdbcType="VARCHAR" />
+			<result column="debutDate" property="debutdate" jdbcType="INTEGER" />
+			<result column="singerStateId" property="singerstateid"
+				jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+		</association>
+		<association property="cdPo" javaType="cn.pojo.CDPo"
+			column="CDId" select="cn.mapper.CDPoMapper.selectByPrimaryKey">
+			<id column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="CDName" property="cdname" jdbcType="VARCHAR" />
+			<result column="coverUrl" property="coverurl" jdbcType="VARCHAR" />
+			<result column="songCount" property="songcount" jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="DATE" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="CDstateId" property="cdstateid" jdbcType="INTEGER" />
+		</association>
+		<association property="typePo" javaType="cn.pojo.TypePo"
+			column="typeId" select="cn.mapper.TypePoMapper.selectByPrimaryKey">
+			<id column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="typeName" property="typename" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<!-- 通过songId查询songVo对象并且状态不阻塞 -->
+	<select id="selectSongVoBySongId" resultMap="ResultSongVoMap1"
+		parameterType="java.lang.Integer">
+		select * from song where songId=#{songId } and
+		songStateId != 1
+	</select>
+	<!-- 通过singerId查询该歌手的所有歌并且统计数量 -->
+	<select id="countBySingerId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select count(*) from song where singerId=#{singerId} and  songStateId != 1
+	</select>
+	<!-- 通过singerId查询所有song实体对象 分页 -->
+	<select id="selectBySingerIdByPag" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select * from song where singerId=#{singerid } and songStateId != 1 limit #{pageIndex},#{pageSize}
+	</select>
+ 	<!-- cdId查歌曲 -->
+ 	<!--CDId查询  -->
+	<select id="selectByCDId" parameterType="int" resultMap="BaseResultMap">
+		select * from song where CDId=#{CDId} and songStateId != 1
+	</select>
+  	
+  	<!-- 分页查询不包括language的songVo,状态不阻塞,通过publishDate(发型时间)排序, -->
+	<select id="selectAllSongVoForPaginationByPublishDateAndLanguageNo" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song 
+		<where>
+		songStateId != 1
+		<if test="language!=null and language!=''">
+		 and language != #{language }
+		</if>
+		</where>
+		order by publishDate desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+  	 
+	<!--歌曲名查询  -->
+	<select id="selectBySongName" parameterType="String" resultType="SongPo">
+		select * from song where songName= #{name} and songStateId != 1
+	</select>
+	
+	<!-- 歌手ID查询 -->
+	<select id="selectSongPosBySingerId" parameterType="int" resultMap="BaseResultMap">
+		select * from song where singerId=#{singerId} and songStateId != 1
+	</select>
+		
+	<!--CDId查询  -->
+	<select id="selectSongPosByCDId" parameterType="int" resultMap="BaseResultMap">
+		select * from song where CDId=#{CDId} and songStateId != 1
+	</select>
+	
+	<!--CDId查询 Vo -->
+	<select id="selectSongVosByCDId" resultMap="ResultSongVoMap1"
+		parameterType="java.lang.Integer">
+		select * from song where cdId=#{CDId } and
+		songStateId != 1
+	</select>
+	
+	<select id="selectCountByTypeId" resultType="int"
+		parameterType="java.lang.Integer">
+		select count(*) from song where typeId=#{typeId } and songStateId != 1
+	</select>
+	
+	<!-- 专辑id和歌曲名查询歌曲 -->
+	 <select id="selectSongByCDIdAndSongName" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song
+		<where>
+			songStateId != 1
+			<if test="songname!=null and songname!=''">
+				and songname like#{songname}
+			</if>
+			and cdid=#{cdid}
+		</where>
+		limit #{pageIndex},#{pageSize}
+	</select>
+		<!-- 专辑id和歌曲名查询歌曲 数量-->
+	 <select id="selectCountSongByCDIdAndSongName" resultType="int" parameterType="java.util.Map">
+		select count(*) from song
+		<where>
+			songStateId != 1
+			<if test="songname!=null and songname!=''">
+				and songname like#{songname}
+			</if>
+			and cdid=#{cdid}
+		</where>
+	</select>
+	<!--查询歌曲总数 -->
+	<select id="selectSongCount" resultType="int">
+		select count(*) from song where songStateId !=1
+	</select>
+	<!-- 查询没被专辑收录的歌曲通过歌手Id-->
+	 <select id="selectNotInCDBySingId" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song where songStateId != 1 and singerid =#{singerid} and cdid is #{cdid} limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 查询没被专辑收录的歌曲 数量通过歌手Id-->
+	 <select id="selectCountNotInCDBySingId" resultType="int" parameterType="java.util.Map">
+		select count(*) from song where songStateId != 1 and singerid =#{singerid} and cdid is #{cdid}
+	</select>
+   <!--  获得已删除的歌曲，歌名模糊查询-->
+	 <select id="selectDeletedSong" resultMap="ResultSongVoMap" parameterType="java.util.Map">
+		select * from song 
+		<where>
+		    songStateId = 1 
+		    <if test="songname!=null and songname!=''">
+					and songname like #{songname}
+			</if>
+		</where> 
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 获得已删除的歌曲数量 ，歌名模糊查询-->
+	 <select id="selectCountDeletedSong" resultType="int" parameterType="java.util.Map">
+		select count(*) from song 
+		<where>
+		    songStateId = 1 
+		    <if test="songname!=null and songname!=''">
+					and songname like #{songname}
+			</if>
+		</where> 
+	</select>
+
+</mapper>

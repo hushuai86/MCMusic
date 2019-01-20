@@ -1,0 +1,73 @@
+.chooseCon{
+	padding-left: 20px;
+	padding-top: 10px;
+}
+
+.songRankCon{
+	width: 1210px;	
+	margin: auto;	
+	
+}
+.songRankCon .songRanknav{
+	height: 500px;
+	width: 200px;
+	float: left;
+	border: solid #BBB 1px;
+}
+.songRankCon .songRanknav .caseSong{
+	padding-top: 20px;
+}
+.songRankCon .songRanknav .caseSong li{
+	width: 200px;
+	height: 40px;
+	font-size: 17px;
+	text-align: center;
+	line-height: 40px;
+	color: #777;
+}
+.songRankCon .songList{
+	width: 1000px;
+	margin: auto;
+	float: left;	
+}
+.title{
+	font-family: myFirstFont;
+	font-size: 35px;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+
+
+
+.layui-table tr{
+	background-color: #EEE;
+	height: 70px;
+}
+.layui-table tr:nth-child(odd){
+	background-color:#F6F6F6;
+}
+.layui-table i{
+	cursor: pointer;
+}
+.layui-table .buttonCon{width: 100px;}
+.layui-table .songActionButton{
+	display: none;
+}
+input[type='checkbox']{
+	display: none;
+}
+.checkLabel{
+	display: none;
+	width: 16px;
+	height: 16px;
+	border: solid #30A89C 1px;
+	float: left;
+}
+.caseSong li{
+	font-family: myFirstFont;
+	cursor: pointer;
+}
+
+.RankAction{
+	background-color: #30A89C;color: white!important;
+}

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<!--轮播导入-->
+		<link rel="stylesheet" type="text/css" href="jquery-auto-play-image/css/datouwang.css"/>
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="jquery-auto-play-image/js/koala.min.1.5.js" ></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<script src="js/vue.min.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		
+		<!--轮播-->
+		<div id="fsD1" class="focus" >  
+		    <div id="D1pic1" class="fPic">  
+		        <!-- <div class="fcon" style="display: none;">
+		            <a  href=""><img src="img/01.jpg" style="opacity: 1; "></a>
+		           <span class="shadow"><a  href="#">红三代叶明子太庙办盛典 白色羽毛装高贵动人</a></span>
+		        </div> -->
+ 
+		    </div>
+		    <div class="fbg">  
+			    <div class="D1fBt" id="D1fBt">  
+			      <!--   <a href="javascript:void(0)" hidefocus="true" target="_self" class="current"><i>1</i></a>   -->
+			    </div>  
+		    </div>  
+	    	<span class="prev"></span>   
+	    	<span class="next"></span>    
+		</div>  
+		<div class="clear"></div><br />
+		<script type="text/javascript">
+		
+			$.get("getAllImgIndex",function(data){
+				console.log(data)
+				$("#D1pic1").html("")
+				data.forEach(function(value){
+					var $div = $('<div class="fcon" style="display: none;">'
+				            +'<a  href="'+value.imagelink+'"><img src="'+value.imageurl+'" style="opacity: 1; "></a></div>')
+					$("#D1pic1").append($div)
+				})
+				
+				$("#D1fBt").html("")
+				data.forEach(function(value,index){
+					var $a = $('<a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>'+(index+1)+'</i></a>')
+					if(index==0){
+						$a = $('<a href="javascript:void(0)" hidefocus="true" target="_self" class="current"><i>'+(index+1)+'</i></a>')
+					}
+					$("#D1fBt").append($a)
+				})
+				
+				Qfast.add('widgets', { path: "jquery-auto-play-image/js/terminator2.2.min.js",
+					type: "js", requires: ['fx'] });
+				Qfast(false, 'widgets', function () {
+					K.tabs({
+						id: 'fsD1',   //焦点图包裹id  
+						conId: "D1pic1",  //** 大图域包裹id  
+						tabId:"D1fBt",  
+						tabTn:"a",
+						conCn: '.fcon', //** 大图域配置class       
+						auto: 1,   //自动播放 1或0
+						effect: 'fade',   //效果配置
+						eType: 'click', //** 鼠标事件
+						pageBt:true,//是否有按钮切换页码
+						bns: ['.prev', '.next'],//** 前后按钮配置class                          
+						interval: 3000  //** 停顿时间  
+					}) 
+				})  
+			})
+		
+		
+			
+		</script>
+		<!--轮播结束-->
+	
+	
+	
+		<!--热门歌手-->
+		<div style="height: 300px;" class="default-con">
+			<font class="default-title">热门歌手</font><br /><br />
+			
+			<ul class="area">
+				<li class="areaThis">中国</li>
+				<li>日韩</li>
+				<li>欧美</li>
+				<li onclick="window.location='singerList.html'">其他</li>
+			</ul>
+			<div class="clear"></div><br />
+			
+			<!--中国-->
+			<div class="changeSinger oneChange">
+				<ul class="newSinger">
+					<li v-for="r in result">
+						<img v-bind:src="r.photourl"  class="layui-circle" height="150" v-on:click="href(r.singerid)"><br>
+						<font>{{r.singername}}</font>
+					</li>
+				</ul>
+			</div>
+			<!--欧美-->
+			<div class="changeSinger twoChange">
+				<ul class="newSinger">
+					<li v-for="r in result">
+						<img v-bind:src="r.photourl"  class="layui-circle" height="150" v-on:click="href(r.singerid)"><br>
+						<font>{{r.singername}}</font>
+					</li>
+				</ul>
+			</div>
+			<!--日韩-->
+			<div class="changeSinger threeChange">
+				<ul class="newSinger">
+					<li v-for="r in result">
+						<img v-bind:src="r.photourl"  class="layui-circle" height="150" v-on:click="href(r.singerid)"><br>
+						<font>{{r.singername}}</font>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="clear"></div><br /><br />
+		<script>
+			$(".changeSinger").eq(0).show();
+			$(".area li").click(function(){
+				var index = $(this).index();
+				$(".area li").not($(this)).removeClass("areaThis");
+				$(this).addClass("areaThis");
+				//切换
+				var changeIndex = $(".changeSinger").eq(index);
+				$(".changeSinger").not(changeIndex).hide();
+				changeIndex.show();
+			});
+			/*中国*/
+			$.get("areaOneSingerList", function(result){
+		  	  	new Vue({
+				  el: '.oneChange',
+				  data:{result},
+				  methods: {//链接到歌手页面
+					  href: function(id){
+						  window.location="singer.html?singerId="+id;
+					  }
+				  }
+				})
+		  	});
+			/*欧美*/
+			$.get("areaTwoSingerList", function(result){
+		  	  	new Vue({
+				  el: '.twoChange',
+				  data:{result},
+				  methods: {//链接到歌手页面
+					  href: function(id){
+						  window.location="singer.html?singerId="+id;
+					  }
+				  }
+				})
+		  	});
+			/*日韩*/
+			$.get("areaThreeSingerList", function(result){
+		  	  	new Vue({
+				  el: '.threeChange',
+				  data:{result},
+				  methods: {//链接到歌手页面
+					  href: function(id){
+						  window.location="singer.html?singerId="+id;
+					  }
+				  }
+				})
+		  	});
+			 
+			
+		</script>
+		<!--热门歌手结束-->
+
+		<!--排行榜-->
+		<div style="height: 450px;" class="default-con">
+			<font class="default-title">Top排行榜</font><br /><br />
+			<div>
+				<div class="among">
+					<div class="amongTitle">
+						<font style="font-size: 25px; font-family: myFirstFont;">热度排行榜</font>
+						<a style="font-size: 25px; font-family: myFirstFont; float: right;
+							color: #999; margin-right: 20px;" href="songRank.html">更多</a>
+					</div><hr />
+					<ul class='songHotRank'>
+						<li v-for="(r,index) in result.list"  v-on:mouseenter="show(index)"  v-on:mouseleave="hide(index)">
+							<div class="number numberA">0{{ index+1 }}</div>
+							<div class="sing">{{r.songPo.songname}}</div>
+							<div class="singer">{{r.singPo.singername}}</div>
+							<div class="button" v-on:mouseenter="">
+								<img v-on:click="play(r.songPo.songid)" src="img/playSmall.png" height="18" title="播放" style="margin-right: 13px;"/>
+								<img v-on:click="down(r.songPo.songid)" src="img/downSmall.png" height="18" title="下载"/>
+							</div>
+							<div>{{r.songPo.songtime}}</div>
+						</li>
+					</ul>
+				</div>
+				<script type="text/javascript" src="js/default.js"></script>
+				<script>
+					/* 热度排行 */
+					$.get("songHotRank", function(result){
+				  	  	new Vue({
+						  el: '.songHotRank',
+						  data:{result},
+						  methods: {//显示播放和下载按钮
+							  show: function(index){
+								  $(".songHotRank li .button").eq(index).children().show();
+							  },
+							  hide: function(index){
+								  $(".songHotRank li .button").eq(index).children().hide();
+							  },
+							  play:function(id){
+								  //模拟表单提交
+								  $.StandardPost("musicPlay",{"songId":id});
+								 // window.location="mc.html";
+							  },
+							  down:function(id){
+								  $.StandardPost("musicDown",{"songId":id});
+							  }
+						  }
+						})
+				  	});
+				</script>
+				
+				
+				<div class="otherAmong">
+					<ul>
+						<li onclick="window.location='songRank.html'">
+							<div style="background-color:  #A6E1EC;">劲爆歌曲</div>
+							<font>劲爆歌曲排行榜</font>
+							<img src="img/iconLeftNext.png"/>
+						</li>
+						<li onclick="window.location='songRank.html'">
+							<div style="background-color:  #C9E2B3;">Top500</div>
+							<font>Top500排行榜</font>
+							<img src="img/iconLeftNext.png"/>
+						</li>
+						<li onclick="window.location='songRank.html'">
+							<div style="background-color:   #F0AD4E;">网络红歌</div>
+							<font>网络红歌排行榜</font>
+							<img src="img/iconLeftNext.png"/>
+						</li>
+						<li onclick="window.location='songRank.html'">
+							<div style="background-color:  #CE8483;">销量热歌</div>
+							<font>销量热歌排行榜</font>
+							<img src="img/iconLeftNext.png"/>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<br /><br />
+		
+		
+		<!--音乐分类-->
+		<div class="kindSing">
+			<div class="kingCon">
+				<div class="kindContext">
+					<div class="kindTitle">电台分类</div>
+					<div class="kindText">听你所想<br>想你所听</div>
+				</div>
+				
+				<div class="kindButton">
+					<ul class="getSongType">
+						<li v-for="r in result" v-on:click="href(r.typeid)">{{r.typename}}</li>
+						<li onclick="window.location='station.html'">更多</li>
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+		<div class="clear"></div><br /><br />
+		<script type="text/javascript">
+		$.get("getSongType", function(result){
+	  	  	new Vue({
+			  el: '.getSongType',
+			  data:{result},
+			  methods: {//跳转
+				  href:function(id){
+					  window.location="station-mc.html?typeId="+id;
+				  }
+			  }
+			}) 
+	  	});
+		</script>
+		<!--音乐分类结束-->
+		
+		
+		
+		
+		<!--推荐歌单-->
+		<div style="height: 450px;" class="default-con">
+			<font class="default-title">歌单推荐</font><br /><br />
+			<div class="singList">
+				<ul class="getSongListRemote"></ul>
+			</div>
+			<br />
+			<div class="singListButton">
+				<div class="singListNext layui-inline singListThis"><i class="layui-icon">&#xe603;</i></div>
+				<div class="singListNext layui-inline"><i class="layui-icon">&#xe602;</i></div>
+			</div>
+		</div>
+		<div class="clear"><br />
+		
+		<script>
+			 $.get("getSongListRemote", function(result){
+				result.forEach(function(value, index, array) {
+					var img = value.imgurl;
+					if(img==null) {
+						img ="img/songListDefault.png";
+					}
+					var kid = $("<li onclick=\"window.location='songList-info.html?songList="+value.songlistid+"'\">"+
+						"<div style='background-image: url("+img+");'>"+
+							"<div class='singListDesc'>"+
+								"<div>"+
+								"<font style='font-size: 17px;'>"+value.songlistname+"</font><br />"+
+								"<font style='font-size: 15px;'><i class='layui-icon'>&#xe6fc;</i>&nbsp;&nbsp;&nbsp;"+value.accesscount+"</font>"+
+								"<div>"+
+							"</div>"+
+						"</div>"+
+					"</li>");
+					$(".getSongListRemote").append(kid);
+					//console.log(value)
+				});
+				
+				//图片经过事件
+				$(".singList ul li").hover(
+					function(){
+						var index = $(this).index();
+						$(".singListDesc").eq(index).css("background-color","#5FB878");
+						$(".singListDesc").eq(index).css("opacity","0.8");
+						$(".singListDesc").eq(index).stop().animate({
+							height:"80px",
+							marginTop: "220px"
+						},500);
+					},
+					function(){
+						var index = $(this).index();
+						$(".singListDesc").eq(index).css("background-color","black");
+						$(".singListDesc").eq(index).css("opacity","0.5");
+						$(".singListDesc").eq(index).stop().animate({
+							height:"70px",
+							marginTop: "230px"
+						},500);
+					}
+				)
+			
+			
+				//分页脚本
+				var singListNum = 3; //显示个数
+				var indexSingList = 0; //歌单推荐的分页索引位置
+				var leftSingList = 0; //分页索引左边界
+				var rightSingList = 2; //分页索引左边界
+				var $singLi = $(".singList ul li");
+				
+				allSingListSet(); //初始化
+				
+				$(".singListNext").click(function(){ //点击事件监听
+					if($(this).index()==0){
+						if(indexSingList!=leftSingList) indexSingList--;
+					}
+					else if($(this).index()==1){
+						if(indexSingList!=rightSingList) indexSingList++;
+					}
+					allSingListSet(); 
+				})
+				
+				
+				function allSingListSet(){ //总体开关
+					imgSingList();
+					nextSingList();
+				}
+				
+				function imgSingList(){  //设置显示img
+					var left = indexSingList*singListNum;
+					var right = (indexSingList+1)*singListNum;
+					var $showList = $singLi.slice(left,right); //得到对应的显示jq对象
+					$showList.fadeIn(300);
+					$singLi.not($showList).hide();
+				}
+				
+				function nextSingList(){  // 设置分页显示效果
+					if(indexSingList == leftSingList){
+						$(".singListNext").eq(0).removeClass("singListThis");
+						$(".singListNext").eq(1).addClass("singListThis");
+					}
+					else if(indexSingList == rightSingList){
+						$(".singListNext").eq(1).removeClass("singListThis");
+						$(".singListNext").eq(0).addClass("singListThis");
+					}
+					else{
+						$(".singListNext").addClass("singListThis");
+					}
+				}
+		  	});
+		</script>
+		<!--推荐歌单结束-->
+		
+		
+		
+		<!--新歌发布-->
+		<div class="newSings"> <!--背景图层-->
+			<div style="height: 600px;" class="default-con"> <!--内容层层-->
+				<br /><font class="default-title">新歌首发</font><br /><br />
+				<div class="newSingsDefault">
+					<font style="font-size: 25px;font-family: myFirstFont;">华语新歌</font>
+					<hr />
+					<ul class="getNewStareByChinese">
+						<li v-for="(r,index) in result">
+							<div style="width: 50px;">0{{index+1}}</div>
+							<div style="width: 200px;">{{r.songPo.songname}}</div>
+							<div style="width: 100px;">{{r.singPo.singername}}</div>
+							<div>
+								<button class="default-submit" v-on:click="play(r.songPo.songid)"><i class="layui-icon">&#xe6fc;</i></button>
+								<button class="default-submit" v-on:click="down(r.songPo.songid)"><i class="layui-icon">&#xe601;</i></button>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="newSingsDefault">
+					<font style="font-size: 25px;font-family: myFirstFont;">其他新歌</font>
+					<hr />
+					<ul class="getNewStareNoChinese">
+						<li v-for="(r,index) in result">
+							<div style="width: 50px;">0{{index+1}}</div>
+							<div style="width: 200px;">{{r.songPo.songname}}</div>
+							<div style="width: 100px;">{{r.singPo.singername}}</div>
+							<div>
+								<button class="default-submit" v-on:click="play(r.songPo.songid)"><i class="layui-icon">&#xe6fc;</i></button>
+								<button class="default-submit" v-on:click="down(r.songPo.songid)"><i class="layui-icon">&#xe601;</i></button>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="clear"></div><br />
+				<button class="default-submit" style="font-size: 20px;font-family: myFirstFont;"
+				onclick="window.location='songRank.html'">更多</button>
+				
+			</div >
+		</div >
+		<div class="clear"></div>
+		<script>
+		$.get("getNewStareByChinese", function(result){
+	  	  	new Vue({
+			  el: '.getNewStareByChinese',
+			  data:{result},
+			  methods: {//显示播放和下载按钮
+				  play:function(id){
+					  //模拟表单提交
+					  $.StandardPost("musicPlay",{"songId":id});
+					 // window.location="mc.html";
+				  },
+				  down:function(id){
+					  $.StandardPost("musicDown",{"songId":id});
+				  }
+			  }
+	  	  	
+			}) 
+	  	});
+		
+		$.get("getNewStareNoChinese", function(result){
+	  	  	new Vue({
+			  el: '.getNewStareNoChinese',
+			  data:{result},
+			  methods: {//显示播放和下载按钮
+				  play:function(id){
+					  //模拟表单提交
+					  $.StandardPost("musicPlay",{"songId":id});
+					 // window.location="mc.html";
+				  },
+				  down:function(id){
+					  $.StandardPost("musicDown",{"songId":id});
+				  }
+			  }
+			}) 
+	  	});
+		</script>
+		<!--新歌发布结束-->
+		
+		
+		
+		<!--经典热歌发布-->
+		<div class="hotSings" style="background-color: #EEE;">
+		<div style="height: 600px;" class="default-con"> 
+				<br /><br /><font class="default-title">经典热曲</font><br /><br />
+				<ul class="hotSingsCon getClassiChitSong">
+					<li>
+						<div class="hotDivSmall" v-bind:style="'background-image: url('+result[0].singPo.photourl+');'"  v-on:mouseenter="show(0)"  v-on:mouseleave="hide(0)" v-on:click="play(result[0].songPo.songid)">
+							<div class="hotSingListen">{{result[0].songPo.songname}}-{{result[0].singPo.singername}}
+							<div style="margin: 30%;"><i class="layui-icon">&#xe652;</i></div> 
+							</div>
+						</div>
+						<div class="hotDivSmall" v-bind:style="'background-image: url('+result[1].singPo.photourl+');'"  v-on:mouseenter="show(1)"  v-on:mouseleave="hide(1)" v-on:click="play(result[1].songPo.songid)">
+							<div class="hotSingListen">{{result[1].songPo.songname}}-{{result[1].singPo.singername}}
+							<div style="margin: 30%;"><i class="layui-icon">&#xe652;</i></div> 
+							</div>
+						</div>
+					</li>
+					
+					<li>
+						<div class="hotDivBig" v-bind:style="'background-image: url('+result[2].singPo.photourl+');'"  v-on:mouseenter="show(2)"  v-on:mouseleave="hide(2)"  v-on:click="play(result[2].songPo.songid)">
+							<div class="hotSingListen hotSingListeBig">{{result[2].songPo.songname}}-{{result[2].singPo.singername}}
+							<div style="margin: 30%;"><i class="layui-icon">&#xe652;</i></div>
+							</div>
+						</div>
+					</li>
+					
+					<li>
+						<div class="hotDivSmall" v-bind:style="'background-image: url('+result[3].singPo.photourl+');'"  v-on:mouseenter="show(3)"  v-on:mouseleave="hide(3)" v-on:click="play(result[3].songPo.songid)">
+							<div class="hotSingListen">{{result[3].songPo.songname}}-{{result[3].singPo.singername}}
+							<div style="margin: 30%;"><i class="layui-icon">&#xe652;</i></div>
+							</div>
+						</div>
+						<div  class="hotDivSmall"v-bind:style="'background-image: url('+result[4].singPo.photourl+');'"  v-on:mouseenter="show(4)"  v-on:mouseleave="hide(4)" v-on:click="play(result[4].songPo.songid)">
+							<div class="hotSingListen">{{result[4].songPo.songname}}-{{result[4].singPo.singername}}
+							<div style="margin: 30%;"><i class="layui-icon">&#xe652;</i></div>
+							</div>
+						</div>
+					</li>
+					
+					<li>
+						<div class="hotDivSmall" v-bind:style="'background-image: url('+result[5].singPo.photourl+');'"  v-on:mouseenter="show(5)"  v-on:mouseleave="hide(5)" v-on:click="play(result[5].songPo.songid)">
+							<div class="hotSingListen">{{result[5].songPo.songname}}-{{result[5].singPo.singername}}
+							<div style="margin: 30%;"><i class="layui-icon">&#xe652;</i></div>
+							</div>
+						</div>
+						<div  class="hotDivSmall" v-bind:style="'background-image: url('+result[6].singPo.photourl+');'"  v-on:mouseenter="show(6)"  v-on:mouseleave="hide(6)" v-on:click="play(result[6].songPo.songid)">
+							<div class="hotSingListen">{{result[6].songPo.songname}}-{{result[6].singPo.singername}}
+							<div style="margin: 30%;"><i class="layui-icon">&#xe652;</i></div>
+							</div>
+						</div>
+					</li>
+				</ul>	
+		</div>
+		</div>
+		<script>
+			$(".hotDivSmall,.hotDivBig").hover(
+				function(){
+					$(this).children(".hotSingListen").addClass("hotSingListenChange");
+					//$(this).children(".hotSingListen")
+				},
+				function(){
+					$(this).children(".hotSingListen").removeClass("hotSingListenChange");
+				}
+			)
+			$.get("getClassiChitSong", function(result){
+		  	  	new Vue({
+				  el: '.getClassiChitSong',
+				  data:{result},
+				  methods: {
+					  show: function(index){
+						 $(".hotSingListen").eq(index).addClass("hotSingListenChange");
+					  },
+					  hide: function(index){
+						 $(".hotSingListen").eq(index).removeClass("hotSingListenChange");
+					  },
+					  play:function(id){
+						//模拟表单提交
+						  $.StandardPost("musicPlay",{"songId":id});
+						 // window.location="mc.html";
+					  }
+				  }
+				}) 
+		  	});
+		</script>
+		<div class="clear"></div>
+		<!--经典热歌发布结束-->
+		
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+
+
+
+		<!--返回顶部-->
+		<div class="scroll">
+			<i class="layui-icon">&#xe619;</i> 
+		</div>
+		<script>
+			$(window).scroll(function(){ //显示按钮
+				if($(window).scrollTop()>1200){
+					$(".scroll").fadeIn();
+				}
+				else $(".scroll").fadeOut();
+			});
+		
+			$(".scroll").click(function () { //监听滚动
+		        $('body,html').animate({ scrollTop: 0 }, 400);
+		 	});
+
+		</script>
+		<!--返回顶部结束-->
+		
+		
+		
+		<script>
+			//layui框架模块引入
+			layui.use(['form','element','layer'], function(){
+			 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+			 var form = layui.form;
+			 var $ = layui.jquery;
+			 var layer = layui.layer;
+			  
+			  $(".login").click(function(){
+			  	$("#loginAlert").show();
+			  	layer.open({
+				  type: 1,
+				  title :'',
+				  skin: 'layui-layer-demo', //样式类名
+				  closeBtn: 0, //不显示关闭按钮
+				  area: ['400px', '250px'],
+				  anim: 2,
+				  shadeClose: true, //开启遮罩关闭
+				  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+				  content: $("#loginAlert")
+				})
+			  });
+			  
+			  
+			  form.on('submit(login)', function(data){
+				  $.post("login",data.field,function(data){
+					  if(data.userid==null){
+						layer.msg('用户名或密码错误');
+						$('input[name="password"]').val("");
+						$('input[name="password"]').focus();
+					  }else{
+						  window.location.reload();
+					  }
+				  })
+				  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+				});
+			 
+				 
+				 form.verify({
+					  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+					      return '用户名不能有特殊字符';
+					    }
+					    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+					      return '用户名首尾不能出现下划线\'_\'';
+					    }
+					    if(/^\d+\d+\d$/.test(value)){
+					      return '用户名不能全为数字';
+					    }
+					  }
+					  ,pass: [
+					    /^[\S]{6,12}$/
+					    ,'密码必须6到12位，且不能出现空格'
+					  ] 
+				});  
+			});
+
+		</script>
+	</body>
+	
+</html>

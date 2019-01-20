@@ -1,0 +1,77 @@
+.songListInfoCon{
+	height: 300px;
+	width: 1200px;
+	border-bottom: solid #CCC 1px;
+	color: #666;
+	margin: auto;
+	overflow:visible;
+	white-space: inherit;
+}
+.songListInfoCon .songListInfoImg{
+	height: 250px;
+	width: 250px; 
+	background-repeat: no-repeat;
+	background-size: cover;
+	
+	margin: 20px;
+	float: left;
+}
+.layui-table tr{
+	background-color: #EEE;
+	height: 55px;
+}
+
+.layui-table thead th,.layui-table tbody tr td{
+	font-size: 16px;
+}
+.layui-table tbody tr:nth-child(odd){
+	background-color:#F6F6F6;
+}
+
+
+.layui-table i{
+	cursor: pointer;
+}
+.layui-table .buttonCon{width: 96px;}
+.layui-table .songActionButton{
+	display: none;
+}
+.cdSongCon{
+	width: 800px;
+	float: left;
+}
+.cdSongCon input[type='checkbox']{
+	display: none;
+}
+.cdSongCon .checkLabel{
+	display: none;
+	width: 16px;
+	height: 16px;
+	border: solid #30A89C 1px;
+	float: left;
+}
+.otherCon{
+	width: 380px;
+	float: right;
+}
+.textTitle{
+	font-family: myFirstFont;font-size: 30px;
+}
+.otherCon .text p{
+	padding: 5px;color: #777;height: 200px; overflow-y: scroll;
+}
+.otherCon .otherSongList ul{
+	height: 230px;
+}
+.otherCon .otherSongList ul li{
+	width: 80px;
+	height: 100px;
+	float: left;
+	margin: 5px;
+}
+.otherCon .otherSongList .otherBg{
+	height: 80px;
+	width: 80px;
+	background-repeat: no-repeat;
+	background-size: cover;
+}

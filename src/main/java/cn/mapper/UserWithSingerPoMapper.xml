@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.UserWithSingerPoMapper" >
+  <resultMap id="BaseResultMap" type="cn.pojo.UserWithSingerPo" >
+    <id column="uSingerId" property="usingerid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="singerId" property="singerid" jdbcType="INTEGER" />
+    <result column="collectionDate" property="collectiondate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  <resultMap id="userWithSingerVoList" type="cn.pojo.vo.UserCollectionSingerVo" >
+    <id column="uSingerId" property="uSingerId" jdbcType="INTEGER" />
+  	<association property="userWithSingerPo" javaType="cn.pojo.UserWithSingerPo">
+	    <id column="uSingerId" property="usingerid" jdbcType="INTEGER" />
+	  	<result column="userId" property="userid" jdbcType="INTEGER" />
+	   	<result column="singerId" property="singerid" jdbcType="INTEGER" />
+	  	<result column="collectionDate" property="collectiondate" jdbcType="TIMESTAMP" />
+	</association>
+  	<association property="singerPo" column="singerId" select="cn.mapper.SingerPoMapper.selectByPrimaryKey">
+    	<id column="singerId" property="singerid" jdbcType="INTEGER" />
+	    <result column="singerName" property="singername" jdbcType="VARCHAR" />
+	    <result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+	    <result column="collectionCount" property="collectioncount" jdbcType="INTEGER" />
+	    <result column="areaId" property="areaid" jdbcType="INTEGER" />
+	    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+	    <result column="singerSex" property="singersex" jdbcType="BIT" />
+	    <result column="photoUrl" property="photourl" jdbcType="VARCHAR" />
+	    <result column="debutDate" property="debutdate" jdbcType="TIMESTAMP" />
+	    <result column="singerStateId" property="singerstateid" jdbcType="INTEGER" />
+    </association>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    uSingerId, userId, singerId, collectionDate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userwithsinger
+    where uSingerId = #{usingerid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from userwithsinger
+    where uSingerId = #{usingerid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.pojo.UserWithSingerPo" >
+    insert into userwithsinger (uSingerId, userId, singerId, 
+      collectionDate)
+    values (#{usingerid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{singerid,jdbcType=INTEGER}, 
+      #{collectiondate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.pojo.UserWithSingerPo" >
+    insert into userwithsinger
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="usingerid != null" >
+        uSingerId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="singerid != null" >
+        singerId,
+      </if>
+      <if test="collectiondate != null" >
+        collectionDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="usingerid != null" >
+        #{usingerid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="singerid != null" >
+        #{singerid,jdbcType=INTEGER},
+      </if>
+      <if test="collectiondate != null" >
+        #{collectiondate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.pojo.UserWithSingerPo" >
+    update userwithsinger
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="singerid != null" >
+        singerId = #{singerid,jdbcType=INTEGER},
+      </if>
+      <if test="collectiondate != null" >
+        collectionDate = #{collectiondate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uSingerId = #{usingerid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.pojo.UserWithSingerPo" >
+    update userwithsinger
+    set userId = #{userid,jdbcType=INTEGER},
+      singerId = #{singerid,jdbcType=INTEGER},
+      collectionDate = #{collectiondate,jdbcType=TIMESTAMP}
+    where uSingerId = #{usingerid,jdbcType=INTEGER}
+  </update>
+  
+ 	<!--按ID查询vo  --> 
+   <select id="getSingerUserWithSingerVo" parameterType="int" resultMap="userWithSingerVoList">
+  	select * from userwithsinger  where userId=#{userid}
+  </select>
+  
+  <!--查询所有  -->
+  <select id="getAllSingerUserWithSingerVos" resultMap="userWithSingerVoList">
+  	select * from userwithsinger 
+  </select>
+  
+  <!-- 取消收藏 -->
+  <delete id="deleteByUserIdAndSingerId" parameterType="Map">
+  	delete from userwithsinger where userId=#{userId} and singerId=#{singerId}
+  </delete>
+  
+  <!-- 按singerId查询 -->
+  <select id="selectBySingerIdAndUserId" parameterType="Map" resultMap="BaseResultMap">
+  	select * from userwithsinger where singerId=#{singerId} and userId=#{userId}
+  </select>
+ 
+</mapper>

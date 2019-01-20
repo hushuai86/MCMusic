@@ -1,0 +1,35 @@
+*{
+	padding: 0px;
+	margin: 0px;
+}
+
+.center{
+	height: 1000px;
+	width: 96%;
+	margin-top: 20px;
+	position: relative;
+}
+.center table{
+	width: 100%;
+	font-size: 16px;
+}
+.center table tr{
+	height: 90px;
+}
+.tb img{
+	width: 80px;
+	height: 80px;
+}
+tr{
+	height: 30px;
+}
+th{
+	text-align: center;
+}
+td{
+	text-align: center;
+}
+#ul{
+	margin-top:50px ;
+	margin-left: 420px;
+}

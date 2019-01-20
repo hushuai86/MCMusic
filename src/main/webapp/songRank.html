@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/songRank.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js"></script>
+	</head>
+	<body style="background-color: #EEE;">
+		 <!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<div class="songRankCon">
+			<br />
+			<div class="songRanknav">
+				<ul class="caseSong">
+					<li style="font-size: 25px;padding-bottom: 28px;">歌曲排行榜</li>
+					<li onclick="post('getNewSongRank')" class="RankAction">金曲榜&nbsp;新歌</li><!--时间排序-->
+					<li onclick="post('getSongCollectionRank')" >收藏榜&nbsp;热歌</li><!--收藏排序-->
+					<li onclick="post('getOldSongRank')" >巅峰榜&nbsp;经典</li><!--时间倒排-->
+					<li onclick="post('getSongHotRank')" >巅峰榜&nbsp;热歌</li><!--热度排序-->
+					<li onclick="post('getSongHotRankByChinese','国语')" >全球榜&nbsp;国语</li><!--热度，国语排序-->
+					<li onclick="post('getSongHotRankByChinese','粤语')" >飙升榜&nbsp;粤语</li><!--热度，粤语排序-->
+					<li onclick="post('getSongHotRankByChinese','英语')" >魅力榜&nbsp;英语</li><!--热度，英语排序-->
+					<li onclick="post('getSongHotRankByChinese','日语')" >潜力榜&nbsp;日语</li><!--热度，日语排序-->
+				</ul>
+			</div>
+			
+			
+			<div class="songList">
+				
+				<div class="chooseCon">
+					<div class="title">歌曲</div>
+				</div>
+			
+				<div style="margin-left: 20px;">
+					<hr />
+					<div  class="layui-btn-group">
+						<button class="layui-btn plays">
+						  <i class="layui-icon">&#xe623;</i> 播放
+						</button>
+						<button class="layui-btn downs">
+						  <i class="layui-icon">&#xe61a;</i> 下载
+						</button>
+						<button class="layui-btn" id="moreActions">
+						  <i class="layui-icon">&#xe649;</i> 批量操作
+						</button>
+					</div>
+					<!--歌曲列表容器 -->
+					<form id="form" action="" method="post" target="mc">
+					<table class="layui-table" lay-skin="nob"  lay-size="lg"> 
+					  <colgroup>
+					  	<col width="40">
+					    <col width="500">
+					    <col width="80">
+					    <col width="150">
+					    <col>
+					  </colgroup>
+					  <thead>
+					    <tr style="background-color: #EEE;color: #777;">
+					      <th>
+					      	<label for="tdInput0" class="checkLabel" id="allChoose"></label>
+			  				<input type="checkbox" id="tdInput0" />&nbsp;&nbsp;</th>
+					      <th>歌曲</th>
+					      <th></th>
+					      <td>歌手</td>
+					      <th>时长</th>
+					    </tr> 
+					  </thead>
+					  <tbody class="cons">
+					  </tbody>
+					</table>
+					</form>
+					<div class="clear"></div>
+					<br><div style="height: 100px; text-align:center;">
+						<div id="limit" style="width: 550px;margin: auto;"></div>
+					</div>
+					<!--歌曲列表结束 -->
+					<br />
+				</div>
+			</div>
+		</div><br /><br />
+		<script>
+		//排行榜点击样式
+		$(".caseSong li").click(function(){
+			var index =  $(this).index()
+			if(index!=0){
+				$(".caseSong li").removeClass("RankAction")
+				$(this).addClass("RankAction")
+			}
+		})
+		
+		$(".plays").click(function(){
+			var $checkedInput = $("#form input[type='checkbox']:checked").not($("#tdInput0"));
+			if($checkedInput.size()==0){
+				layui.use(['layer'], function(){
+				 var layer = layui.layer;
+				 layer.msg('请在批量操作中选择至少一个音乐播放');
+				});
+			}else{
+				$("#form").attr("action","musicPlay");
+				$("#form").submit();
+			}
+		})
+		
+		$(".downs").click(function(){
+			var $checkedInput = $("#form input[type='checkbox']:checked").not($("#tdInput0"));
+			if($checkedInput.size()==0){
+				layui.use(['layer'], function(){
+				 var layer = layui.layer;
+				 layer.msg('请在批量操作中选择至少一个音乐下载');
+				});
+			}else{
+				$("#form").attr("action","musicDown");
+				$("#form").submit();
+			}
+		})
+		
+		//单曲音乐播放
+		function play(id){
+			$.StandardPost("musicPlay",{"songId":id});
+		}
+		//单音乐下载
+		function singerDown(id){
+			$.StandardPost("musicDown",{"songId":id});
+		}
+		//添加
+		function add(){
+			layui.use(['layer'], function(){
+			 var layer = layui.layer;
+			 layer.msg('请在音乐播放界面进行歌曲收藏');
+			});
+		}
+		//批量操作
+		$("#moreActions").click(function(){
+			$(".checkLabel").toggle();
+			$(".checkLabel").css("background-image","url(img/goodGreen.png)");
+			$(".checkLabel").next().attr("checked","true");
+		})
+		//设置数据
+		function setData(url,params){
+			$.post(url,params,function(data){
+				$(".checkLabel").hide();
+				$(".checkLabel").css("background-image","none");
+				$(".checkLabel").not($(this)).next().attr("checked",false);
+				$(".cons").html("");
+				console.log(params.pageIndex)
+				data.forEach(function(value, index){
+					var $tr = $('<tr><td><label for="tdInput'+(index+1)+'" class="checkLabel"></label>'
+						+'<input name="songId" value="'+value.songPo.songid+'" type="checkbox" id="tdInput'+(index+1)+'" />&nbsp;&nbsp;'+(index+1+10*(params.pageIndex-1))
+			  			+'</td><td><img src="'+value.singPo.photourl+'" height="80">'
+					    +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+value.songPo.songname+'</td>'
+					    +'<td><div class="buttonCon"><div class="songActionButton">'
+					    +'<img onclick="play('+value.songPo.songid+')" src="img/user/play.png" />'
+				      	+'<img onclick="add('+value.songPo.songid+')" src="img/user/add.png" />'
+				      	+'<img onclick="singerDown('+value.songPo.songid+')"  src="img/user/down.png" />'
+				      	+'</div ></div></td><td>'+value.singPo.singername+'</td>'
+					    +'<td>'+value.songPo.songtime+'</td></tr>');
+					$(".cons").append($tr);
+				})
+				//button显示与隐藏
+				$(".layui-table tbody tr").hover(function(){
+					var index = $(this).index();
+					$(".songActionButton").eq(index).show();
+				},function(){
+					var index = $(this).index();
+					$(".songActionButton").eq(index).hide();
+				});
+				
+				//单选框点击事件
+				$(".checkLabel").click(function(){
+					if($(this).css("background-image")=='none'){
+						$(this).css("background-image","url(img/goodGreen.png)");
+					}else{
+						$(this).css("background-image","none");
+					}
+				})
+				//全选
+				$("#allChoose").click(function(e){
+					if($(this).next().attr("checked")=="checked"){
+						$(".checkLabel").css("background-image","none");
+						$(".checkLabel").not($(this)).next().attr("checked",false);
+					}else{
+						$(".checkLabel").css("background-image","url(img/goodGreen.png)");
+						$(".checkLabel").not($(this)).next().attr("checked",true);
+					}
+				})
+			})
+		}
+		</script>
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+	 
+		 //layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+		 
+		
+		 post = function (url,params){
+			 
+			 laypage.render({
+			    elem: 'limit' //注意，这里的 test1 是 ID，不用加 # 号
+			    ,count: 50, //数据总数，从服务端得到
+			    limit:10,
+			    theme:'limitClass',
+			    prev:'<i class="layui-icon">&#xe603;</i>',
+			    next:'<i class="layui-icon">&#xe602;</i>',
+			    jump: function(obj, first){
+			    	if(params!=null){
+						var l = params;
+						params = {pageSize:10,pageIndex:obj.curr,language:l};
+					}else{
+						params = {pageSize:10,pageIndex:obj.curr};
+					}
+			        setData(url,params);
+			      }
+			  });
+		 }
+		 post("getNewSongRank");
+		 
+		 form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 	 
+		  
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

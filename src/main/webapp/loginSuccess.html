@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<title></title>
+	</head>
+	<body>
+		<!--导航-->
+		 <style>
+			#nav-main{
+				height: 60px; 
+				background-color: black;
+			}
+			#nav-main img,#nav-main .layui-nav{
+				float: left;
+			}
+			.layui-nav-child{
+				position: absolute;
+			}
+			.layui-nav{
+				background-color: black;
+			}
+			.layui-nav li{
+				margin-left: 10px;
+			}
+			.layui-nav li a{
+				font-size: 16px;
+			}
+		</style>
+		<div id="nav-main" class="noOverflow">
+			<div style="float: left;height: 48px;width: 105px;
+				background-image: url(img/logon.png); margin-top: 10px;margin-left: 50px;">
+			</div>
+
+			<ul class="layui-nav">
+			  <li class="layui-nav-item"></li>  
+			  <li class="layui-nav-item layui-this"><a href="">首页</a></li>  
+			  <li class="layui-nav-item"><a href="">歌手</a></li>
+			  <li class="layui-nav-item"><a href="">歌单</a></li>
+			  <li class="layui-nav-item"><a href="">电台</a></li>
+			  <li class="layui-nav-item">
+			    <a href="javascript:;">榜单</a>
+			    <dl class="layui-nav-child">
+			      <dd><a href="">华语排行榜</a></dd>
+			      <dd><a href="">日语排行榜</a></dd>
+			      <dd><a href="">粤语排行榜</a></dd>
+			    </dl>
+			  </li>
+			</ul>
+			
+			<div class="noOverflow" style="float: right;margin-right: 30px;">
+				<ul class="layui-nav">
+				  <li class="layui-nav-item">
+				    <a href="javascript:;">
+				    	<div style="height: 50px;width: 50px;background-image: url(img/qqMCLink.png);background-size: cover;float: left;
+				    		border-radius: 50px;margin-bottom: 8px;margin-top: 2px;"></div>
+				    		&nbsp;&nbsp;
+				    		<div style="float: left;margin-left: 10px;">hushuai</div>
+				    </a>
+				    <dl class="layui-nav-child">
+				      <dd><a href=""><i class="layui-icon">&#xe68e;</i>&nbsp;个人中心</a></dd>
+				      <dd><a href=""><i class="layui-icon">&#xe6fc;</i>&nbsp;我的歌单</a></dd>
+				      <dd><a href=""><i class="layui-icon">&#xe600;</i>&nbsp;我的收藏</a></dd>
+				      <dd><a href=""><i class="layui-icon">&#x1006;</i>&nbsp;退出</a></dd>
+				    </dl>
+				  </li>
+				</ul>
+			</div>
+			
+			
+			<div style="float: left; margin-left: 200px;">
+			<img src="img/ss.png" style="position: relative; top: 20px;left:30px;" height="24px"/>
+			<input type="search" 
+				style="background-color: #333;color: white;height: 30px;width: 300px;border:none;
+				margin-top: 16px;padding-left: 40px;border-radius: 10px; font-size: 16px;" placeholder="音乐，改变世界"/> 
+			</div>
+		</div>
+		<div class="clear"></div>
+		<!--导航结束-->
+		
+		
+	</body>
+	
+		<script>
+			layui.use(['element'], function(){
+			 var element = layui.element(); //导航的hover效果、二级菜单等功能，需要依赖element模块
+			});
+		</script>
+</html>

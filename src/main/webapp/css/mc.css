@@ -1,0 +1,150 @@
+.singerDefaultCon{
+	
+	float: left;
+}
+.singerDefaultSmallCon{
+	height: 550px; 
+	margin: auto;
+	color: #BBB;
+	padding-top: 50px;"
+}
+.playerSingerButton{
+	height: 40px;
+}
+.playerSingerButton li{
+	text-align: center;
+	line-height: 40px;
+	margin-left: 6px;
+	border: solid #AAA 1px;
+	width: 110px;
+	height: 40px;
+	float: left;
+}
+.playerSingerButton li:hover{
+	cursor: pointer;
+	border: solid white 1px;
+}
+.playerSingerButton img{
+	vertical-align:middle;
+}
+
+.singerListTab{
+	margin-left: 10px;
+}
+.singerListTab th{
+	text-align: left!important;
+	font-size: 16px;
+	border-bottom: 1px #666 solid;
+	padding-bottom: 10px;
+	color:#FFF;
+}
+
+.singerListTab td{
+	font-size: 15px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	color:#FFF;
+	cursor: default;
+}
+.singerListTab td .changePlayButton{
+	border: inherit;
+	background-color: inherit;
+	color: #AAA;
+}
+.singerListTab .urlTd{
+	display: none;
+}
+.singerListTab input[type='checkbox']{
+	display: none;
+}
+.checkLabel{
+	display: block;
+	width: 16px;
+	height: 16px;
+	border: solid #666 1px;
+	float: left;
+}
+.checkLabel:hover{border: solid #AAA 1px;}
+#songWords li{
+	font-size: 16px;
+	height: 25px;
+}
+
+.player{
+	position: fixed;
+	bottom: 0px;
+	height: 130px;
+	background-color: transparent;
+}
+.player .playButton, .otherButton{
+	padding: 30px;
+	padding-top: 40px;
+	height: 150px;
+	float: left;
+}
+.player .playBar{
+	height: 150px;
+	width: 900px;
+	float: left;
+}
+
+
+.player .playBar .singText{/*歌词容器*/
+	height: 25px;
+	margin-top: 40px;
+	color: white;
+}
+.player .playBar .progress{/*进度条容器（灰色背景）*/
+	cursor: pointer;
+	height: 5px;
+	background-color: #AAA;
+	margin-top: 5px;
+}
+.player .playBar .progress .bc{/*进度条白色背景*/
+border: white solid 3px;
+width: 0px;/*白色进度长度，总长度为900*/
+}
+.player .playBar .progress .bcmove{/*进度移动块*/
+border-radius: 20px;
+height: 20px; 
+width: 20px; 
+background-color: white;
+position: absolute;
+top: 62px;
+left: 217px;/*进度块最左距离*/
+}
+
+
+.player .soundButton{
+	padding: 30px;
+	padding-top: 40px;
+	height: 150px;
+	width: 150px;
+	float: left;
+}
+.player .soundProgress{
+	background-color: #AAA;
+	margin-top: 25px;
+	float: left;
+	width: 85px;
+	height: 5px;
+}
+.player .soundBc{
+	border: white solid 3px;
+	width: 20px;/*声音白色进度长度，总长度为85*/
+}
+
+.player .soundBcMove{
+	
+	height: 5px; 
+	width: 7px; 
+	background-color: lightsteelblue;
+	position: absolute;
+	top: 65px;
+	left: 1416px;/*进度块最左距离*/
+}
+
+.player img{
+	height: 50px;
+	cursor: pointer;
+}

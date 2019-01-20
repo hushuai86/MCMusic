@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.SongListWithSongPoMapper" >
+  <resultMap id="BaseResultMap" type="cn.pojo.SongListWithSongPo" >
+    <id column="slSongId" property="slsongid" jdbcType="INTEGER" />
+    <result column="songListId" property="songlistid" jdbcType="INTEGER" />
+    <result column="songId" property="songid" jdbcType="INTEGER" />
+    <result column="collectionDate" property="collectiondate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    slSongId, songListId, songId, collectionDate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from songlistwithsong
+    where slSongId = #{slsongid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from songlistwithsong
+    where slSongId = #{slsongid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.pojo.SongListWithSongPo" >
+    insert into songlistwithsong (slSongId, songListId, songId, 
+      collectionDate)
+    values (#{slsongid,jdbcType=INTEGER}, #{songlistid,jdbcType=INTEGER}, #{songid,jdbcType=INTEGER}, 
+      #{collectiondate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.pojo.SongListWithSongPo" >
+    insert into songlistwithsong
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="slsongid != null" >
+        slSongId,
+      </if>
+      <if test="songlistid != null" >
+        songListId,
+      </if>
+      <if test="songid != null" >
+        songId,
+      </if>
+      <if test="collectiondate != null" >
+        collectionDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="slsongid != null" >
+        #{slsongid,jdbcType=INTEGER},
+      </if>
+      <if test="songlistid != null" >
+        #{songlistid,jdbcType=INTEGER},
+      </if>
+      <if test="songid != null" >
+        #{songid,jdbcType=INTEGER},
+      </if>
+      <if test="collectiondate != null" >
+        #{collectiondate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.pojo.SongListWithSongPo" >
+    update songlistwithsong
+    <set >
+      <if test="songlistid != null" >
+        songListId = #{songlistid,jdbcType=INTEGER},
+      </if>
+      <if test="songid != null" >
+        songId = #{songid,jdbcType=INTEGER},
+      </if>
+      <if test="collectiondate != null" >
+        collectionDate = #{collectiondate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where slSongId = #{slsongid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.pojo.SongListWithSongPo" >
+    update songlistwithsong
+    set songListId = #{songlistid,jdbcType=INTEGER},
+      songId = #{songid,jdbcType=INTEGER},
+      collectionDate = #{collectiondate,jdbcType=TIMESTAMP}
+    where slSongId = #{slsongid,jdbcType=INTEGER}
+  </update>
+  
+  <!--根据歌曲ID查询歌单  -->
+  <select id="selectBySongId" parameterType="int" resultMap="BaseResultMap">
+  	select * from songlistwithsong where songId=#{songId}
+  </select>
+  
+  <select id="selectBySongListId" parameterType="int" resultType="int">
+  	select songid from songlistwithsong where songListId=#{songListId}
+  </select>
+  
+  <!--查询唯一  -->
+  <select id="selectById" parameterType="Map" resultMap="BaseResultMap">
+  	select * from songlistwithsong where songId=#{songId}
+  	and songListId = #{songListId}
+  </select>
+  
+  <!--根据歌曲ID和歌单ID删除歌曲歌单表的数据-->
+  <delete id="deleteBySongIdAndSongListId" parameterType="Map">
+  	delete from songlistwithsong where songId=#{songId} and songListId=#{songListId}
+  </delete>
+
+</mapper>

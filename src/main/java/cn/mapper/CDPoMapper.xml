@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.CDPoMapper">
+	<resultMap id="BaseResultMap" type="cn.pojo.CDPo">
+		<id column="CDId" property="cdid" jdbcType="INTEGER" />
+		<result column="CDName" property="cdname" jdbcType="VARCHAR" />
+		<result column="coverUrl" property="coverurl" jdbcType="VARCHAR" />
+		<result column="songCount" property="songcount" jdbcType="INTEGER" />
+		<result column="publishDate" property="publishdate" jdbcType="TIMESTAMP" />
+		<result column="singerId" property="singerid" jdbcType="INTEGER" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+		<result column="collectionCount" property="collectioncount"
+			jdbcType="INTEGER" />
+		<result column="CDstateId" property="cdstateid" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		CDId, CDName, coverUrl, songCount, publishDate, singerId,
+		introduce,
+		collectionCount,
+		CDstateId
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from cd
+		where CDId = #{cdid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from cd
+		where CDId = #{cdid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.pojo.CDPo">
+		insert into cd (CDId, CDName,
+		coverUrl,
+		songCount, publishDate, singerId,
+		introduce, collectionCount,
+		CDstateId
+		)
+		values (#{cdid,jdbcType=INTEGER},
+		#{cdname,jdbcType=VARCHAR},
+		#{coverurl,jdbcType=VARCHAR},
+		#{songcount,jdbcType=INTEGER}, #{publishdate,jdbcType=TIMESTAMP},
+		#{singerid,jdbcType=INTEGER},
+		#{introduce,jdbcType=VARCHAR},
+		#{collectioncount,jdbcType=INTEGER},
+		#{cdstateid,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="cn.pojo.CDPo">
+		insert into cd
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cdid != null">
+				CDId,
+			</if>
+			<if test="cdname != null">
+				CDName,
+			</if>
+			<if test="coverurl != null">
+				coverUrl,
+			</if>
+			<if test="songcount != null">
+				songCount,
+			</if>
+			<if test="publishdate != null">
+				publishDate,
+			</if>
+			<if test="singerid != null">
+				singerId,
+			</if>
+			<if test="introduce != null">
+				introduce,
+			</if>
+			<if test="collectioncount != null">
+				collectionCount,
+			</if>
+			<if test="cdstateid != null">
+				CDstateId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="cdid != null">
+				#{cdid,jdbcType=INTEGER},
+			</if>
+			<if test="cdname != null">
+				#{cdname,jdbcType=VARCHAR},
+			</if>
+			<if test="coverurl != null">
+				#{coverurl,jdbcType=VARCHAR},
+			</if>
+			<if test="songcount != null">
+				#{songcount,jdbcType=INTEGER},
+			</if>
+			<if test="publishdate != null">
+				#{publishdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="singerid != null">
+				#{singerid,jdbcType=INTEGER},
+			</if>
+			<if test="introduce != null">
+				#{introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="collectioncount != null">
+				#{collectioncount,jdbcType=INTEGER},
+			</if>
+			<if test="cdstateid != null">
+				#{cdstateid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.pojo.CDPo">
+		update cd
+		<set>
+			<if test="cdname != null">
+				CDName = #{cdname,jdbcType=VARCHAR},
+			</if>
+			<if test="coverurl != null">
+				coverUrl = #{coverurl,jdbcType=VARCHAR},
+			</if>
+			<if test="songcount != null">
+				songCount = #{songcount,jdbcType=INTEGER},
+			</if>
+			<if test="publishdate != null">
+				publishDate = #{publishdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="singerid != null">
+				singerId = #{singerid,jdbcType=INTEGER},
+			</if>
+			<if test="introduce != null">
+				introduce = #{introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="collectioncount != null">
+				collectionCount = #{collectioncount,jdbcType=INTEGER},
+			</if>
+			<if test="cdstateid != null">
+				CDstateId = #{cdstateid,jdbcType=INTEGER},
+			</if>
+		</set>
+		where CDId = #{cdid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.pojo.CDPo">
+		update cd
+		set
+		CDName = #{cdname,jdbcType=VARCHAR},
+		coverUrl =
+		#{coverurl,jdbcType=VARCHAR},
+		songCount =
+		#{songcount,jdbcType=INTEGER},
+		publishDate =
+		#{publishdate,jdbcType=TIMESTAMP},
+		singerId =
+		#{singerid,jdbcType=INTEGER},
+		introduce =
+		#{introduce,jdbcType=VARCHAR},
+		collectionCount =
+		#{collectioncount,jdbcType=INTEGER},
+		CDstateId =
+		#{cdstateid,jdbcType=INTEGER}
+		where CDId = #{cdid,jdbcType=INTEGER}
+	</update>
+
+	<!-- 自写方法 -->
+	<!-- cdvo结果集 -->
+	<resultMap id="CDVoListMap" type="cn.pojo.vo.CDVo">
+		<association column="cdid" property="CDPo" javaType="cn.pojo.CDPo"
+			select="cn.mapper.CDPoMapper.selectByPrimaryKey">
+			<id column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="CDName" property="cdname" jdbcType="VARCHAR" />
+			<result column="coverUrl" property="coverurl" jdbcType="VARCHAR" />
+			<result column="songCount" property="songcount" jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="TIMESTAMP" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="CDstateId" property="cdstateid" jdbcType="INTEGER" />
+		</association>
+		<association column="singerid" property="singerPo"
+			javaType="cn.pojo.SingerPo" select="cn.mapper.SingerPoMapper.selectByPrimaryKey">
+			<id column="singerid" property="singerid" />
+			<result column="singername" property="singername" />
+			<result column="accesscount" property="accesscount" />
+			<result column="areaid" property="areaid" />
+			<result column="birthday" property="birthday" />
+			<result column="singersex" property="singersex" />
+			<result column="photourl" property="photourl" />
+			<result column="debutdate" property="debutdate" />
+			<result column="singerstateid" property="singerstateid" />
+			<result column="introduce" property="introduce" />
+		</association>
+		<collection column="cdid" property="list" ofType="cn.pojo.SongPo"
+			select="cn.mapper.SongPoMapper.selectByCDId">
+			<id column="songId" property="songid" jdbcType="INTEGER" />
+			<result column="songName" property="songname" jdbcType="VARCHAR" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="language" property="language" jdbcType="VARCHAR" />
+			<result column="playCount" property="playcount" jdbcType="INTEGER" />
+			<result column="downloadCount" property="downloadcount"
+				jdbcType="INTEGER" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="TIMESTAMP" />
+			<result column="songUrl" property="songurl" jdbcType="VARCHAR" />
+			<result column="cyricUrl" property="cyricurl" jdbcType="VARCHAR" />
+			<result column="songTime" property="songtime" jdbcType="DOUBLE" />
+			<result column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="songStateId" property="songstateid" jdbcType="INTEGER" />
+		</collection>
+	</resultMap>
+
+	<!-- 按照cdname查询 -->
+	<select id="selectByCDName" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from cd
+		where CDName = #{cdname,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 通过cdId查找状态不为阻塞的cd对象 -->
+	<select id="selectShowCDPoById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from cd
+		where CDId = #{cdid,jdbcType=INTEGER} and CDStateId!=1
+	</select>
+
+	<!-- 查找所有状态不为阻塞的cd对象 -->
+	<select id="selectShowCDPo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cd where CDStateId!=1
+	</select>
+
+	<!-- 通过cdId查找 cd扩展对象，状态不为阻塞 -->
+	<select id="selectShowCDVoById" resultMap="CDVoListMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from cd where CDId= #{cdid,jdbcType=INTEGER} and CDStateId!=1
+	</select>
+
+	<!-- 查找所有状态不为阻塞的cd扩展对象 -->
+	<select id="selectShowCDVo" resultMap="CDVoListMap">
+		select
+		<include refid="Base_Column_List" />
+		from cd where CDStateId!=1
+	</select>
+
+	<!-- 分页查找所有状态不为阻塞的cd扩展对象 -->
+	<select id="selectShowCDVoPage" parameterType="Map" resultMap="CDVoListMap">
+		select
+		<include refid="Base_Column_List" />
+		from cd where CDStateId!=1 limit #{index},#{pageSize}
+	</select>
+
+	<!-- 所有状态不为阻塞的cd扩展对象的总数 -->
+	<select id="selectShowCDVoCount" resultType="java.lang.Integer">
+		select count(*) from
+		cd where CDStateId!=1
+	</select>
+
+	<!-- 条件查询cd扩展对象总数 -->
+	<select id="selectFilterCount" parameterType="CDVo" resultType="java.lang.Integer">
+		select count(*) from cd
+		<where>
+			<if test="CDPo.cdname !=null">
+				CDName like #{CDPo.cdname}
+			</if>
+			<if test="CDPo.publishdate !=null">
+				and publishdate between #{CDPo.publishdate} and
+				DATE_ADD(#{CDPo.publishdate} ,INTERVAL 1 year)
+			</if>
+			and cdstateid!=1;
+		</where>
+	</select>
+
+	<!-- 分页条件查询cd扩展对象集合 -->
+	<select id="selectFilter" parameterType="PageBasePo" resultMap="CDVoListMap">
+		select
+		<include refid="Base_Column_List" />
+		from cd
+		<where>
+			<if test="indexEntity.CDPo.cdname!=null">
+				cdname like #{indexEntity.CDPo.cdname}
+			</if>
+			<if test="indexEntity.CDPo.publishdate!=null">
+				and publishdate between #{indexEntity.CDPo.publishdate} and
+				DATE_ADD(#{indexEntity.CDPo.publishdate} ,INTERVAL 1 year)
+			</if>
+			and cdstateid!=1
+		</where>
+		order by collectionCount limit #{pageIndex},#{pageSize}
+	</select>
+
+	<!--按照singerId查询 -->
+	<select id="selecCdPosBySingerId" parameterType="int" resultMap="BaseResultMap">
+		select * from cd where singerId=#{singerId} and CDstateId != 1
+	</select>
+	<!--按照singerId查询 根据收藏量排序 状态不阻塞 -->
+	<select id="selecHotCdPosBySingerId" parameterType="int"
+		resultMap="BaseResultMap">
+		select * from cd where singerId=#{singerId} and CDstateId != 1 order by
+		collectionCount desc
+	</select>
+	<!--按照singerId查询 根据收藏量排序 状态不阻塞 -->
+	<select id="selecHotCdPosBySingerIdByPag" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select * from cd where singerId=#{singerid} and CDstateId != 1 limit
+		#{pageIndex },#{pageSize }
+	</select>
+
+	<!--根据cdid得到数量 -->
+	<select id="selecCdBySingerIdCount" parameterType="int"
+		resultType="int">
+		select count(*) from cd where singerId=#{singerId}
+		and CDstateId != 1
+	</select>
+	<!-- 专辑名称模糊查询 -->
+	<select id="selectCdPoBlockByCdName" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from cd where CDName like #{cdname } and CDstateId != 1
+	</select>
+	<!-- 专辑名称模糊查询状态阻塞 -->
+	<select id="selectNotShowCDPosByName" parameterType="java.util.Map"
+		resultMap="CDVoListMap">
+		select * from cd
+		<where>
+			CDstateId = 1
+			<if test="cdname!=null">
+				and CDName like #{cdname}
+			</if>
+		</where>
+		limit #{pageIndex },#{pageSize }
+	</select>
+	<!-- 专辑名称模糊查询数量 状态阻塞 -->
+	<select id="selectCountNotShowCDPosByName" parameterType="java.util.Map"
+		resultType="int">
+		select count(*) from cd
+		<where>
+			CDstateId = 1
+			<if test="cdname!=null">
+				and CDName like #{cdname }
+			</if>
+		</where>
+	</select>
+	<!-- 歌手id和 cd名模糊查询 -->
+	<select id="selectByCDNameAndSingerId" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select * from cd
+		<where>
+			cdstateid=0
+			and singerid=#{singerid}
+			<if test="cdname!=null">
+				and cdname like #{cdname}
+			</if>
+		</where>
+	</select>
+
+</mapper>

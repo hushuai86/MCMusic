@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<title></title>
+	</head>
+	<body style="background-color: #DDD;">
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<!--用户背景  -->
+		<!--#include file="Include_user.shtml"-->
+		<br />
+		
+		<!--正文容器 -->
+		<style>
+			.collectionSingerCon{
+				width: 970px;
+				margin: auto;
+			}
+			.collectionSingerCon li{
+				float: left;
+				width: 200px;
+				height: 280px;
+				margin: 20px;
+				text-align: center;
+			}
+			.collectionSingerCon .singerImg{
+				height: 160px;
+				width: 160px;
+				background-repeat: no-repeat;
+				background-size: cover;
+				border-radius: 160px;
+				margin: auto;
+			}
+			.collectionSingerCon .singerName{
+				text-align: center;
+				margin-top: 10px;
+				font-size: 16px;
+			}
+			.collectionSingerCon .singerAbout{
+				text-align: center;
+				margin-top: 5px;
+				margin-bottom: 5px;
+				color: #666;;
+			}
+			.collectionSingerCon li:hover{
+				background-color: #CCC;
+			}
+			.singerCollection{
+				display: none;
+			}
+		</style>
+		<div style="width: 1200px;margin: auto;">
+			<ul class="collectionSingerCon">
+
+			</ul>
+		</div>
+		<!--正文容器结束 -->
+		<br /><br />
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	
+		<script>
+		
+		//放弃收藏
+		function giveUp(id){
+			$.post("giveupUserSinger",{singerId:id},function(flag){
+				if(flag){
+					window.location.reload();
+				}else{
+					layui.use(['element','layer','form'], function(){
+					 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+					 var layer = layui.layer;
+					 layer.msg("操作失败")
+					});
+				}
+			})
+			console.log(id)
+		}		
+		$.get("userSinger",function(data){
+			$(".collectionSingerCon").html("");
+			data.forEach(function(value){
+				var $li = $('<li><br />'
+					+'<div onclick="window.location=\'singer.html?singerId='+value.singerid+'\'" class="singerImg" style="background-image: url('+value.photourl+');"></div>'
+					+'<div class="singerName">'+value.singername+'</div>'
+					+'<div class="singerAbout">'+value.collectioncount+'人关注</div>'
+					+'<button class="layui-btn layui-btn-small singerCollection" onclick="giveUp('+value.singerid+')">'
+					+'<i class="layui-icon">&#x1006;</i>取消收藏</button> </li>')
+				$(".collectionSingerCon").append($li)
+			})
+			$(".collectionSingerCon li").hover(function(){
+				var index = $(this).index();
+				$(".singerCollection").eq(index).show();
+			},function(){
+				var index = $(this).index();
+				$(".singerCollection").eq(index).hide();
+			})
+		})
+		
+		
+		layui.use(['element','layer','form'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var layer = layui.layer;		 
+		});
+		</script>
+		
+</html>

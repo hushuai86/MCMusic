@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.SongListPoOtherMapper">
+
+	<resultMap type="SongListPo" id="showSongListPo">
+		<id column="songListId" property="songlistid" jdbcType="INTEGER" />
+		<result column="userId" property="userid" jdbcType="INTEGER" />
+		<result column="songListName" property="songlistname" jdbcType="VARCHAR" />
+		<result column="typeId" property="typeid" jdbcType="INTEGER" />
+		<result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+		<result column="collectionCount" property="collectioncount"
+			jdbcType="INTEGER" />
+		<result column="tags" property="tags" jdbcType="VARCHAR" />
+		<result column="songListStateId" property="songliststateid"
+			jdbcType="INTEGER" />
+		<result column="imgURL" property="imgurl" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap type="cn.pojo.vo.SongListVo" id="songListVo">
+		<id column="songListId" property="songListId" jdbcType="INTEGER" />
+		<association column="songListId" property="songListPo"
+			select="cn.mapper.SongListPoMapper.selectByPrimaryKey" javaType="cn.pojo.SongListPo">
+			<id column="songListId" property="songlistid" jdbcType="INTEGER" />
+			<result column="userId" property="userid" jdbcType="INTEGER" />
+			<result column="songListName" property="songlistname"
+				jdbcType="VARCHAR" />
+			<result column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="accessCount" property="accesscount" jdbcType="INTEGER" />
+			<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="tags" property="tags" jdbcType="VARCHAR" />
+			<result column="songListStateId" property="songliststateid"
+				jdbcType="INTEGER" />
+			<result column="imgURL" property="imgurl" jdbcType="VARCHAR" />
+		</association>
+
+		<association property="userPo"
+			select="cn.mapper.UserPoMapper.selectByPrimaryKey" javaType="cn.pojo.UserPo"
+			column="userId">
+			<id column="userId" property="userid" jdbcType="INTEGER" />
+			<result column="loginId" property="loginid" jdbcType="VARCHAR" />
+			<result column="password" property="password" jdbcType="VARCHAR" />
+			<result column="userName" property="username" jdbcType="VARCHAR" />
+			<result column="userSex" property="usersex" jdbcType="VARCHAR" />
+			<result column="email" property="email" jdbcType="VARCHAR" />
+			<result column="phone" property="phone" jdbcType="VARCHAR" />
+			<result column="userType" property="usertype" jdbcType="INTEGER" />
+			<result column="sign" property="sign" jdbcType="VARCHAR" />
+			<result column="headSculptureUrl" property="headsculptureurl"
+				jdbcType="VARCHAR" />
+			<result column="registationDate" property="registationdate"
+				jdbcType="TIMESTAMP" />
+			<result column="userStateId" property="userstateid" jdbcType="INTEGER" />
+		</association>
+
+		<association property="typePo" column="typeId" javaType="cn.pojo.TypePo"
+			select="cn.mapper.TypePoMapper.selectByPrimaryKey">
+			<id column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="typeName" property="typename" jdbcType="VARCHAR" />
+		</association>
+
+		<collection property="list" column="typeId" ofType="cn.pojo.SongPo"
+			select="cn.mapper.SongPoMapper.selectByTypeId">
+			<id column="songId" property="songid" jdbcType="INTEGER" />
+			<result column="songName" property="songname" jdbcType="VARCHAR" />
+			<result column="singerId" property="singerid" jdbcType="INTEGER" />
+			<result column="CDId" property="cdid" jdbcType="INTEGER" />
+			<result column="language" property="language" jdbcType="VARCHAR" />
+			<result column="playCount" property="playcount" jdbcType="INTEGER" />
+			<result column="downloadCount" property="downloadcount"
+				jdbcType="INTEGER" />
+			<result column="collectionCount" property="collectioncount"
+				jdbcType="INTEGER" />
+			<result column="publishDate" property="publishdate" jdbcType="TIMESTAMP" />
+			<result column="songUrl" property="songurl" jdbcType="VARCHAR" />
+			<result column="cyricUrl" property="cyricurl" jdbcType="VARCHAR" />
+			<result column="songTime" property="songtime" jdbcType="DOUBLE" />
+			<result column="typeId" property="typeid" jdbcType="INTEGER" />
+			<result column="songStateId" property="songstateid" jdbcType="INTEGER" />
+			<result column="imgURL" property="imgurl" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<!-- <resultMap type="SongListPo" id="songListPo"> <collection property=""> 
+		<id column="songListId" property="songlistid" jdbcType="INTEGER" /> <result 
+		column="userId" property="userid" jdbcType="INTEGER" /> <result column="songListName" 
+		property="songlistname" jdbcType="VARCHAR" /> <result column="typeId" property="typeid" 
+		jdbcType="INTEGER" /> <result column="accessCount" property="accesscount" 
+		jdbcType="INTEGER" /> <result column="introduce" property="introduce" jdbcType="VARCHAR" 
+		/> <result column="collectionCount" property="collectioncount" jdbcType="INTEGER" 
+		/> <result column="tags" property="tags" jdbcType="VARCHAR" /> <result column="songListStateId" 
+		property="songliststateid" jdbcType="INTEGER" /> </collection> </resultMap> -->
+
+
+	<!-- 增加收藏（+1） -->
+	<update id="addCollectionCount" parameterType="int">
+		update songList set collectionCount= collectionCount+1 where
+		songListId=#{id}
+	</update>
+
+	<!-- 减少收藏（-1） -->
+	<update id="cutCollectionCount" parameterType="int">
+		update songList set collectionCount= collectionCount-1 where
+		songListId=#{id}
+	</update>
+
+	<!--查询当前的收藏记录 -->
+	<select id="getCurrentCollectionCount" parameterType="int"
+		resultType="int">
+		select collectionCount from songList where songListId=#{id}
+	</select>
+
+	<!-- 访问收藏（+1） -->
+	<update id="addAccessCount" parameterType="int">
+		update songList set accessCount= accessCount+1 where songListId=#{id}
+	</update>
+
+	<!--查询当前的访问记录 -->
+	<select id="getCurrentAccessCount" parameterType="int"
+		resultType="int">
+		select accessCount from songList where songListId=#{id}
+	</select>
+
+	<!-- 查询所有的SongListPo -->
+	<select id="getSongListPos" resultMap="showSongListPo">
+		select *from songList
+	</select>
+
+	<!-- 得到所有歌单拓展类，（添加字段user，song,type） -->
+	<select id="getSongListVos" resultMap="songListVo">
+		select * from songList
+	</select>
+
+
+	<!--根据歌单id得到拓展类 -->
+	<select id="getSongListVoBySongListId" parameterType="int"
+		resultMap="songListVo">
+		select * from songList where songListId=#{id}
+	</select>
+
+	<!-- 获取歌单总条数 -->
+	<select id="getAllCountNum" resultType="int">
+		select count(*) from songList
+	</select>
+
+
+	<!--对歌单进行分页 -->
+	<select id="getShowSongListVo" parameterType="Map" resultMap="songListVo">
+		select * from songList limit #{index},#{pageSize}
+	</select>
+
+	<!--对歌单进行动态搜索分页 -->
+	<select id="getShowSongListVoBySearch" parameterType="PageBasePo"
+		resultMap="songListVo">
+		select * from songList
+		<where>
+			<if test="indexEntity.songListPo.songlistname!=null">
+				songlistname like #{indexEntity.songListPo.songlistname}
+			</if>
+		</where>
+		order by songListId desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+
+
+	<!--对歌单进行动态搜索分页 -->
+	<!-- 最新 -->
+	<select id="getShowSongListVoBySearch1" parameterType="PageBasePo"
+		resultMap="songListVo">
+		select * from songList
+		<where>
+			<if test="indexEntity.songListPo.typeid!=null"><!-- 类型名 -->
+				typeid = #{indexEntity.songListPo.typeid}
+			</if>
+		</where>
+		order by songListId desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 每日推荐 -->
+	<select id="getShowSongListVoBySearch2" parameterType="PageBasePo"
+		resultMap="songListVo">
+		select * from songList
+		<where>
+			<if test="indexEntity.songListPo.typeid!=null"><!-- 类型名 -->
+				typeid = #{indexEntity.songListPo.typeid}
+			</if>
+		</where>
+		order by (accesscount+collectioncount) desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 热藏 -->
+	<select id="getShowSongListVoBySearch3" parameterType="PageBasePo"
+		resultMap="songListVo">
+		select * from songList
+		<where>
+			<if test="indexEntity.songListPo.typeid!=null"><!-- 类型名 -->
+				typeid = #{indexEntity.songListPo.typeid}
+			</if>
+		</where>
+		order by collectioncount desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 最热 -->
+	<select id="getShowSongListVoBySearch4" parameterType="PageBasePo"
+		resultMap="songListVo">
+		select * from songList
+		<where>
+			<if test="indexEntity.songListPo.typeid!=null"><!-- 类型名 -->
+				typeid = #{indexEntity.songListPo.typeid}
+			</if>
+		</where>
+		order by accesscount desc
+		limit #{pageIndex},#{pageSize}
+	</select>
+
+
+	<!-- 模糊查询出来的记录条数 -->
+	<select id="getShowSongListVoBySearchCount" parameterType="PageBasePo"
+		resultType="int">
+		select count(*) from songList
+		<where>
+			<if test="indexEntity.songListPo.songlistname!=null">
+				songlistname like #{indexEntity.songListPo.songlistname}
+			</if>
+			<if test="indexEntity.songListPo.typeid!=null"><!-- 类型名 -->
+				typeid = #{indexEntity.songListPo.typeid}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据用户ID查询歌单 -->
+	<select id="selectSongListByUser" parameterType="int" resultMap="showSongListPo">
+		select songlist.* from songlist inner join userwithsonglist
+		on songlist.userid=userwithsonglist.userid
+		and songlist.songListId=userwithsonglist.songListId
+		where songlist.userid=#{id}
+	</select>
+
+
+
+	<!--对歌单进行动态搜索分页 -->
+	<select id="getShowSongListVoBySearchBySongListName"
+		parameterType="PageBasePo" resultMap="songListVo">
+		select * from songList
+		<where>
+			<if test="indexEntity.songListPo.songlistname!=null"><!-- 类型名 -->
+				songListName like #{indexEntity.songListPo.songlistname}
+			</if>
+		</where>
+		limit #{pageIndex},#{pageSize}
+	</select>
+	<!-- 歌单名查询条数 -->
+	<select id="getShowSongListVoBySearchBySongListNameCount"
+		parameterType="PageBasePo" resultType="Integer">
+		select count(*) from songList
+		<where>
+			<if test="indexEntity.songListPo.songlistname!=null "><!-- 类型名 -->
+				songlistname like #{indexEntity.songListPo.songlistname}
+			</if>
+		</where>
+	</select>
+</mapper>

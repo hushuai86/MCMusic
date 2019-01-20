@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<title></title>
+	</head>
+	<body style="background-color: #DDD;">
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<!--用户背景  -->
+		<!--#include file="Include_user.shtml"-->
+		<br /><br />
+		
+		<!--正文容器 -->
+		<style>
+			.layui-form-label{
+				font-size: 16px;
+			}
+			.layui-input{
+				background-color: #EEE!important;
+				border: solid #999 1px;
+				font-size: 16px;
+				color: #555;
+			}
+		</style>
+		<div style="width: 800px;margin: auto;">
+			<form class="layui-form">
+				<div class="layui-form-item">
+				    <label class="layui-form-label">状态</label>
+				    <div class="layui-input-inline">
+				    	<div class="layui-input " style="background-color:inherit!important;border: none;">
+				    		<font class="stateTitle">未激活</font>
+				    		<i id="actionInfo" class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe60b;</i>  
+				    	</div>
+				    </div>
+			 	</div>
+				
+				<div class="layui-form-item">
+				    <label class="layui-form-label">邮箱</label>
+				    <div class="layui-input-block">
+				      <input type="email" name="email" required lay-verify="required|email" placeholder="请输入邮箱进行激活" autocomplete="off"  class="layui-input">
+				    </div>
+			 	</div>
+			 	
+			 	<div class="actions">
+			 	<div class="layui-form-item">
+				    <label class="layui-form-label">激活码</label>
+				    <div class="layui-input-block">
+				    	<input type="text" name="token" placeholder="请输入激活码" autocomplete="off" class="layui-input">
+				    </div>
+				   
+			 	</div>
+			 	
+			 	<div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn" lay-submit lay-filter="email">发送激活码</button>
+				      <button class="layui-btn" lay-submit lay-filter="action">立即激活</button>
+				    </div>
+				 </div>
+				 </div>
+			</form>
+		</div>
+		<!--正文容器结束 -->
+		<br /><br />
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+		
+	</body>
+	
+		<script>
+			layui.use(['element','layer','form'], function(){
+			 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+			 var layer = layui.layer;	
+			 var form = layui.form;
+			 
+			 
+			 //判断是否有未激活，有则在页面开启就弹出该信息
+			 //判断
+			 $.get("isNotHavaEmail",function(flag){
+				 if(flag){ //需要激活
+					layer.msg('激活邮箱后开启用户信息修改权限');
+				 }else{//不需要激活
+					$(".actions").hide();
+					$(".stateTitle").html("已激活");
+				 	$("input[name='email']").attr("readonly","readonly");
+				 	$.post("getEmail",function(data){
+				 		$("input[name='email']").val(data.email)
+				 	})
+				 }
+			 })
+			 
+			 //发送激活码
+			 form.on('submit(email)', function(data){
+				 var $email = $("input[name='email']").val()
+				 $.post("sendEmailAction",{email:$email});
+				 layer.msg('已发送到该邮箱，请查看后填写激活');
+			 	 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			 });
+			 
+			 //激活
+			 form.on('submit(action)', function(data){
+				 $.post("emailAction",data.field,function(flag){
+					 if(flag){
+						 layer.msg('激活成功');
+						 window.location.reload(); 
+					 }else{
+						 layer.msg('激活失败');
+					 }
+				 })
+			 	 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			 });
+			 
+			
+			
+			});
+		</script>
+		
+</html>

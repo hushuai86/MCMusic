@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.UserWithCDPoMapper" >
+  <resultMap id="BaseResultMap" type="cn.pojo.UserWithCDPo" >
+    <id column="uCDId" property="ucdid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="CDId" property="cdid" jdbcType="INTEGER" />
+    <result column="collectionDate" property="collectiondate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap type="cn.pojo.vo.UserCollectionCDVo" id="getUserWithCDVosList">
+  
+  	<id column="uCDId" property="uCDId" jdbcType="INTEGER"/>
+  	
+  	<association property="userWithCDPo" javaType="cn.pojo.UserWithCDPo">
+  		<id column="uCDId" property="ucdid" jdbcType="INTEGER" />
+   		<result column="userId" property="userid" jdbcType="INTEGER" />
+    	<result column="CDId" property="cdid" jdbcType="INTEGER" />
+    	<result column="collectionDate" property="collectiondate" jdbcType="TIMESTAMP" />
+  	</association>
+  	
+  	<association property="cdPo" column="CDId" select="cn.mapper.CDPoMapper.selectByPrimaryKey" javaType="cn.pojo.CDPo">
+  		<id column="CDId" property="cdid" jdbcType="INTEGER" />
+	    <result column="CDName" property="cdname" jdbcType="VARCHAR" />
+	    <result column="coverUrl" property="coverurl" jdbcType="VARCHAR" />
+	    <result column="songCount" property="songcount" jdbcType="INTEGER" />
+	    <result column="publishDate" property="publishdate" jdbcType="TIMESTAMP" />
+	    <result column="singerId" property="singerid" jdbcType="INTEGER" />
+	    <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+	    <result column="collectionCount" property="collectioncount" jdbcType="INTEGER" />
+	    <result column="CDstateId" property="cdstateid" jdbcType="INTEGER" />
+  	</association>
+  
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    uCDId, userId, CDId, collectionDate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userwithcd
+    where uCDId = #{ucdid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from userwithcd
+    where uCDId = #{ucdid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.pojo.UserWithCDPo" >
+    insert into userwithcd (uCDId, userId, CDId, 
+      collectionDate)
+    values (#{ucdid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{cdid,jdbcType=INTEGER}, 
+      #{collectiondate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.pojo.UserWithCDPo" >
+    insert into userwithcd
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ucdid != null" >
+        uCDId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="cdid != null" >
+        CDId,
+      </if>
+      <if test="collectiondate != null" >
+        collectionDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ucdid != null" >
+        #{ucdid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="cdid != null" >
+        #{cdid,jdbcType=INTEGER},
+      </if>
+      <if test="collectiondate != null" >
+        #{collectiondate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.pojo.UserWithCDPo" >
+    update userwithcd
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="cdid != null" >
+        CDId = #{cdid,jdbcType=INTEGER},
+      </if>
+      <if test="collectiondate != null" >
+        collectionDate = #{collectiondate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uCDId = #{ucdid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.pojo.UserWithCDPo" >
+    update userwithcd
+    set userId = #{userid,jdbcType=INTEGER},
+      CDId = #{cdid,jdbcType=INTEGER},
+      collectionDate = #{collectiondate,jdbcType=TIMESTAMP}
+    where uCDId = #{ucdid,jdbcType=INTEGER}
+  </update>
+  
+  <!--查询用户CD vo  -->
+  <select id="getUserWithCDVos" parameterType="int" resultMap="getUserWithCDVosList">
+  	select * from userwithcd where userid=#{userid}  
+  </select>
+  
+  <!--查询所有用户  -->
+    <select id="getAllUserWithCDVos"  resultMap="getUserWithCDVosList">
+  	select * from userwithcd 
+  </select>
+  
+  <!-- 根据CDId查询 -->
+  <select id="selectByCDId" parameterType="int" resultMap="BaseResultMap">
+  	select * from userwithcd where CDId=#{CDId}
+  </select>
+  
+   <select id="selectByUserIdAndcdId" parameterType="Map" resultMap="BaseResultMap">
+  	select * from userwithcd 
+  	where CDId=#{cdId} and userId=#{userId}
+  </select>
+  
+  <!--取消收藏  -->
+  <delete id="deleteByCDIdAndUserId" parameterType="Map">
+  	delete  from userwithcd where userId=#{userId} and CDId=#{CDId}
+  </delete>
+  
+  
+  
+</mapper>

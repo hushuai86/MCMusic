@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/singer-cd.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<script src="js/vue.min.js"></script>
+	</head>
+
+	<body style="background-color: #EEE;">
+		 <!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		
+		<!--歌手相关信息-->
+		<!--#include file="Include_singer.shtml"-->
+		
+		
+		<!--专辑-->	
+		<div style="width: 1200px;margin: auto;">
+			<div class="title">专辑</div>	
+			<br />
+			<ul class="singerCDList getCdBySingerId">
+				<li v-for="r in result">
+					<div class="singerCDListbg" v-on:click="href(r.cdid)" v-bind:style="'background-image: url('+r.coverurl+');'"
+						onclick="location='cdInfo.html'"></div>
+					<div class="singerCDListText">
+						<div style="padding-top: 10px;"><a href="cdInfo.html">{{r.cdname}}</a></div>
+						<div class="singerCDDate">{{r.publishdate|time}}</div>
+					</div>
+				</li>
+			</ul>
+			<div class="clear"></div><br />
+			<br><div style="height: 100px;text-align:center;">
+				<div id="limit" style="width: 550px;margin: auto;"></div>
+			</div>
+		</div><br /><br />
+		<!--专辑结束-->	
+		
+		
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+		 
+  			
+
+			var result=[];
+			$.ajax({ 
+		       type: "post", 
+		       url: "getCdBySingerId", 
+		       cache:false, 
+		       async:false, 
+		       data: {singerId:GetQueryString("singerId"),pageIndex:1},
+			   success: function(data){
+				   result=data;
+		 	   }
+		    });
+			Vue.filter('time', function (value) {
+			  return new Date(value).Format("yyyy-M-d");
+			});
+			var vue = new Vue({
+			  el: '.getCdBySingerId',
+			  data:{result},
+			  methods: {//链接到歌手页面
+				  href:function(id){
+					  window.location="cdInfo.html?cdId="+id;
+				  }
+			  }
+			}) 
+
+		 
+		  $.post("getCdBySingerIdConut",{singerId:GetQueryString("singerId")},function(data){
+			  //执行一个laypage实例
+			  laypage.render({
+			    elem: 'limit' //注意，这里的 test1 是 ID，不用加 # 号
+			    ,count: data, //数据总数，从服务端得到
+			    limit:12,
+			    theme:'limitClass',
+			    prev:'<i class="layui-icon">&#xe603;</i>',
+			    next:'<i class="layui-icon">&#xe602;</i>',
+			    jump: function(obj, first){
+			    	 if(!first){
+					     $.post("getCdBySingerId",{singerId:GetQueryString("singerId"),pageIndex:obj.curr},function(result){
+					    	 result.forEach(function(value,index){
+					    		 vue.result[index].cdname=value.cdname;
+					    		 vue.result[index].publishdate=value.publishdate;
+					    		 vue.result[index].coverurl=value.coverurl;
+					    	 })
+					  	 });
+				     }
+			      }
+			  });
+		  })
+		  form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 
+		  //登录
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

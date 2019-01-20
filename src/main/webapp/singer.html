@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/singer.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<script src="js/vue.min.js"></script>
+	</head>
+	<body style="background-color: #EEE;">
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		
+		<!--歌手相关信息-->
+		<!--#include file="Include_singer.shtml"-->
+		
+		
+		<!--歌手热门歌曲 -->
+		<div class="singerSongCon">
+			<div class="title">热门歌曲</div>	
+			<div style="float: right;padding-top: 40px;font-size: 16px;margin-right: 40px;">
+				<a class="songCount2">全部<i class="layui-icon">&#xe602;</i></a>
+			</div>
+			<div style="width: 1120px;margin: auto;">
+			<table class="layui-table getHonSongBySingerId" lay-skin="nob"  lay-size="lg" > 
+			  <colgroup>
+			  	<col width="30">
+			    <col width="340">
+			    <col width="310">
+			    <col width="420">
+			    <col>
+			  </colgroup>
+			  <thead>
+			    <tr v-if="result" style="background-color: #EEE; color: #999;">
+			      <th></th>
+			      <th>歌曲</th>
+			      <th></th>
+			      <th>歌手</th>
+			      <th>时长</th>
+			    </tr> 
+			  </thead>
+			  <tbody >
+			    <tr v-for="(r,index) in result"   v-on:mouseenter="show(index)"  v-on:mouseleave="hide(index)">
+			      <td>0{{index+1}}</td>
+			      <td>{{r.songPo.songname}}</td>
+			      <td>
+			      	<div class="buttonCon">
+				      	<div class="songActionButton">
+				      	 <img v-on:click="play(r.songPo.songid)" src="img/user/play.png" />
+				      	 <img v-on:click="collection(r.songPo.songid)" src="img/user/add.png" />
+				      	 <img v-on:click="down(r.songPo.songid)" src="img/user/down.png" />
+				      	</div >
+			      	</div>
+			      </td>
+			      <td>{{r.singPo.singername}}</td>
+			      <td>{{r.songPo.songtime}}</td>
+			    </tr>
+			  </tbody>
+			</table>
+			</div>
+		</div>
+		<script>
+
+			$.post("getHonSongBySingerId",{singerId:GetQueryString("singerId")},function(result){
+				$(".songCount2").attr("href","singer-song.html?singerId="+GetQueryString("singerId"));
+				new Vue({
+					  el: '.getHonSongBySingerId',
+					  data:{result},
+					  methods: {//链接到歌手页面
+						  show:function(index){
+							  $(".songActionButton").eq(index).show();
+						  },
+						  hide:function(index){
+							  $(".songActionButton").eq(index).hide();
+						  },
+						  play:function(id){
+							  $.StandardPost("musicPlay",{"songId":id});
+						  },
+						  collection:function(id){
+							  layui.use(['layer'], function(){
+								 var layer = layui.layer;
+								 $.get("isLogin",function(flag){
+									 if(flag){
+										 $.post("getMysongList",function(data){
+											//构建选择框
+											var select = "<select class='select' style='margin:30px;width:70%;height:35px;'>";
+											data.forEach(function(value,index){
+												select =select +"<option value='"+value.songlistid+"'>"+value.songlistname+"</option>";
+											})
+											select = select + "</select>";
+											select = select + "<button onclick='aAdd()' class='layui-btn'>确定</button>";
+											
+											aAdd=function(){
+												$.post("aADDSongList",{songId:id,songListId:$(".select").val()});
+												layer.close(lay);
+												layer.msg('添加成功');
+											}
+											
+											//显示弹框选择加入歌单
+											var lay = layer.open({
+											  type: 1,
+											  title :'请选择你要添加的歌单',
+											  skin: 'layui-layer-demo', //样式类名
+											  closeBtn: 1, //不显示关闭按钮
+											  area: ['500px', '150px'],
+											  anim: 2,
+											  shadeClose: true, //开启遮罩关闭
+											  content: select
+											})
+										 })
+
+									 }else{
+										 layer.msg('请先登录');
+									 }
+								 }) 
+							  });
+						  },
+						  down:function(id){
+							  $.StandardPost("musicDown",{"songId":id});
+						  }
+					  }
+					})
+			});
+		</script>
+		<!--歌手热门歌曲结束 -->
+		<br /><br />
+		
+		
+		
+		
+		
+		<!--歌手热门专辑-->
+		<div style="width: 1200px;margin: auto;">
+			<div class="title">热门专辑</div>	
+			<div style="float: right;padding-top: 40px;font-size: 16px;margin-right: 40px;">
+				<a class="cdCount2">全部<i class="layui-icon">&#xe602;</i></a>
+			</div>
+			<br />
+			<ul class="singerCDList getHotCD">
+				<li v-for="r in result">
+					<div class="singerCDListbg" v-bind:style="'background-image: url('+r.coverurl+');'"
+					v-on:click="href(r.cdid)"></div>
+					<div class="singerCDListText">
+						<div style="padding-top: 10px;" v-on:click="href(r.cdid)">{{r.cdname}}</div>
+						<div class="singerCDDate">{{r.publishdate|time}}</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script>
+			$.post("getHotCD",{singerId:GetQueryString("singerId")},function(result){
+				$(".cdCount2").attr("href","singer-cd.html?singerId="+GetQueryString("singerId"));
+				
+				Vue.filter('time', function (value) {
+				  return new Date(value).Format("yyyy-M-d");
+				})
+
+				new Vue({
+					  el: '.getHotCD',
+					  data:{result},
+					  methods: {//链接到歌手页面
+						  show:function(index){
+							  $(".songActionButton").eq(index).show();
+						  },
+						  hide:function(index){
+							  $(".songActionButton").eq(index).hide();
+						  },
+						  href:function(id){
+							  window.location="cdInfo.html?cdId="+id;
+						  }
+					  }
+					})
+			});
+		</script>
+		<!--歌手热门专辑 -->
+		<br /><br />
+		
+		
+
+		<!--歌手推荐-->
+		<div class="singerListCon">
+			<div class="singerList">
+				<div class="title">推荐歌手</div>		
+				<div class="clear"></div><br />
+				<div style="height: 750px;margin-left: 30px;">
+					<ul class="getHotSingerRankNum5">
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<script>
+			$.post("getHotSingerRankNum5",{singerId:GetQueryString("singerId")},function(result){
+				result.forEach(function(value, index, array) {
+					var $li = $('<li  onclick="window.location=\'singer.html?singerId='+value.singerid+'\'"><div style="background-image: url('+value.photourl+');"></div>'+value.singername+'</li>');
+					$(".getHotSingerRankNum5").append($li);
+				});
+				
+			});
+		</script>
+		
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+		 
+		 form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 
+			 
+		  //登录
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

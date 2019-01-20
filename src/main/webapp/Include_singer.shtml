@@ -1,0 +1,187 @@
+
+    <meta charset="UTF-8">
+		<!--歌手相关信息-->
+		<style>
+			.singerFirstCon{
+				height: 300px;
+				width: 1200px;
+				border-bottom: solid #CCC 1px;
+				color: #666;
+				margin: auto;
+				overflow:visible;
+				white-space: inherit;
+			}
+			.singerFirstCon .singerHeadImg{
+				height: 250px;
+				width: 250px; 
+				background-repeat: no-repeat;
+				background-size: cover;
+				border-radius: 300px;
+				margin: 20px;
+				float: left;
+			}
+
+			.singerFirstCon div{
+				overflow:visible;
+				white-space: inherit;
+			}
+			.singerFirstCon div p{
+				margin: 10px;
+			}
+			.singerFirstCon .moreText{
+				color: #222;
+				width: 400px; 
+				height: 350px;
+				word-break:break-all;
+				overflow-y:scroll; 
+				z-index:99999;
+				position: relative;
+				top: -100px;
+				left: 423px;
+				background-color: #EEE;
+				border: solid #BBB 1px;
+				display: none;
+			}
+		</style>
+		<br />
+		<div class="singerFirstCon getSingerInformation">
+			<div class="singerHeadImg"></div>
+			<div style="float: left;margin: 20px;width: 820px;">
+				<br />
+				<div style="font-size: 40px;"><a class="singerName" style="font-family: myFirstFont;"></a></div><hr />
+				<div style="font-size: 16px;">
+					地区：<font class="singerArea"></font>&nbsp;&nbsp;&nbsp;
+					出生日期：<font class="singerD1"></font>&nbsp;&nbsp;&nbsp;
+					出道时间：<font class="singerD2"></font>&nbsp;&nbsp;&nbsp;
+					<button class="layui-btn layui-btn-primary layui-btn-small" id="moreAbout">
+					  更多介绍
+					</button>
+				</div>
+				
+				<div style="margin: 10px;margin-left: 0px;">
+					<span class="layui-breadcrumb" lay-separator="|">
+					  <a class="songCount"  style="font-size: 20px;">单曲&nbsp;&nbsp;116</a>
+					  <a class="cdCount" style="font-size: 20px;">专辑&nbsp;&nbsp;22</a>
+					</span>
+				</div>
+				<br />
+				<button class="layui-btn layui-btn-big hotMusicButton">
+					<i class="layui-icon">&#xe623;</i> 
+					播放热门音乐
+				</button>
+				<button class="layui-btn  layui-btn-primary layui-btn-big singerCollection">
+					<i class="layui-icon">&#xe654;</i> 
+					收藏&nbsp;14523
+				</button>
+			</div>
+			<!--更多关于歌手-->
+			<div class="moreText">
+	
+			</div>
+		</div>
+		<script>
+			$("#moreAbout").click(function(){
+				$(".moreText").toggle();
+			})
+			$("body").click(function(e){
+				var target = $(e.target);
+				if(!target.is($("#moreAbout"))){
+					if(!target.is($(".moreText p"))&&!target.is($(".moreText"))){
+						$(".moreText").hide();
+					}
+				}
+			});
+			
+			//得到地址栏参数方法
+			function GetQueryString(name)
+			{
+			     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			     var r = window.location.search.substr(1).match(reg);
+			     if(r!=null)return  unescape(r[2]); return null;
+			}
+			
+			//播放歌手全部音乐
+			$(".hotMusicButton").click(function(){
+				window.open('musicPlayForSinger?singerId='+GetQueryString("singerId"),'mc')
+			})
+
+			
+			Date.prototype.Format = function (fmt) { //author: meizz 
+			    var o = {
+			        "M+": this.getMonth() + 1, //月份 
+			        "d+": this.getDate(), //日 
+			        "h+": this.getHours(), //小时 
+			        "m+": this.getMinutes(), //分 
+			        "s+": this.getSeconds(), //秒 
+			        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			        "S": this.getMilliseconds() //毫秒 
+			    };
+			    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			    for (var k in o)
+			    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			    return fmt;
+			}
+			
+			//热度+1
+			$.post("addAccessCount",{singerId:GetQueryString("singerId")});
+
+			
+			
+			
+			$.post("getSingerInformation",{singerId:GetQueryString("singerId")}, function(result){
+				//图片
+				$(".getSingerInformation .singerHeadImg").css("background-image","url("+result.photourl+")");
+				//名称
+				$(".getSingerInformation .singerName").html(result.singername);
+				$(".getSingerInformation .singerName").attr("href","singer.html?singerId="+GetQueryString("singerId"));
+				$(".moreText").html(result.introduce);
+				//时间
+				$(".singerD1").html(result.birthday==null?"暂无":new Date(result.birthday).Format("yyyy-M-d") +"");
+				$(".singerD2").html(result.debutDate==null?"暂无":result.debutDate.Format("yyyy-M-d") +"");
+				
+				$.post("getSingerArea",{singerId:GetQueryString("singerId")}, function(area){
+					$(".singerArea").html(area.areaname);
+				});
+				
+				//单曲
+				$.post("getSongCountBySingerId",{singerId:GetQueryString("singerId")}, function(songs){
+					$(".songCount").html("单曲&nbsp;&nbsp"+songs);
+					$(".songCount").attr("href","singer-song.html?singerId="+result.singerid)
+					
+				});
+				//专辑
+				$.post("getCdCountBySingerId",{singerId:GetQueryString("singerId")}, function(cds){
+					$(".cdCount").html("专辑&nbsp;&nbsp"+cds);
+					$(".cdCount").attr("href","singer-cd.html?singerId="+result.singerid)
+				});
+				//收藏
+				//是否收藏
+				$.post("isConllectionForSingerId",{singerId:GetQueryString("singerId")},function(flag){
+					//显示
+					if(!flag){
+						$(".singerCollection").html("<i class='layui-icon'>&#xe654;</i>收藏&nbsp;"+result.collectioncount);
+					}else{
+						$(".singerCollection").html("<i class='layui-icon'>&#xe618;</i>已收藏&nbsp;"+result.collectioncount);
+					}
+					
+					//收藏操作
+					if(!flag){
+						$(".singerCollection").click(function(){
+							$.post("addCollection",{singerId:GetQueryString("singerId")},function(data){
+								if(data){
+									$(".singerCollection").html("<i class='layui-icon'>&#xe618;</i>已收藏&nbsp;"+result.collectioncount);
+								}else{
+									 layui.use(['layer'], function(){
+										 var layer = layui.layer;
+										 layer.msg('请登录后再进行收藏');
+										});
+								}
+							});
+							
+						})
+					}
+				});
+				
+		  	})
+		</script>
+		<!--歌手相关信息结束-->

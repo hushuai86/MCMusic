@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/songList.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js"></script>
+	</head>
+	<body style="background-color: #EEE;">
+		 <!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<div class="songListCon">
+			<div class="songListnav">
+				<ul class="caseSong">
+					<li data-tag="1" class="tagAction">最新</li>
+					<li data-tag="2">推荐</li>
+					<li data-tag="3">最热</li>
+					<li data-tag="4">热藏</li>
+				</ul>
+			</div>
+			
+			
+			<div class="songList" >
+				
+				<div class="chooseCon">
+					<br />
+					<ul class="ulType">
+						<li data-tag="0" class="thisAction">全部</li>
+					</ul><div class="clear"></div>
+					<hr />
+				</div>
+				
+				
+				<div class="title">全部歌单</div>		
+				<div style="margin-left: 10px;">
+					<ul class="songListInfo"><!--20条最多-->
+					</ul>
+				</div>
+				<div class="clear"></div><br />
+				<div style="height: 100px;text-align:center;">
+					<div id="limit" style="width: 550px;margin: auto;"></div>
+				</div>
+				
+			</div>
+		</div><br /><br />
+		<script type="text/javascript">
+			var tag = 1;
+			var typeId = 0;
+			$.post("getAllTypes",function(data){
+				data.forEach(function(value){
+					var $li = $("<li data-tag='"+value.typeid+"'>"+value.typename+"</li>")
+					$(".ulType").append($li);
+				})
+				post();
+				//类型筛选
+				$(".caseSong li").click(function(){
+					//设置样式
+					$(".caseSong li").removeClass("tagAction");
+					$(this).addClass("tagAction");
+					//ajax获取
+					tag = $(this).attr("data-tag");
+					post()
+				});
+
+				//排序筛选
+				$(".ulType li").click(function(){
+					//设置样式
+					$(".ulType li").removeClass("thisAction");
+					$(this).addClass("thisAction");
+					//ajax获取
+					typeId = $(this).attr("data-tag");
+					post()
+				});
+				
+				//筛选刷新方法
+				function post(){
+					layui.use(['element','laypage'], function(){
+						 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+						 var laypage = layui.laypage;
+				  		 //得打歌单总数
+						 $.post("getAllSongListCount",{typeId:typeId},function(count){
+							  //执行一个laypage实例
+							  laypage.render({
+							    elem: 'limit' //注意，这里的 test1 是 ID，不用加 # 号
+							    ,count:count, //数据总数，从服务端得到
+							    limit:8,
+							    theme:'limitClass',
+							    prev:'<i class="layui-icon">&#xe603;</i>',
+							    next:'<i class="layui-icon">&#xe602;</i>',
+							    jump: function(obj, first){
+							        //得到筛选的歌单
+									$.post("getAllSongList",{typeId:typeId,pageIndex:obj.curr,tag:tag},function(data){
+										$(".songListInfo").html("");
+										data.forEach(function(value,index){
+											if(value.songListPo.imgurl == null){
+												value.songListPo.imgurl="img/songListDefault.png";
+											}
+											var $li = $('<li onclick="window.location=\'songList-info.html?songList='+value.songListPo.songlistid+'\'"><div class="songListBg" style="background-image: url('+value.songListPo.imgurl+');"></div>'
+													+'<div>'+value.songListPo.songlistname+'</div>'
+													+'<div style="color: #888;">'+value.userPo.username+'</div>'
+													+'<div style="color: #888;">播放量：'+value.songListPo.accesscount+'</div></li>');
+											$(".songListInfo").append($li);
+										})
+									})
+							      }
+							  });
+						})
+						
+					});	
+				}
+				
+				
+			});
+			
+			
+			
+		</script>
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+  
+		 form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 	  
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

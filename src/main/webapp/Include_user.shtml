@@ -1,0 +1,101 @@
+<meta charset="UTF-8">
+<!--用户背景-->
+<style>
+	#userBg{
+		height: 400px;
+		background-image: url(img/user/userbg.png);
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+	#userBg .headimgcon{
+		height: 250px;
+		width: 150px;
+		margin: auto;
+	}
+	#userBg .headimgcon .headimg{
+		height: 140px;
+		width: 140px;
+		background-size: cover;
+		border: solid white 3px;
+		border-radius: 140px; 
+	}
+	#userBg .headimgcon .text{
+		text-align: center;
+		font-family: myFirstFont;
+		font-size: 27px;
+		color: white;
+	}
+	#userBg .headimgcon .seximg{
+		margin: auto;
+		height: 50px;
+		background-repeat: no-repeat;
+		background-position-x: 55px;
+	}
+</style>
+<div id="userBg">
+	<br /><br /><br />
+	<div class="headimgcon">
+		<div  class="headimg"></div>
+		<br />
+		<div class="text"></div>
+		<div class="seximg" style="background-image: url(img/user/nan.png);"></div><!--女生nv.png-->	
+	</div>
+	
+	<!--选项-->
+	<style>
+		.userBgButtonCon{
+			background-color: black; 
+			height: 90px;
+			opacity: 0.6;
+			color: white;
+		}
+		.userBgButtonCon .buttonUl{
+			margin: auto;
+			width: 850px;
+		}
+		.userBgButtonCon .buttonUl li{
+			font-size: 18px;
+			width: 120px;
+			line-height: 90px;
+			text-align: center;
+			border:  solid white black;
+			float: left;
+		}
+		.userBgButtonCon .buttonUl li img{
+			cursor: pointer;
+		}
+	</style>
+	<div class="userBgButtonCon">
+		<ul class="buttonUl">
+			<li><a href="user-songlist.html"><img src="img/user/songlist.png" title="我的歌单"></a></li>
+			<li><a href="user-song.html"><img src="img/user/song.png"  title="我喜欢的歌曲"></a></li>
+			<li><a href="user-singer.html"><img src="img/user/singer.png"  title="我收藏的歌手"></a></li>
+			<li><a href="user-cd.html"><img src="img/user/cd.png"  title="我收藏的专辑"></a></li>
+			<li><a href="user-email.html"><img src="img/user/email.png" title="用户邮箱激活"></a></li>
+			<li><a href="user-setInfo.html"><img src="img/user/setInfo.png" title="用户信息修改"></a></li>
+			<li><a href="user-setpassword.html"><img src="img/user/setPassword.png" title="用户密码修改"></a></li>
+		</ul>
+	</div>
+
+</div>
+<!--用户背景结束-->
+<script>
+	$.get("getUser",function(data){
+		if(data==""){
+			window.location='index.html'
+		}else{
+			$(".text").html(data.username)
+			//sex
+			if(data.usersex=='男') $(".seximg").css("background-image","url(img/user/nan.png)");
+			else $(".seximg").css("background-image","url(img/user/nv.png)");
+			//头像
+			if(data.headsculptureurl!=''&&data.headsculptureurl!=null){
+				$(".headimg").css("background-image","url("+data.headsculptureurl+")");
+			}else{
+				$(".headimg").css("background-image","url(img/qqMCLink.png)");
+			}
+			
+			//填充
+		}
+	})
+</script>

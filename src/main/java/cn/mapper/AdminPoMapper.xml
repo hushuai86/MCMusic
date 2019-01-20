@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.mapper.AdminPoMapper" >
+  <resultMap id="BaseResultMap" type="cn.pojo.AdminPo" >
+    <id column="adminId" property="adminid" jdbcType="INTEGER" />
+    <result column="loginId" property="loginid" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="adminName" property="adminname" jdbcType="VARCHAR" />
+    <result column="userType" property="usertype" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    adminId, loginId, password, adminName, userType
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where adminId = #{adminid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin
+    where adminId = #{adminid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.pojo.AdminPo" >
+    insert into admin (adminId, loginId, password, 
+      adminName, userType)
+    values (#{adminid,jdbcType=INTEGER}, #{loginid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{adminname,jdbcType=VARCHAR}, #{usertype,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.pojo.AdminPo" >
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adminid != null" >
+        adminId,
+      </if>
+      <if test="loginid != null" >
+        loginId,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="adminname != null" >
+        adminName,
+      </if>
+      <if test="usertype != null" >
+        userType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adminid != null" >
+        #{adminid,jdbcType=INTEGER},
+      </if>
+      <if test="loginid != null" >
+        #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="adminname != null" >
+        #{adminname,jdbcType=VARCHAR},
+      </if>
+      <if test="usertype != null" >
+        #{usertype,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.pojo.AdminPo" >
+    update admin
+    <set >
+      <if test="loginid != null" >
+        loginId = #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="adminname != null" >
+        adminName = #{adminname,jdbcType=VARCHAR},
+      </if>
+      <if test="usertype != null" >
+        userType = #{usertype,jdbcType=INTEGER},
+      </if>
+    </set>
+    where adminId = #{adminid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.pojo.AdminPo" >
+    update admin
+    set loginId = #{loginid,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      adminName = #{adminname,jdbcType=VARCHAR},
+      userType = #{usertype,jdbcType=INTEGER}
+    where adminId = #{adminid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 账号查询 -->
+   <select id="selectByLoginId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where loginId = #{loginid,jdbcType=INTEGER}
+  </select>
+  <!-- 修改密码 -->
+  <update id="updateOldPassWord" parameterType="Map" >
+    update admin
+    set password = #{password}
+    where loginId = #{loginId}
+  </update>
+  <select id="selectCount" resultType="int">
+     select count(*) from admin 
+  </select>
+</mapper>

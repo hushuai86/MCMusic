@@ -1,0 +1,304 @@
+.newSinger li{
+	float: left;
+	margin: 8px;
+}
+.newSinger li font{
+	font-size: 18px;
+}
+.area{
+	width: 300px;
+	margin: auto;
+	color: #999;
+}
+.area li{
+	float: left;
+	width: 50px;
+	font-size: 17px;
+	margin-left: 20px;
+	
+}
+.area li:hover{
+	cursor: pointer;
+}
+.areaThis{
+	background-color: #5FB878;
+	color: white;
+}
+.changeSinger{
+	display: none;
+}
+.among{
+	float: left;
+	width: 620px;
+	height: 350px;
+	margin: 10px;
+	background-color: #F8F8F8;
+}
+.among .amongTitle{			
+	height: 50px;
+	padding-left: 20px;
+	text-align: left;
+	line-height: 70px;
+	color: #5FB878;
+}
+.among ul li{
+	height: 30px;
+	margin: 3px;
+	line-height: 30px;
+	padding-left: 20px;
+	text-align: left;
+	font-size: 15px;
+	color: #737373;
+}
+.among ul li:hover{
+	background-color: #DDD;
+	cursor: pointer;
+}
+.among ul li div{float:left;}
+.among ul li .number{
+	text-align: center;
+	font-family: myFirstFont;
+	font-size: 18px;
+	width: 35px;
+}
+.numberA{
+	color: #EB7350;
+}
+.among ul li .sing{width: 280px; }
+.among ul li .singer{width: 140px; }
+.among ul li .button{
+	height: 30px;
+	width: 70px;
+}
+.among ul li .button img{
+	display: none;
+	opacity: 0.6;
+}
+
+
+.otherAmong{
+	float: left;
+	width: 330px;
+	height: 350px;
+	margin: 10px;
+
+}
+.otherAmong li{
+	width: 330px;
+	height: 80px;
+	margin-bottom: 10px;
+	background-color: #F8F8F8;
+	cursor: pointer;
+}
+.otherAmong li div{
+	float: left;
+	width: 100px;
+	height: 80px;
+	color: white;
+	font-size: 16px;
+	line-height: 80px;
+	
+}
+.otherAmong li font{
+	width: 200px;
+	line-height: 80px;
+	font-size: 22px;
+	color: #999;
+	font-family: myFirstFont;
+}
+.otherAmong li img{
+	float: right;
+	margin-top: 27px; 
+	margin-right: 30px;
+	opacity: 0.4;
+}
+.kindSing{
+	height: 320px;
+	background-image: url(../img/index-img01.png);
+	background-size: cover;
+}
+.kindSing .kingCon{
+	color: white;
+	width: 850px;
+	height: 320px;
+	float: right;
+	margin-right: 250px;
+}
+.kindSing .kindContext{
+	margin-top: 50px;
+	float: left;
+}
+
+.kindSing .kindContext .kindTitle{
+	color: white;
+	font-family: myFirstFont;
+	font-size: 35px;
+	border-bottom:  #5FB878 2px solid;
+	width: 150px;
+	text-align: right;
+}
+.kindSing .kindContext .kindText{
+	font-family: myFirstFont;
+	padding-top: 30px;
+	color: #BBB;
+	font-size: 20px;
+	width: 150px;
+	text-align: right;
+}
+.kindSing .kindButton{
+	margin-top: 40px;
+	float: left;
+	padding-left: 20px;
+	height: 300px;
+	width: 650px;
+}
+.kindSing .kindButton ul li{
+	text-align: center;
+	line-height: 50px;
+	background-color: #666666;
+	opacity: 0.7;
+	width: 150px;
+	height: 50px;
+	float: left;
+	margin-top: 10px;
+	margin-right: 5px;
+}
+.kindSing .kindButton ul li:hover{
+	background-color: #5FB878;
+	cursor: pointer;
+}
+.singList{
+	width: 906px;
+	margin: auto;
+}
+.singList ul li{
+	width: 300px;
+	height: 300px;
+	float: left;
+	cursor: pointer;
+}
+.singList ul li div{
+	width: 300px;
+	height: 300px;
+	background-size: cover;
+}
+.singList ul li div .singListDesc{
+	padding-top: 15px;
+	margin-top: 230px;
+	width: 300px;
+	height: 70px;
+	background-color: black;
+	opacity: 0.5;
+	color: white;
+}
+.singList ul li div .singListDesc div{
+	margin: auto;
+	width: 240px;
+}
+.singListButton{
+	width: 75px;
+	margin: auto;
+}
+.singListThis{ /*next按钮的 可点击的样式*/
+	background-color: #5FB878 !important;
+}
+.singListButton .singListNext{
+	background-color: #AAA;
+	cursor: pointer;
+	float: left;
+	height: 30px;
+	width: 30px;
+	color: white;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 30px;
+	margin-right: 5px;
+}
+.newSings{
+	height: 600px;
+	background:url(../img/newSingBackground.png);
+	background-size: cover;
+	color: white; 
+}
+.newSings .newSingsDefault{
+	margin: 5px;
+	width: 490px;
+	height: 400px;
+	float: left;
+}
+.newSings .newSingsDefault hr{
+	background-color: #777;
+	height: 1px;
+}
+.newSings .newSingsDefault ul li{
+	height: 40px;
+	text-align: left;
+	line-height: 40px;
+	padding-left: 10px;
+	font-size: 16px;
+	cursor: pointer;
+	color: #DDD;
+}
+.newSings .newSingsDefault ul li:hover{
+	background:rgba(220,220,220,0.4);
+}
+.newSings .newSingsDefault ul li div{
+	float: left;
+}
+.newSings .newSingsDefault ul li div button{
+	width: 40px !important;
+	background-color: inherit !important;
+	border: none !important;
+}
+.hotSingsCon{
+	height: 450px; 
+}
+.hotSingsCon li{
+	float: left;
+}
+.hotSingsCon li .hotDivSmall{
+	height: 200px; 
+	width: 200px;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.hotSingsCon li .hotDivBig{
+	height: 400px; 
+	width: 400px;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.hotSingsCon li .hotSingListen{
+	cursor: pointer;
+	margin-top: 80%;
+	height: 100%;
+	background: rgba(245,245,245,0.6);
+	padding: 10px;
+}
+.hotSingsCon li .hotSingListeBig{
+	padding: 20px !important;
+	font-size: 25px !important;
+	font-family: myFirstFont;
+}
+.hotSingListenChange{ /*字体层铺满类*/
+	margin-top: 0% !important;
+	height: 100% !important;
+}
+.hotSingsCon li i{
+	color: #5FB878;
+	font-size: 55px;
+}
+.scroll{
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	background-color: #444;
+	color: white;
+	cursor: pointer;
+	font-size: 30px;
+	text-align: center;
+	width: 40px;
+	line-height: 40px;
+	display: none;
+	border-radius: 10px;
+}

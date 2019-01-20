@@ -1,0 +1,66 @@
+.chooseCon{
+	height: 200px;
+	padding-left: 200px;
+}
+.chooseCon ul li{
+	float: left;
+	text-align: center;
+	line-height: 25px;
+	margin: 5px;
+	height: 25px;
+	font-size: 15px;
+	color: #555;
+	cursor: pointer;
+}
+.ul1 li{
+	width: 30px;
+}
+
+.ul2 li{
+	width: 70px;
+}
+
+.ul3 li{
+	width: 60px;
+}
+
+.ul4 li{
+	width: 60px;
+}
+.thisAction{
+	background-color: #30A89C;
+	width: 60px!important;
+	color: white!important;
+}
+
+
+
+.singerListCon .singerList{
+	width: 1200px;
+	margin: auto;
+}
+
+.singerListCon .singerList ul{
+	width: 1200px;
+}
+.singerListCon .singerList ul li{
+	padding: 15px;
+	float: left;
+	height: 200px;
+	width: 180px;
+	margin: 5px;				
+	text-align: center;
+}
+.singerListCon .singerList ul li div{
+	background-size: cover;
+	height: 180px;
+	width: 180px;
+	margin-bottom: 5px;
+	border-radius: 180px;
+}
+.singerListCon .singerList .title{
+	font-family: myFirstFont;
+	font-size: 35px;
+	margin-top: 20px;
+	margin-left: 40px;
+}

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/songList-info.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<script src="js/vue.min.js"></script>
+	</head>
+	<body style="background-color: #EEE;">
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<!--歌单相关信息-->
+		<br />
+		<div class="songListInfoCon getShowSongPoById">
+			<!--判断图片  -->
+			<div v-if="result.songListPo.imgurl!=null" style="float:left;">
+		      <div class="songListInfoImg" 
+				v-bind:style="'background-image: url('+result.songListPo.imgurl+');'"></div>
+		    </div>
+		    <div v-else style="float:left;">
+		      <div class="songListInfoImg" 
+				style="background-image: url(img/songListDefault.png);"></div>
+		    </div>
+			
+			
+			<div style="float: left;margin: 20px;width: 820px;">
+				<br />
+				<div style="font-size: 40px;"><a href="" style="font-family: myFirstFont;">
+					{{result.songListPo.songlistname}}
+				</a></div><hr />
+				<div style="margin: 10px;margin-left: 0px;">
+					<span class="layui-breadcrumb" lay-separator="|">
+					  <a style="font-size: 20px;">
+					  	<img src="img/typeImg.png" />
+					  	{{result.typePo.typename}}
+					  </a>
+					  <a style="font-size: 20px;">
+					  	<img src="img/songListImg.png" />
+					    {{result.userPo.username}}
+					  </a>
+					  
+					</span>
+				</div>
+				<div style="font-size: 16px;">
+					<img src="img/tags.png">&nbsp;&nbsp;{{result.songListPo.tags}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<img src="img/click.png">&nbsp;&nbsp;{{result.songListPo.accesscount}}
+				</div>
+				
+				
+				<br />
+				<button class="layui-btn layui-btn-big AllMusicButton" v-on:click="allMusic(result.songListPo.songlistid)">
+					<i class="layui-icon">&#xe623;</i> 
+					播放全部
+				</button>
+				<button class="layui-btn  layui-btn-primary layui-btn-big songListCollection">
+					<i class="layui-icon">&#xe654;</i> 
+					收藏&nbsp;{{result.songListPo.collectioncount}}
+				</button>
+			</div>
+		</div>
+		<!--歌单相关信息结束-->
+		
+		<!--容器-->
+		<div class="noOverflow" style="width: 1200px;margin: auto;margin-bottom: 60px;">
+			<br /><br />
+			<!--歌手热门歌曲 -->
+			<div class="cdSongCon">
+				<div style="width: 800px;margin: auto;">
+				<div class="layui-btn-group">
+					<button class="layui-btn plays">
+					  <i class="layui-icon">&#xe623;</i> 播放
+					</button>
+					<button class="layui-btn downs">
+					 <i class="layui-icon">&#xe61a;</i> 下载
+					</button>
+					<button class="layui-btn" id="moreActions">
+					  <i class="layui-icon">&#xe649;</i> 批量操作
+					</button>
+				</div>
+				<form id="form"  method="post" target="mc">
+				<table class="layui-table" lay-skin="nob"  lay-size="lg"> 
+				  <colgroup>
+				  	<col width="30">
+				    <col width="130">
+				    <col width="20">
+				    <col width="100">
+				    <col>
+				  </colgroup>
+				  <thead>
+				    <tr style="background-color: #EEE; color: #999;">
+				      <th>
+				      	<label for="tdInput0" class="checkLabel" id="allChoose"></label>
+			  			<input type="checkbox" id="tdInput0" />&nbsp;&nbsp;
+				      </th>
+				      <th>歌曲</th>
+				      <th></th>
+				      <th>歌手</th>
+				      <th>时长</th>
+				    </tr> 
+				  </thead>
+				  <tbody class="songListS">
+				  </tbody>
+				</table>
+				</form>
+				</div>
+			</div>
+			<!--歌手热门歌曲结束 -->
+		
+		
+			<!--其他信息-->
+			<div class="otherCon noOverflow">
+				<div class="noOverflow text">
+					<font class="textTitle">简介</font><br />
+					<p class="SongListIntroduce">
+					</p>
+				</div><br /><br />
+				
+				<div class="otherSongList getShowSongListVo">
+					<font class="textTitle">推荐歌单</font><br />
+					<ul>
+						<li v-for="r in result" v-on:click="href(r.songListPo.songlistid)">
+							<!--判断图片  -->
+							<div v-if="r.songListPo.imgurl!=null">
+						      <div class="otherBg" v-bind:style="'background-image: url('+r.songListPo.imgurl+');'"></div>
+						    </div>
+						    <div v-else>
+						      <div class="otherBg" style="background-image: url(img/songListDefault.png);"></div>
+						    </div>
+							
+							<div style="color: #777;">{{r.songListPo.songlistname}}</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<script type="text/javascript">
+
+				
+				$(".plays").click(function(){
+					var $checkedInput = $("#form input[type='checkbox']:checked").not($("#tdInput0"));
+					if($checkedInput.size()==0){
+						layui.use(['layer'], function(){
+						 var layer = layui.layer;
+						 layer.msg('请在批量操作中选择至少一个音乐播放');
+						});
+					}else{
+						$("#form").attr("action","musicPlay");
+						$("#form").submit();
+					}
+				})
+				
+				$(".downs").click(function(){
+					var $checkedInput = $("#form input[type='checkbox']:checked").not($("#tdInput0"));
+					if($checkedInput.size()==0){
+						layui.use(['layer'], function(){
+						 var layer = layui.layer;
+						 layer.msg('请在批量操作中选择至少一个音乐下载');
+						});
+					}else{
+						$("#form").attr("action","musicDown");
+						$("#form").submit();
+					}
+				})
+				//单曲音乐播放
+				function play(id){
+					$.StandardPost("musicPlay",{"songId":id});
+				}
+				//单音乐下载
+				function singerDown(id){
+					$.StandardPost("musicDown",{"songId":id});
+				}
+				//删除
+				function del(songId,songlistId){
+					$.post("delSongForSongList",{songId:songId,songlistId:songlistId},function(flag){
+						if(flag){
+							window.location.reload();
+						}else{
+							layui.use(['layer'], function(){
+							 var layer = layui.layer;
+							 layer.msg('没有删除权限');
+							}); 
+						}
+					})
+				}
+				
+				//添加
+				function add(id){
+					layui.use(['layer'], function(){
+						 var layer = layui.layer;
+						 $.get("isLogin",function(flag){
+							 if(flag){
+								 $.post("getMysongList",function(data){
+									//构建选择框
+									var select = "<select class='select' style='margin:30px;width:70%;height:35px;'>";
+									data.forEach(function(value,index){
+										select =select +"<option value='"+value.songlistid+"'>"+value.songlistname+"</option>";
+									})
+									select = select + "</select>";
+									select = select + "<button onclick='aAdd()' class='layui-btn'>确定</button>";
+									
+									aAdd=function(){
+										$.post("aADDSongList",{songId:id,songListId:$(".select").val()});
+										layer.close(lay);
+										layer.msg('添加成功');
+									}
+									
+									//显示弹框选择加入歌单
+									var lay = layer.open({
+									  type: 1,
+									  title :'请选择你要添加的歌单',
+									  skin: 'layui-layer-demo', //样式类名
+									  closeBtn: 1, //不显示关闭按钮
+									  area: ['500px', '150px'],
+									  anim: 2,
+									  shadeClose: true, //开启遮罩关闭
+									  content: select
+									})
+								 })
+
+							 }else{
+								 layer.msg('请先登录');
+							 }
+						 }) 
+					  });
+				}
+				//得到地址栏参数方法
+				function GetQueryString(name)
+				{
+				     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				     var r = window.location.search.substr(1).match(reg);
+				     if(r!=null)return  unescape(r[2]); return null;
+				}
+				
+				
+				//ajax 歌单信息
+				$.post("getShowSongPoById",{songListId:GetQueryString("songList")},function(result){
+					//收藏
+					//是否收藏
+					$.post("isConllectionForSongList",{songListId:GetQueryString("songList")},function(flag){
+						//显示
+						if(!flag){
+							$(".songListCollection").html("<i class='layui-icon'>&#xe654;</i>收藏&nbsp;"+result.songListPo.collectioncount);
+						}else{
+							$(".songListCollection").html("<i class='layui-icon'>&#xe618;</i>已收藏&nbsp;"+result.songListPo.collectioncount);
+						}
+						
+						//收藏操作
+						 if(!flag){
+							$(".songListCollection").click(function(){
+								$.post("addSongListCollection",{songListId:GetQueryString("songList")},function(data){
+									if(data){
+										$(".songListCollection").html("<i class='layui-icon'>&#xe618;</i>已收藏&nbsp;"+result.songListPo.collectioncount);
+									}else{
+										 layui.use(['layer'], function(){
+											 var layer = layui.layer;
+											 layer.msg('请登录后再进行收藏');
+											});
+									}
+								});
+								
+							})
+						} 
+					});
+					
+
+					//设置歌曲信息
+					$(".songListS").html("");
+					result.list.forEach(function(value,index){
+						var name ;
+						$.ajax({
+							url : 'getsingerName',
+							type : 'post',
+							async: false,//使用同步的方式,true为异步方式
+							data : {singerId:value.singerid},//这里使用json对象
+							success : function(data){
+								name = data.singerName;
+							}
+						})
+						var $tr = $('<tr><td><label for="tdInput'+(index+1)+'" class="checkLabel"></label>'
+						  		+'<input name="songId" value="'+value.songid+'" type="checkbox" id="tdInput'+(index+1)+'" />&nbsp;&nbsp;'+(index+1)+'</td>'
+						  		+'<td><div style="width:300px">'+value.songname+'</div></td><td><div class="buttonCon">'
+						  		+'<div class="songActionButton">'
+						  		+'<img onclick="play('+value.songid+')" src="img/user/play.png" height="25" />'
+						  		+'<img onclick="add('+value.songid+')" src="img/user/add.png" height="25" />'
+						  		+'<img onclick="singerDown('+value.songid+')" src="img/user/down.png" height="25" />'
+						  		+'<img onclick="del('+value.songid+','+result.songListId+')" src="img/user/del.png" height="25" /></div ></div>'
+						  		+'</td><td>'+name+'</td><td>'+value.songtime+'</td></tr>');
+						$(".songListS").append($tr);
+					})
+					
+					//按钮显示
+					$(".layui-table tbody tr").hover(function(){
+						var index = $(this).index();
+						$(".songActionButton").eq(index).show();
+					},function(){
+						var index = $(this).index();
+						$(".songActionButton").eq(index).hide();
+					});
+					
+					//单选框点击事件
+					$(".checkLabel").click(function(){
+						if($(this).css("background-image")=='none'){
+							$(this).css("background-image","url(img/goodGreen.png)");
+						}else{
+							$(this).css("background-image","none");
+						}
+					})
+					//全选
+					$("#allChoose").click(function(e){
+						if($(this).next().attr("checked")=="checked"){
+							$(".checkLabel").css("background-image","none");
+							$(".checkLabel").not($(this)).next().attr("checked",false);
+						}else{
+							$(".checkLabel").css("background-image","url(img/goodGreen.png)");
+							$(".checkLabel").not($(this)).next().attr("checked",true);
+						}
+					})
+					
+					//批量操作
+					$("#moreActions").click(function(){
+						$(".checkLabel").toggle();
+						$(".checkLabel").css("background-image","url(img/goodGreen.png)");
+						$(".checkLabel").next().attr("checked","true");
+					}) 
+					
+					
+					//设置基础信息
+					$(".SongListIntroduce").html(result.songListPo.introduce);
+					new Vue({
+					  el: '.getShowSongPoById',
+					  data:{result},
+					  methods: {//跳转
+						  allMusic:function(id){
+							 window.open("musicPlayForList?songListId="+id,"mc");
+						  }
+					  }
+					});
+				})
+				
+				
+				//歌单推荐
+				$.post("getShowSongListVo",function(result){
+					new Vue({
+					  el: '.getShowSongListVo',
+					  data:{result},
+					  methods: {//跳转
+						  href:function(id){
+							  console.log(id)
+							  window.location="songList-info.html?songList="+id;
+						  }
+					  }
+					})
+				})
+				
+			</script>
+			<!--其他信息结束-->
+		
+		
+		</div>
+		<div class="clear"></div>
+		<!--容器结束-->
+		<br /><br />
+
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+
+		 form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 	  
+		  //登录
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

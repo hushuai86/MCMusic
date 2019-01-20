@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/singerList.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<script src="js/vue.min.js"></script>
+	</head>
+	<body style="background-color: #EEE;">
+		 <!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+
+		<div class="chooseCon">
+			<br />
+			<ul class="ul2">
+				<li  class="thisAction" name="">全部</li>
+			</ul><div class="clear" ></div>
+			
+			<ul class="ul3">
+				<li  class="thisAction" name="">全部</li>
+				<li name="1">男歌手</li>
+				<li name="0">女歌手</li>
+			</ul><div class="clear"></div>
+		    
+		    <ul class="ul4">
+				<li  class="thisAction">最新</li>
+				<li>收藏量</li>
+				<li>访问量</li>
+			</ul><div class="clear"></div>
+			
+			<ul class="ul1">
+				<li class="thisAction">全部</li><li>A</li><li>B</li><li>C</li><li>D</li><li>E</li>
+				<li>F</li><li>G</li><li>H</li><li>I</li><li>J</li><li>K</li>
+				<li>L</li><li>M</li><li>N</li><li>O</li><li>P</li><li>Q</li>
+				<li>R</li><li>S</li><li>T</li><li>U</li><li>V</li><li>W</li>
+				<li>X</li><li>Y</li><li>Z</li>
+			</ul><div class="clear"></div>
+			
+		
+		</div><hr />
+		<div class="singerListCon">
+			<div class="singerList">
+				<div class="title">全部歌手</div>		
+				<div style="margin-left: 30px;">
+					<ul class="allSingers"><!--20条最多-->
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<br><div style="height: 100px;">
+					<div id="limit" style="text-align:center;margin: auto;"></div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+  			
+		 $.get("allArea", function(result){
+				result.forEach(function(value, index, array) {
+					var $li = $("<li name='"+value.areaid+"'>"+value.areaname+"</li>");
+					$(".ul2").append($li)
+				});
+				
+				var singerpo={"singername": "","firstLetter":"","pageIndex":1};
+				//地区索引
+				$(".ul2 li").click(function(){
+					$(".ul2 li").not($(this)).removeClass("thisAction");
+					$(this).addClass("thisAction");
+					singerpo.areaid=$(this).attr("name");
+					post();
+				});
+				//字母索引
+				$(".ul1 li").click(function(){
+					$(".ul1 li").not($(this)).removeClass("thisAction");
+					$(this).addClass("thisAction");
+					singerpo.firstLetter=$(this).html();
+					if($(this).html()=='全部'){
+						singerpo.firstLetter="";
+					}
+					post();
+				});
+				//性别索引
+				$(".ul3 li").click(function(){
+					$(".ul3 li").not($(this)).removeClass("thisAction");
+					$(this).addClass("thisAction");
+					singerpo.singersex=$(this).attr("name");
+					post();
+				});
+				//收藏索引
+				$(".ul4 li").click(function(){
+					$(".ul4 li").not($(this)).removeClass("thisAction");
+					$(this).addClass("thisAction");
+					if($(this).html()=="收藏量"){
+						delete singerpo.collectioncount;
+						singerpo.accesscount=1;
+					}
+					else if($(this).html()=="访问量"){
+						singerpo.collectioncount=1;
+						delete singerpo.accesscount;
+					}
+					else if($(this).html()=="最新"){
+						delete singerpo.collectioncount;
+						delete singerpo.accesscount;
+					}
+					post();
+				});
+				post();
+				function post(){
+					//内容
+					function getText(){
+						$.post("allSingers",singerpo, function(result){
+							$(".allSingers").html("");
+							result.list.forEach(function(value, index, array) {
+								var $li=$('<li><div style="background-image: url('+value.photourl+');"'+
+										'onclick="location=\'singer.html?singerId='+value.singerid+'\'"></div>'+
+										'<a>'+value.singername+'</a>'+
+									'</li>');
+								$(".allSingers").append($li);
+							});
+					  	});
+					}
+					
+					
+					//分页
+					$.post("singersCount",singerpo, function(result){
+						//执行一个laypage实例
+						laypage.render({
+						  elem: 'limit' //注意，这里的 test1 是 ID，不用加 # 号
+						  ,count: result, //数据总数，从服务端得到
+						  limit:15,
+						  theme:'limitClass',
+						  prev:'<i class="layui-icon">&#xe603;</i>',
+						  next:'<i class="layui-icon">&#xe602;</i>',
+						  jump: function(obj, first){
+						    //obj包含了当前分页的所有参数，比如：
+						    //console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+						    //首次不执行
+					    	singerpo.pageIndex=obj.curr;
+					    	getText();
+						  }
+						});
+				  	});
+					
+				}
+		  	});
+		 form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 
+  
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/user-songlist.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<title></title>
+	</head>
+	<body style="background-color: #DDD;">
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<!--用户背景  -->
+		<!--#include file="Include_user.shtml"-->
+		
+		
+		<!--正文容器 -->
+		<div style="width: 1100px;margin: auto;">
+			<ul class="mySongList">
+				<li><div class="songlistbgAdd"></div></li>
+			</ul>
+		</div>
+		<script>
+			//跳转到设置页面
+			function listInfo(id){
+				$.get("isEditor",{songListId:id},function(flag){
+					if(flag){
+						window.open("user-songlist-edit.html?songListId="+id);
+					}else{
+						layui.use(['layer'], function(){
+						 var layer = layui.layer;
+						 layer.msg('暂无修改权限');
+						});
+					}
+				})
+				
+			}
+		
+		
+			$.get("getUserCollectionSongListVo",function(data){
+				data.forEach(function(value,index){
+					$.ajax({
+					    type: "POST",
+					    url: "getUserName",
+					    data:{userId:value.songListPo.userid},
+					    async: false,
+					    success: function(user) {
+					    	var img ="img/songListDefault.png";
+					    	if(value.songListPo.imgurl!=""&&value.songListPo.imgurl!=null){
+					    		img=value.songListPo.imgurl;
+					    	}
+					    	var $li = $('<li>'
+									+'<div  onclick="window.location=\'songList-info.html?songList='+value.songListPo.songlistid+'\'" class="songlistbg" style="background-image: url('+img+');background-size: cover;"></div>'
+									+'<div class="songlisttext"><div style="padding-top: 10px;">'+value.songListPo.songlistname+'</div>'
+									+'<div class="songlistuser">'+user.username+'</div>'
+									+'<div onclick="listInfo('+value.songListPo.songlistid+')" class="sonlistedit"><img src="img/user/songlistEdit.png"></div>'
+									+'<div class="sonlistedel"><img src="img/user/songlistdel.png"></div>'
+									+'<input class="singlistid" type="hidden" value="'+value.songListPo.songlistid+'"></div></li>');
+							$(".mySongList").append($li);
+					    }
+					});
+
+				})
+				
+				
+				$(".mySongList li").mouseenter(function(){
+					$(".mySongList li .sonlistedit").eq($(this).index()-1).show();
+					$(".mySongList li .sonlistedel").eq($(this).index()-1).show();
+					
+				})
+				$(".mySongList li").mouseleave(function(){
+					$(".mySongList li .sonlistedit").eq($(this).index()-1).hide();
+					$(".mySongList li .sonlistedel").eq($(this).index()-1).hide();
+				})
+				
+			
+			})
+		</script>
+		<!--正文容器结束 -->
+		<br /><br />
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	
+		<script>
+			layui.use(['element','layer','form'], function(){
+			 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+			 var layer = layui.layer;
+			  var form = layui.form;
+			 
+			 
+			 $(".sonlistedel").click(function(){  //删除提示
+				var id = $(this).next().val();
+				layer.confirm('是否确定删除该歌单', {
+					shadeClose: true,
+					  btn: ['确定','取消'] //按钮
+					}, function(){
+						$.post("delSongList",{songListId:id},function(flag){
+							if(flag){
+								layer.msg('删除成功', {icon: 1});
+								window.location.reload();
+							}
+						})
+					  
+					}, function(){}
+				);
+			 })
+			 
+			 $(".songlistbgAdd").click(function(){  //删除提示
+			 	$("#createSong").show();
+				layer.open({
+				  type: 1,
+				  title :'',
+				  skin: 'layui-layer-demo', //样式类名
+				  closeBtn: 0, //不显示关闭按钮
+				  area: ['650px', '250px'],
+				  anim: 2,
+				  shadeClose: true, //开启遮罩关闭
+				  end: function(){$("#createSong").hide();},//弹层销毁时，隐藏
+				  content:$("#createSong")
+				})
+			 })
+			 
+			 form.on('submit(add)', function(data){
+				 $.post("addUserCollectionSongListVo",data.field,function(){
+					 if(true) window.location.reload();
+				 })
+				  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+				});
+			 
+			});
+		</script>
+		
+		<div id="createSong" style="width: 600px;display: none;">
+			<form class="layui-form">
+				<br />
+				<p style="margin-left: 250px;font-size: 25px;">快捷创建歌单</p>
+				<br />
+				<div class="layui-form-item">
+				    <label class="layui-form-label">歌单名称</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="songListName" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+				<div class="layui-form-item">
+				    <label class="layui-form-label"></label>
+				    <div class="layui-input-block" style="color: #999;">
+				     	详细信息请前往歌单设置进行补充
+				    </div>
+				</div>
+				 <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+				      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				    </div>
+				  </div>
+			</form>
+			
+		</div>
+</html>

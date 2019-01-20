@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<title></title>
+	</head>
+	<body >
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<!--编辑歌单-->
+		<style>
+			.songListEditCon{
+				margin-left: 200px;
+				margin-top: 30px;
+				width: 900px;
+			}
+			.songListEditCon .songListtitle{
+				font-size: 33px;
+				border-bottom: solid 5px #5FB878;
+				width: 140px;
+			}
+			.songListEditCon .point{
+				float: left;
+				margin-left: 10px;
+				color: #999;
+				font-size: 15px;
+			}
+		</style>
+		<div class="songListEditCon">
+			<p class="songListtitle">编辑歌单</p><br /><br />
+			<form class="layui-form" >
+				<input name="songlistid" type="hidden">
+				<div class="layui-form-item">
+				    <label class="layui-form-label" style="font-size: 16px;">歌单名称</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="songlistname" required  lay-verify="required" placeholder="请输入名称" autocomplete="off"
+				      	 class="layui-input" value="">
+				    </div>
+			  	</div>
+			  	
+			  	<div class="layui-form-item">
+				    <label class="layui-form-label" style="font-size: 16px;">歌单封面</label>
+				    <div class="layui-input-block">
+					    <div class="layui-upload-drag" id="imgUp" style="float: left;">
+						  <i class="layui-icon" style="color: #5FB878"></i>
+						  <p>点击上传，或将文件拖拽到此处</p>
+						</div>
+						
+						<div class="point">
+							最佳尺寸：800*800 px<br />
+							仅支持图片格式jpg,png,gif,bmp,jpeg<br />
+							异步自动上传，大小不超过5MB
+						</div>
+				    </div>
+			  	</div>
+				
+				<div class="layui-form-item">
+				    <label class="layui-form-label" style="font-size: 16px;">歌单简介</label>
+				    <div class="layui-input-block">
+				       <textarea name="introduce" placeholder="每张歌单都用你的情感，经历，故事。来一起倾述一下吧" class="layui-textarea"></textarea>
+				    </div>
+			  	</div>
+			  	
+			  	 <div class="layui-form-item">
+				    <label class="layui-form-label">选择框</label>
+				    <div class="layui-input-block">
+				      <select name="typeid" class="editorType" lay-verify="required">
+				      </select>
+				    </div>
+				  </div>
+			  	
+			  	<div class="layui-form-item">
+				    <label class="layui-form-label" style="font-size: 16px;">标签</label>
+				    <div class="layui-input-block">
+				      	<div style="float: left;width: 500px;">
+				      	 <input type="text" name="tags" required  lay-verify="required|sign" placeholder="请输入标签" autocomplete="off"
+				      	 class="layui-input" ></div>
+				      	 
+				      	<div class="point" style="margin-top: 10px;">
+				      		标签可为多个，用符号','分隔
+						</div>
+				    </div>
+			  	</div>
+			  	
+			  	<div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn" lay-submit lay-filter="submit" style="background-color:#5FB878 ;">
+				      	确定编辑
+				      </button>
+				    </div>
+				</div>
+				<br /><br />
+			</form>
+		</div>
+		<!--编辑歌单结束-->
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+	</body>
+	
+	<script>
+		$.get("getEmail",function(f){
+			if(f=="") window.location='index.html'; 
+		})
+	
+		//得到地址栏参数方法
+		function GetQueryString(name)
+		{
+		     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null)return  unescape(r[2]); return null;
+		}
+	
+	
+		layui.use(['element','upload','form','layedit'], function(){
+			 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+			 var upload = layui.upload;//文件上传
+			 var form = layui.form;
+			 
+			 $.post("editUserSongList",{songListId:GetQueryString('songListId')},function(result){
+				 $("input[name='songlistid']").val(result.songlistid);
+				 $("input[name='songlistname']").val(result.songlistname);
+				 $("input[name='tags']").val(result.tags);
+				 $("textarea[name='introduce']").val(result.introduce);
+				 //下拉框
+				 $.get("getAllTypes",function(data){
+					 $(".editorType").html("");
+					 data.forEach(function(value){
+						 var $op = $('<option value="'+value.typeid+'">'+value.typename+'</option>');
+						 if(result.typeid == value.typeid){
+							 $op = $('<option value="'+value.typeid+'" selected>'+value.typename+'</option>');
+						 }
+						 $(".editorType").append($op);
+					 })
+					 form.render();
+				 })
+			 })
+
+			 form.on('submit(submit)', function(data){
+				 $.post("submitEditUserSongList",data.field,function(flag){
+					 if(flag){
+						 layer.msg('提交成功');
+					 }
+				 })
+			  	return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+			 
+			 
+			 
+			 form.verify({
+			  sign: [
+			    /^[\S]{0,24}$/
+			    ,'标签长度超过限制'
+			  ] 
+			});      
+			 
+			 var songListId = {}
+			 songListId.songListId=GetQueryString('songListId');
+			 console.log(songListId)
+			 upload.render({
+			  size:1024*5,
+			  elem: '#imgUp',
+			  url: 'editSongListImg',
+			  data:songListId,
+			  done: function(res, index, upload){
+				 layer.msg('上传成功');
+			  }
+			});
+		});
+		
+		
+	</script>
+</html>

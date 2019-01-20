@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js"></script>
+	</head>
+	<body style="background-color: #EEE;">
+		 <!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		
+		<style>
+			.chooseCon{
+				padding-left: 20px;
+				padding-top: 10px;
+			}
+		
+			.songListRankCon{
+				width: 1210px;	
+				margin: auto;		
+			}
+			.songListRankCon .songListRanknav{
+				height: 500px;
+				width: 200px;
+				float: left;
+				border: solid #BBB 1px;
+			}
+			.songListRankCon .songListRanknav .caseSongList{
+				padding-top: 20px;
+			}
+			.songListRankCon .songListRanknav .caseSongList li{
+				font-family: myFirstFont;
+				width: 200px;
+				height: 40px;
+				font-size: 17px;
+				text-align: center;
+				line-height: 40px;
+				color: #777;
+			}
+			
+			
+			.songListRankCon .songList{
+				width: 1000px;
+				margin: auto;
+				float: left;	
+			}
+			.title{
+				font-family: myFirstFont;
+				font-size: 35px;
+				margin-top: 10px;
+				margin-left: 20px;
+			}
+
+			
+			.ulSongList li{
+				height: 140px;
+				margin-top: 15px;
+				border: solid #DDD 1px;
+			}
+			.ulSongList li .img{
+				height: 140px;
+				width: 140px;
+				background-repeat: no-repeat;
+				background-size: cover;
+				float: left;
+				margin-right: 10px;
+			}
+			.ulSongList li .liTitle{
+				font-size: 25px;
+				font-family: myFirstFont;
+			}
+			.ulSongList li .liText{
+				width: 800px;
+				color: #888;
+			}
+			
+			
+		</style>
+		<div class="songListRankCon noOverflow">
+			<br />
+			<div class="songListRanknav">
+				<ul class="caseSongList">
+					<li style="font-size: 25px;padding-bottom: 28px;">歌单排行榜</li>
+					<li style="background-color: #30A89C;color: white;">收藏榜</li><!--收藏排序-->
+					<li>热搜榜</li><!--热度排序-->
+					<li>推荐榜</li><!--最新排序-->
+				</ul>
+			</div>
+			
+			
+			<div class="songList noOverflow">
+				
+				<div class="chooseCon">
+					<div class="title">歌单</div>
+				</div>
+			
+				<div class="noOverflow" style="margin-left: 20px;">
+					<hr />
+					<!--歌单列表容器 -->
+					<ul class="ulSongList">
+						<li>
+							<div class="img" style="background-image: url(img/singList01.png);"></div>
+							<div class="noOverflow">
+								<div class="liTitle">KTV必唱的经典华语金曲</div>
+								<p class="liText">今天凌晨，薛之谦与高磊鑫微博双双宣布复合，
+									爱薛你失恋了吗？但人生又能有多幸运，才能在众人中遇见一个深爱的她？又有多庆幸，
+									爱情兜兜转转之后，你还在那里，愿意继续让我牵起你的手。祝福他们，希望他们的余生，
+									继续做彼此最美的一半。</p>
+							</div>
+						</li>
+						
+						<li>
+							<div class="img" style="background-image: url(img/singList02.png);"></div>
+							<div class="noOverflow">
+								<div class="liTitle">珍藏多年超好听的英文歌</div>
+								<p class="liText">好听的音乐带给你快乐</p>
+							</div>
+						</li>
+						
+						<li>
+							<div class="img" style="background-image: url(img/singList03.png);"></div>
+							<div class="noOverflow">
+								<div class="liTitle">我想独自仰望着星空</div>
+								<p class="liText">暗，渐渐布满天空，无数的星挣破夜幕探出来，夜的潮气在空气中漫漫地浸润，
+									扩散出一种感伤的氛围。黑夜给了我黑色的眼睛，我却用它寻找光明。</p>
+							</div>
+						</li>
+						
+						<li>
+							<div class="img" style="background-image: url(img/singList03.png);"></div>
+							<div class="noOverflow">
+								<div class="liTitle">我想独自仰望着星空</div>
+								<p class="liText">暗，渐渐布满天空，无数的星挣破夜幕探出来，夜的潮气在空气中漫漫地浸润，
+									扩散出一种感伤的氛围。黑夜给了我黑色的眼睛，我却用它寻找光明。</p>
+							</div>
+						</li>
+						
+						<li>
+							<div class="img" style="background-image: url(img/singList03.png);"></div>
+							<div class="noOverflow">
+								<div class="liTitle">我想独自仰望着星空</div>
+								<p class="liText">暗，渐渐布满天空，无数的星挣破夜幕探出来，夜的潮气在空气中漫漫地浸润，
+									扩散出一种感伤的氛围。黑夜给了我黑色的眼睛，我却用它寻找光明。</p>
+							</div>
+						</li>
+						
+						
+						
+					</ul>
+					<div class="clear"></div>
+					<!--歌单列表结束 -->
+					<br />
+				</div>
+			</div>
+		</div><br /><br /><br />
+		
+		
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+  
+		  //执行一个laypage实例
+		  laypage.render({
+		    elem: 'limit' //注意，这里的 test1 是 ID，不用加 # 号
+		    ,count: 150, //数据总数，从服务端得到
+		    limit:20,
+		    theme:'limitClass',
+		    prev:'<i class="layui-icon">&#xe603;</i>',
+		    next:'<i class="layui-icon">&#xe602;</i>'
+		  });
+		  form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 	  
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		});
+
+	</script>
+</html>

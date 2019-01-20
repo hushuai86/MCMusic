@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="<%=basePath%>">
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="layui/css/layui.css" />
+		<link rel="stylesheet" href="css/default.css" />
+		<link rel="stylesheet" href="css/search.css" />
+		<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="layui/layui.js" ></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+	</head>
+	<body style="background-color: #EEE;">
+		<!--导航-->
+		<!--#include file="Include_nav.shtml"-->
+		
+		<!--搜索框-->
+		<div class="searchCon noOverflow">
+			<br /><br /><br />
+			<div class="searchInputCon">
+				<input class="input"/>
+				<div class="inputButton"></div>
+				<div class="clear"></div>
+				<!--热门搜索便签-->
+				<div style="color: white;margin-top: 10px;font-size: 15px;">
+					热门搜索：&nbsp;&nbsp;&nbsp;&nbsp;无条件&nbsp;&nbsp;&nbsp;&nbsp;
+					薛之谦 &nbsp;&nbsp;&nbsp;&nbsp;李宇春&nbsp;&nbsp;&nbsp;&nbsp;王俊凯
+				</div>
+				<script type="text/javascript">
+					$(".inputButton").click(function(){
+						if($(".input").val()==""){
+							layui.use(['layer'], function(){
+							 var layer = layui.layer;
+							 layer.msg('请输入搜索关键字');
+							});
+						}else{
+							window.location='search.html?searchWord='+$(".input").val();
+						}
+					})
+				</script>
+				<!--搜索导航-->
+				<div class="searchNavCon">
+					<!--歌曲-->
+					<div class="ssSong" style="color:#666;">
+						<div class="first">
+							<br />
+							<img src="img/search/song.png" />
+							歌曲
+						</div>
+						<div class="con">
+							<ul class="searchNavUl searchNavUlSong">
+							</ul>
+							<hr />
+						</div>
+					</div>
+					
+					
+					<!--歌手-->
+					<div class="ssSinger"  style="color:#666 ;">
+						<div class="first">
+							<br />
+							<img src="img/search/singer.png" />
+							歌手
+						</div>
+						<div class="con">
+							<ul class="searchNavUl searchNavUlSinger">
+							</ul>
+							<hr />
+						</div>
+					</div>
+					
+					
+					<!--专辑-->
+					<div class="ssCD"  style="color:#666 ;">
+						<div class="first">
+							<br />
+							<img src="img/search/cd.png" />
+							专辑
+						</div>
+						<div class="con">
+							<ul class="searchNavUl searchNavUlCD">
+							</ul>
+							<hr />
+						</div>
+					</div>
+				</div>
+				<!--搜索导航结束-->	
+					
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(".input").bind("input propertychange",function(){
+				if($(".input").val()=="") {
+					$(".searchNavCon").hide();
+					return ;
+				}
+				
+				//歌曲
+				$.post("searchSongPosForGood",{search:$(".input").val()},function(data){
+					$(".searchNavUlSong").html("");
+					if(data.list.length==0){
+						$(".ssSong").hide();
+					}
+					else{
+						$(".ssSong").show();
+						data.list.forEach(function(value){
+							var $li = $("<li onclick=\"window.location='musicPlay?songId="+value.songPo.songid+"'\">"+value.songPo.songname+"-"+value.singPo.singername+"</li>")
+							$(".searchNavUlSong").append($li)
+						})
+					}
+					
+				})
+				
+				//歌手
+				$.post("searchSingerPosForGood",{search:$(".input").val()},function(data){
+					$(".searchNavUlSinger").html("");
+					if(data.list.length==0){
+						$(".ssSinger").hide();
+					}
+					else{
+						$(".ssSinger").show();
+						data.list.forEach(function(value){
+							var $li = $("<li onclick=\"window.location='singer.html?singerId="+value.singerid+"'\">"+value.singername+"</li>")
+							$(".searchNavUlSinger").append($li)
+						})
+					}
+				})
+				
+				//专辑
+				$.post("searchCDPosForGood",{search:$(".input").val()},function(data){
+					$(".searchNavUlCD").html("");
+					if(data.list.length==0){
+						$(".ssCD").hide();
+					}
+					else{
+						$(".ssCD").show();
+						data.list.forEach(function(value){
+							var $li = $("<li onclick=\"window.location='cdInfo.html?cdId="+value.cdpo.cdid+"'\">"+value.cdpo.cdname+"-"+value.singerPo.singername+"</li>")
+							$(".searchNavUlCD").append($li)
+						})
+					}
+				})
+				$(".searchNavCon").show();
+			})
+			
+			$("body").click(function(){
+				$(".searchNavCon").hide();
+			})
+		</script>
+		<!--搜索框结束-->
+		
+		<!--搜索结果-->
+		<div class="result noOverflow">
+			<br />
+			<div class="layui-tab layui-tab-brief noOverflow" lay-filter="docDemoTabBrief"
+				 style="width: 1100px;margin: auto;">
+			  <ul class="layui-tab-title">
+			    <li class="layui-this">歌曲</li>
+			    <li>歌手</li>
+			    <li>专辑</li>
+			    <li>歌单</li>
+			  </ul>
+			  <!--容器-->
+			  <div class="layui-tab-content noOverflow">
+			  	<!--歌曲-->
+			    <div class="layui-tab-item layui-show">
+			    	<div class="layui-btn-group">
+						<button class="layui-btn plays">
+						  <i class="layui-icon">&#xe623;</i> 播放
+						</button>
+						<button class="layui-btn downs">
+						  <i class="layui-icon">&#xe61a;</i> 下载
+						</button>
+						<button class="layui-btn" id="moreActions">
+						  <i class="layui-icon">&#xe649;</i> 批量操作
+						</button>
+					</div>
+					<form id="form"  method="post">
+					<table class="layui-table" lay-skin="nob"  lay-size="lg"> 
+					  <colgroup>
+					  	<col width="40">
+					    <col width="350">
+					    <col width="310">
+					    <col width="440">
+					    <col>
+					  </colgroup>
+					  <thead>
+					    <tr style="background-color: #EEE;color: #777;">
+					      <th>
+					      	<label for="tdInput0" class="checkLabel" id="allChoose"></label>
+				  			<input type="checkbox" id="tdInput0" />&nbsp;&nbsp;
+					      </th>
+					      <th>歌曲</th>
+					      <th></th>
+					      <td>歌手</td>
+					      <th>时长</th>
+					    </tr> 
+					  </thead>
+					  <tbody class="songs">
+					   </tbody>
+					</table>
+					</form>
+					<div class="clear"></div>
+					<br><div style="height: 100px;text-align:center">
+						<div id="limitSong" style="margin: auto;"></div>
+					</div>
+			    </div>
+			    <script>
+			    	//获取参数
+				    function getUrlParam(key) {
+				        var url = window.location.search;
+				        var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+				        var result = url.substr(1).match(reg);
+				        return result ? decodeURIComponent(result[2]) : null;
+				    }
+				    //回显到搜索框
+					$(".input").val(getUrlParam("searchWord"))
+					
+					
+					
+					//批量操作
+					$("#moreActions").click(function(){
+						$(".checkLabel").toggle();
+						$(".checkLabel").css("background-image","url(img/goodGreen.png)");
+						$(".checkLabel").next().attr("checked","true");
+					})
+					
+					$(".plays").click(function(){
+						var $checkedInput = $("#form input[type='checkbox']:checked").not($("#tdInput0"));
+						if($checkedInput.size()==0){
+							layui.use(['layer'], function(){
+							 var layer = layui.layer;
+							 layer.msg('请在批量操作中选择至少一个音乐播放');
+							});
+						}else{
+							$("#form").attr("action","musicPlay");
+							$("#form").submit();
+						}
+					})
+					
+					$(".downs").click(function(){
+						var $checkedInput = $("#form input[type='checkbox']:checked").not($("#tdInput0"));
+						if($checkedInput.size()==0){
+							layui.use(['layer'], function(){
+							 var layer = layui.layer;
+							 layer.msg('请在批量操作中选择至少一个音乐下载');
+							});
+						}else{
+							$("#form").attr("action","musicDown");
+							$("#form").submit();
+						}
+					})
+				
+				
+					//单曲音乐播放
+					function play(id){
+						$.StandardPost("musicPlay",{"songId":id});
+					}
+					//单音乐下载
+					function singerDown(id){
+						$.StandardPost("musicDown",{"songId":id});
+					}
+					//添加
+					function add(){
+						layui.use(['layer'], function(){
+						 var layer = layui.layer;
+						 layer.msg('请在音乐播放界面进行歌曲收藏');
+						});
+					}
+					
+					//添加
+					function add(id){
+						layui.use(['layer'], function(){
+							 var layer = layui.layer;
+							 $.get("isLogin",function(flag){
+								 if(flag){
+									 $.post("getMysongList",function(data){
+										//构建选择框
+										var select = "<select class='select' style='margin:30px;width:70%;height:35px;'>";
+										data.forEach(function(value,index){
+											select =select +"<option value='"+value.songlistid+"'>"+value.songlistname+"</option>";
+										})
+										select = select + "</select>";
+										select = select + "<button onclick='aAdd()' class='layui-btn'>确定</button>";
+										
+										aAdd=function(){
+											$.post("aADDSongList",{songId:id,songListId:$(".select").val()});
+											layer.close(lay);
+											layer.msg('添加成功');
+										}
+										
+										//显示弹框选择加入歌单
+										var lay = layer.open({
+										  type: 1,
+										  title :'请选择你要添加的歌单',
+										  skin: 'layui-layer-demo', //样式类名
+										  closeBtn: 1, //不显示关闭按钮
+										  area: ['500px', '150px'],
+										  anim: 2,
+										  shadeClose: true, //开启遮罩关闭
+										  content: select
+										})
+									 })
+
+								 }else{
+									 layer.msg('请先登录');
+								 }
+							 }) 
+						  });
+					}
+				</script>
+			    <!--歌曲结束-->
+			    
+			    
+			    
+			    <!--歌手-->
+			    <div class="layui-tab-item">
+				    <div style="margin-left: 38px;">
+						<!--歌手列表容器 -->
+						<ul class="ulSinger" >
+						</ul>
+						<div class="clear"></div>
+						<br><div style="height: 100px;text-align:center;">
+							<div id="limitSinger" style="margin: auto;"></div>
+						</div>
+						<!--歌手列表结束 -->
+						<br />
+					</div>
+			    </div>
+			    
+			    
+			    <!--专辑-->
+			    <div class="layui-tab-item list">
+			    	<div style="margin-left: 38px;">
+						<!--专辑列表容器 -->
+						<ul class="ulcd" >
+							<li>
+								<img src="img/singList01.png">
+								<div><font style="color:#999;">薛之谦</font><br>万事如意</div>
+							</li>
+						</ul>
+						<div class="clear"></div>
+						<br><div style="height: 100px;text-align:center;">
+							<div id="limitCD" style="margin: auto;"></div>
+						</div>
+						<!--歌手列表结束 -->
+						<br />
+					</div>
+			    </div>
+			    
+			    
+			    <!--歌单-->
+			    <div class="layui-tab-item list">
+					<div class="noOverflow" style="margin-left: 20px;">
+					<!--歌单列表容器 -->
+					<ul class="ulSongList">
+
+					</ul>
+					<div class="clear"></div>
+					<br><div style="height: 100px;text-align:center;">
+						<div id="limitList" style="margin: auto;"></div>
+					</div>
+					<!--歌单列表结束 -->
+					<br />
+				</div>
+				</div>
+			  </div>
+			</div>  
+		</div>
+
+		<!--页面底部-->
+		<!--#include file="Include_foot.shtml"-->
+		<!--页面底部结束-->
+		
+	</body>
+	<script>
+		function Color(str,word){
+			return str.replace( word, "<font color='red'>"+word+"</font>"); 
+		}
+	
+	
+		//layui框架模块引入
+		layui.use(['form','element','layer','laypage'], function(){
+		 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var form = layui.form;
+		 var $ = layui.jquery;
+		 var layer = layui.layer;
+		 var laypage = layui.laypage;
+		 
+		 //歌曲
+		 limitSong = function(num){
+			  //执行一个laypage实例
+			  laypage.render({
+			    elem: 'limitSong' //注意，这里的 test1 是 ID，不用加 # 号
+			    ,count: num, //数据总数，从服务端得到
+			    limit:10,
+			    theme:'limitClass',
+			    prev:'<i class="layui-icon">&#xe603;</i>',
+			    next:'<i class="layui-icon">&#xe602;</i>',
+			    jump: function(obj, first){
+			        setSong(obj.curr);
+			    }
+			  });
+		 }
+		 $.post("searchSongPosCount",{search:getUrlParam("searchWord")},function(num){
+			 limitSong(num);
+		 })
+		 function setSong(index){
+			 $.post("searchSongPos",{search:getUrlParam("searchWord"),pageIndex:index},function(data){
+	    		$(".songs").html("")
+	    		data.list.forEach(function(value,index){
+	    			//关键字变色
+	    			songname = Color(value.songPo.songname,getUrlParam("searchWord"));
+	    			var $tr = $('<tr><td><label for="tdInput'+(index+1)+'" class="checkLabel"></label>'
+					  		+'<input name="songId" value="'+value.songPo.songid+'" type="checkbox" id="tdInput'+(index+1)+'" />&nbsp;&nbsp;'+(index+1)+''
+						    +'</td><td>'+songname+'</td><td><div class="buttonCon">'
+							+'<div class="songActionButton">'
+							+'<img onclick="play('+value.songPo.songid+')" src="img/user/play.png" />'
+							+'<img onclick="add('+value.songPo.songid+')" src="img/user/add.png" />'
+							+'<img onclick="singerDown('+value.songPo.songid+')" src="img/user/down.png" /></div ></div></td>'
+						    +'<td><a href="singer.html?singerId='+value.singPo.singerid+'">'+value.singPo.singername+'</a></td><td style="color: #999;">'+value.songPo.songtime+'</td></tr>');
+	    			$(".songs").append($tr);
+	    		})
+	    		
+	    		$(".layui-table tbody tr").hover(function(){
+					var index = $(this).index();
+					$(this).find(".songActionButton").show();
+				},function(){
+					var index = $(this).index();
+					$(this).find(".songActionButton").hide();
+				});
+				 
+				//单选框点击事件
+				$(".checkLabel").click(function(){
+					if($(this).css("background-image")=='none'){
+						$(this).css("background-image","url(img/goodGreen.png)");
+					}else{
+						$(this).css("background-image","none");
+					}
+				})
+				//全选
+				$("#allChoose").click(function(e){
+					if($(this).next().attr("checked")=="checked"){
+						$(".checkLabel").css("background-image","none");
+						$(".checkLabel").not($(this)).next().attr("checked",false);
+					}else{
+						$(".checkLabel").css("background-image","url(img/goodGreen.png)");
+						$(".checkLabel").not($(this)).next().attr("checked",true);
+					}
+				})
+	    	})
+		 }
+		 
+		   
+		  //歌曲
+		  limitSinger = function(num){
+			  laypage.render({
+			    elem: 'limitSinger' //注意，这里的 test1 是 ID，不用加 # 号
+			    ,count: num, //数据总数，从服务端得到
+			    limit:15,
+			    theme:'limitClass',
+			    prev:'<i class="layui-icon">&#xe603;</i>',
+			    next:'<i class="layui-icon">&#xe602;</i>',
+			    jump: function(obj, first){
+			        setSinger(obj.curr);
+			    }
+			  });
+		  };
+		  $.post("searchSingerPosCount",{search:getUrlParam("searchWord")},function(num){
+			  limitSinger(num)
+		  })
+		  function setSinger(index){
+			  $(".ulSinger").html("")
+			  $.post("searchSingerPos",{search:getUrlParam("searchWord"),pageIndex:index},function(data){
+				  data.list.forEach(function(value,index){
+					  //关键字变色
+		    		  singername = Color(value.singername,getUrlParam("searchWord"));
+					  var $li = $('<li  onclick="window.location=\'singer.html?singerId='+value.singerid+'\'"><img src="'+value.photourl+'"><div>'+singername+'</div></li>');
+					  $(".ulSinger").append($li);
+				  })
+				 
+			  })
+		  }
+		  
+		  //专辑
+		  limitCD = function(num){
+			//执行一个laypage实例
+			  laypage.render({
+			    elem: 'limitCD' //注意，这里的 test1 是 ID，不用加 # 号
+			    ,count: num, //数据总数，从服务端得到
+			    limit:15,
+			    theme:'limitClass',
+			    prev:'<i class="layui-icon">&#xe603;</i>',
+			    next:'<i class="layui-icon">&#xe602;</i>',
+			    jump: function(obj, first){
+			        setCD(obj.curr);
+			    }
+			  });
+		  }
+		  $.post("searchCDPosCount",{search:getUrlParam("searchWord")},function(num){
+			  limitCD(num)
+		  })
+		  function setCD(index){
+			  $(".ulcd").html("");
+			  $.post("searchCDPos",{search:getUrlParam("searchWord"),pageIndex:index},function(data){
+				  data.list.forEach(function(value,index){
+					  //关键字变色
+		    		  cdname = Color(value.cdpo.cdname,getUrlParam("searchWord"));
+					  var $li = $('<li onclick="window.location=\'cdInfo.html?cdId='+value.cdpo.cdid+'\'"><img src="'+value.cdpo.coverurl+'">'+
+								'<div><font style="color:#999;font-size:13px;">'+value.singerPo.singername+'</font><br>'+cdname+'</div></li>');
+					  $(".ulcd").append($li);
+				  })
+				 
+			  })
+		  }
+		  
+		  //歌单
+		  limitList = function(num){
+			//执行一个laypage实例
+			  laypage.render({
+			    elem: 'limitList' //注意，这里的 test1 是 ID，不用加 # 号
+			    ,count: num, //数据总数，从服务端得到
+			    limit:5,
+			    theme:'limitClass',
+			    prev:'<i class="layui-icon">&#xe603;</i>',
+			    next:'<i class="layui-icon">&#xe602;</i>',
+			    jump: function(obj, first){
+			        setList(obj.curr);
+			    }
+			  });
+		  }
+		  $.post("searchSongListPosCount",{search:getUrlParam("searchWord")},function(num){
+			  limitList(num)
+		  })
+		  function setList(index){
+			  $(".ulSongList").html("");
+			  $.post("searchSongListPos",{search:getUrlParam("searchWord"),pageIndex:index},function(data){
+				  data.list.forEach(function(value,index){
+					  songListUrl = value.songListPo.imgurl;
+					//关键字变色
+					  songListName = Color(value.songListPo.songlistname,getUrlParam("searchWord"));
+					  if(songListUrl==""||songListUrl==null) songListUrl = "img/songListDefault.png"
+					  var $li = $('<li  onclick="window.location=\'songList-info.html?songList='+value.songListPo.songlistid+'\'"><div class="img" style="background-image: url('+songListUrl+');"></div>'
+								+'<div class="noOverflow"><div class="liTitle">'+songListName+'</div>'
+								+'<p class="liText">'+value.songListPo.introduce+'</p></div></li>');
+					  $(".ulSongList").append($li);
+				  })
+				 
+			  })
+		  }
+		  
+		  
+		  
+		  //登录
+		  $(".login").click(function(){
+		  	$("#loginAlert").show();
+		  	layer.open({
+			  type: 1,
+			  title :'',
+			  skin: 'layui-layer-demo', //样式类名
+			  closeBtn: 0, //不显示关闭按钮
+			  area: ['400px', '250px'],
+			  anim: 2,
+			  shadeClose: true, //开启遮罩关闭
+			  end: function(){$("#loginAlert").hide();},//弹层销毁时，隐藏
+			  content: $("#loginAlert")
+			})
+		  });
+		 
+		  form.on('submit(login)', function(data){
+			  $.post("login",data.field,function(data){
+				  if(data.userid==null){
+					layer.msg('用户名或密码错误');
+					$('input[name="password"]').val("");
+					$('input[name="password"]').focus();
+				  }else{
+					  window.location.reload();
+				  }
+			  })
+			  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+		 
+			 
+			 form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+			}); 
+		});
+
+	</script>
+</html>

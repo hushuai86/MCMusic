@@ -1,0 +1,61 @@
+#nav-main{
+	height: 60px; 
+}
+#nav-main img,#nav-main .layui-nav{
+	float: left;
+}
+.layui-nav-child{
+	position: absolute;
+}
+.layui-nav{
+	background-color: inherit;
+}
+.layui-nav li{
+	margin-left: 10px;
+	cursor: pointer;
+}
+.layui-nav li a{
+	font-size: 16px;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #666; opacity:1; 
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #666;opacity:1;
+}
+
+input:-ms-input-placeholder{
+    color: #666;opacity:1;
+}
+
+input::-webkit-input-placeholder{
+    color: #666;opacity:1;
+}
+.defaultContian{
+	width: 430px;
+	margin: auto;
+	background:rgba(255,255,255,0.7);
+	padding: 25px;
+	text-align: center;
+	border-radius: 8px 8px 0px 0px;
+}
+.defaultContianBut{
+	cursor:pointer;
+	width: 480px;
+	color: white;
+	height: 55px;
+	background-color: #009F95;
+	margin: auto;
+	font-size: 23px;
+	text-align: center;
+	line-height: 55px;
+	border-radius: 0px 0px 8px 8px;
+	border:none;
+}
+.inputText{
+	padding-left: 45px;
+	border:none;
+	border-bottom:solid #AAA 1px;
+}
